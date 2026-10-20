@@ -55,7 +55,7 @@ extern "C" void app_main() {
 
     // Released: /OE high, all channels off, until a person engages it.
     CogletController::Instance().Start({SERVO_I2C_PORT, SERVO_I2C_SDA_PIN, SERVO_I2C_SCL_PIN,
-                                        SERVO_OE_PIN, SERVO_PCA9685_ADDR});
+                                        SERVO_OE_PIN, SERVO_PCA9685_ADDR, SERVO_ROLE_CHANNELS});
     mcp::RegisterTools();
     console::Start();
     session::Start();

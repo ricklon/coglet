@@ -12,6 +12,9 @@
 
 ## Next
 
+- [ ] Redraw `hardware/esp32c3-voice-agent.fzz` to the standard pad map.
+- [ ] Rewire the bench C3 to the standard pad map: swap D2/D3 and D4/D5
+      (see [WIRING.md](../hardware/WIRING.md#pad-map-every-board)).
 - [ ] Flash `firmware/app` onto the bench C3 (servo rail off) and check:
       check-in, hello, a full voice turn, MCP discovery and a tool call, the
       boot button interrupting a reply, `!quiet`, builder-mode quiet, and that

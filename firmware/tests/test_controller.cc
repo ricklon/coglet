@@ -18,7 +18,7 @@ static void Reject(const std::function<void()>& f) {
 }
 int main(int argc, char** argv) {
     auto& c=CogletController::Instance();
-    // Matches the S3 profile wiring that fake_idf.h accepts.
+    // Matches the S3 profile wiring that fake_idf.h accepts: SDA D4, SCL D5.
     c.Start({I2C_NUM_1, GPIO_NUM_5, GPIO_NUM_6, GPIO_NUM_9, 0x40});
     assert(c.ready_ && c.released_ && fake_oe==1);
     // Warm-start sequence disables outputs before MODE1 writes; no PWM pose.
@@ -135,6 +135,17 @@ int main(int argc, char** argv) {
     assert(!c.Valid(bare,true));
     // An assigned but unconfirmed role blocks engagement.
     auto lame=full; lame.axes[7].confirmed=0; assert(!c.Valid(lame,true));
+    c.Command("release"); c.cal_=full;
+    // fit assigns a role to its standard channel, unconfirmed, with no range.
+    c.cal_.axes[6].channel=-1; c.cal_.axes[6].confirmed=0;
+    c.Command("fit jaw",true);
+    assert(c.cal_.axes[6].channel==6 && !c.cal_.axes[6].confirmed);
+    assert(c.cal_.axes[6].low==90 && c.cal_.axes[6].high==90);
+    Reject([&]{c.Command("fit jaw");});           // local only
+    Reject([&]{c.Command("fit tail",true);});
+    c.cal_.axes[7].channel=6; c.cal_.axes[6].channel=-1;
+    Reject([&]{c.Command("fit jaw",true);});       // channel 6 already taken
+    c.Command("builder",true); Reject([&]{c.Command("fit jaw",true);}); // released only
     c.Command("release"); c.cal_=full;
     std::cout<<"Coglet host safety and motion tests passed (fake I2C/NVS; no hardware).\n";
 }

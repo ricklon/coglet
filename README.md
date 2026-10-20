@@ -34,7 +34,8 @@ emergency stop**.
 ## Quick start
 
 1. **Wire it.** See [hardware/WIRING.md](hardware/WIRING.md). The Fritzing
-   schematic is [hardware/esp32c3-voice-agent.fzz](hardware/esp32c3-voice-agent.fzz).
+   schematic is [hardware/esp32c3-voice-agent.fzz](hardware/esp32c3-voice-agent.fzz)
+   (older than the pad map in WIRING.md; the pad map wins).
 2. **Flash it.** Servo supply off. Use the web flasher
    (Chrome or Edge), or build from source:
    ```bash

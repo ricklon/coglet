@@ -96,8 +96,10 @@ Newest first. Add an entry for every build that goes onto a robot.
 
 - Coglet C3 running on the bench against agent-hub: voice session, MCP tool
   discovery, listen mode, and tool calls through the device MCP proxy.
-- C3 wiring corrections confirmed on hardware: D2 = mic data, D3 = WS; SCL on
-  D4, SDA on D5 (see [WIRING.md](../hardware/WIRING.md)).
+- C3 wiring as built, confirmed on hardware: D2 = mic data, D3 = WS; SCL on
+  D4, SDA on D5. (Superseded 2026-10-20: the standard pad map follows the S3,
+  so this robot needs D2/D3 and D4/D5 swapped. See
+  [WIRING.md](../hardware/WIRING.md#pad-map-every-board).)
 - Servos being fitted and calibrated from the base upward; stages 5–8 not yet
   complete for the full mechanism.
 

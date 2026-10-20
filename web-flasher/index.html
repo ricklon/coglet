@@ -264,29 +264,113 @@
     .section p.lead { color: #94a3b8; font-size: .9rem; line-height: 1.5; margin-bottom: .75rem; }
     .section a { color: #7dd3fc; }
     .unsupported { color: #f87171; font-size: 0.8rem; margin-top: 0.5rem; }
+
+    /* Walkthrough */
+    .section h4 { color: #e2e8f0; font-size: .92rem; margin: 1rem 0 .4rem; }
+    .section ul { margin: .25rem 0 .5rem 1.2rem; color: #94a3b8; font-size: .88rem; line-height: 1.55; }
+    .section li code, .section p code, td code {
+      background: #0f1117; padding: .1rem .3rem; border-radius: 3px; color: #7dd3fc; font-size: .85em;
+    }
+    .table-wrap { overflow-x: auto; margin: .25rem 0 .5rem; }
+    table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+    th, td { text-align: left; padding: .35rem .5rem; border-bottom: 1px solid #2d3748; color: #cbd5e1; vertical-align: top; }
+    th { color: #94a3b8; font-weight: 600; }
+    details { margin: .5rem 0; }
+    summary { cursor: pointer; color: #7dd3fc; font-size: .88rem; }
+    .check { color: #86efac; }
+    .note { font-size: .82rem; color: #94a3b8; margin-top: .5rem; line-height: 1.5; }
+    pre.cmds {
+      background: #0b1220; border: 1px solid #2d3748; border-radius: 6px; padding: .6rem .75rem;
+      font-family: monospace; font-size: .82rem; color: #dbeafe; overflow-x: auto; margin: .35rem 0 .5rem;
+    }
   </style>
 </head>
 <body>
 
 <header>
   <h1>Coglet Flasher</h1>
-  <p>Firmware for Coglet, a voice-and-servo robot that agent-hub drives over MCP</p>
+  <p>Build, flash and test Coglet, a voice-and-servo robot head that agent-hub drives over MCP</p>
   <a class="docs-link" href="https://github.com/ricklon/coglet#readme">Coglet documentation</a>
 </header>
 
 <div class="section warning">
   <p><strong>Switch the servo supply off before you plug in USB.</strong> Opening the port can
   reset the board, and the servo rail switch is the only real emergency stop.</p>
-  <p>Every boot starts released with no servo roles mapped, so a fresh flash moves nothing.
-  Calibration lives in NVS: an erase-and-install wipes it, so export it first
-  (<code>!coglet export</code>).</p>
+  <p>Every boot starts released, and a fresh board has no servo roles assigned, so flashing
+  moves nothing. Calibration lives on the board: "erase" wipes it, so on a robot that's
+  already calibrated, export it first (<code>!coglet export</code>).</p>
 </div>
 
-<!-- FLASH SECTION -->
+<!-- 1. HARDWARE -->
 <div class="section">
-  <div class="section-title">1. Flash firmware</div>
-  <p class="lead">Use Chrome or Edge on a desktop (Web Serial). Pick the board that is in the robot.</p>
-  <div class="boards">
+  <div class="section-title">1. Build the hardware</div>
+  <p class="lead">Coglet is a Seeed XIAO ESP32, an I²S microphone and amp, and a PCA9685 driving nine
+  hobby servos. Full details, the Fritzing schematic and the bench notes are in
+  <a href="https://github.com/ricklon/coglet/blob/main/hardware/WIRING.md">WIRING.md</a>.</p>
+
+  <h4>Parts</h4>
+  <ul>
+    <li><strong>Seeed XIAO ESP32-C3</strong> (or XIAO ESP32-S3 Sense for the camera build)</li>
+    <li><strong>INMP441</strong> I²S microphone (3.3 V) and <strong>MAX98357A</strong> I²S amp (5 V) with a 4–8 Ω speaker</li>
+    <li><strong>PCA9685</strong> 16-channel servo board at I²C address 0x40</li>
+    <li>Up to <strong>nine hobby servos</strong>, fitted one at a time from the base up</li>
+    <li>A <strong>separate switched 4.8–6 V servo supply</strong>. Its switch is the emergency stop</li>
+  </ul>
+
+  <h4>Wiring (the same pads on every board)</h4>
+  <div class="table-wrap"><table>
+    <tr><th>Connect</th><th>XIAO pad</th><th>C3 GPIO</th><th>S3 GPIO</th></tr>
+    <tr><td>Amp DIN</td><td>D0</td><td>2</td><td>1</td></tr>
+    <tr><td>I²S BCLK: amp BCLK and mic SCK</td><td>D1</td><td>3</td><td>2</td></tr>
+    <tr><td>I²S WS: amp LRC and mic WS</td><td><strong>D2</strong></td><td>4</td><td>3</td></tr>
+    <tr><td>Mic SD (data out of the mic)</td><td><strong>D3</strong></td><td>5</td><td>4</td></tr>
+    <tr><td>PCA9685 <strong>SDA</strong></td><td><strong>D4</strong></td><td>6</td><td>5</td></tr>
+    <tr><td>PCA9685 <strong>SCL</strong></td><td><strong>D5</strong></td><td>7</td><td>6</td></tr>
+    <tr><td>PCA9685 /OE (with a pull-up to 3.3 V)</td><td>D10</td><td>10</td><td>9</td></tr>
+  </table></div>
+  <p class="note">Wire by the <strong>pad</strong> column. A C3 and an S3 use the same harness; the firmware
+  handles the GPIO numbers. SDA and SCL are on the XIAO's default I²C pads. The bold pairs are the easy
+  ones to swap: with D2/D3 swapped the amp hisses and the mic reads zero; with SDA/SCL swapped nothing
+  answers on the I²C bus.</p>
+
+  <h4>Power</h4>
+  <ul>
+    <li>Mic and PCA9685 logic VCC from the XIAO's 3.3 V. Amp Vin from 5 V.</li>
+    <li>Servo V+ goes to the PCA9685's V+ terminal from its own switched supply. Never power
+      servos from the XIAO.</li>
+    <li>All grounds common: XIAO, mic, amp, PCA9685 and the servo supply.</li>
+  </ul>
+
+  <h4>Servo channels</h4>
+  <p class="lead">Every Coglet uses the same channel per servo. Plug each one in as you fit it.</p>
+  <div class="table-wrap"><table>
+    <tr><th>PCA9685 channel</th><th>Servo</th><th>Driven by the LLM?</th></tr>
+    <tr><td>0</td><td><code>base</code></td><td>no</td></tr>
+    <tr><td>1</td><td><code>neck_tilt</code></td><td>no</td></tr>
+    <tr><td>2</td><td><code>neck_roll</code></td><td>no</td></tr>
+    <tr><td>3</td><td><code>eye_pan</code></td><td>gaze, animations</td></tr>
+    <tr><td>4</td><td><code>eye_tilt</code></td><td>gaze, animations</td></tr>
+    <tr><td>5</td><td><code>lids</code> (one servo, both top lids)</td><td>blink</td></tr>
+    <tr><td>6</td><td><code>jaw</code></td><td>no</td></tr>
+    <tr><td>7</td><td><code>ear_left</code></td><td>no</td></tr>
+    <tr><td>8</td><td><code>ear_right</code></td><td>no</td></tr>
+  </table></div>
+  <p class="note">A partly built robot is normal. The board doesn't drive a channel until you
+  assign that servo in step 6.</p>
+</div>
+
+<!-- 2. FLASH -->
+<div class="section">
+  <div class="section-title">2. Flash the firmware</div>
+  <div class="steps">
+    <div class="step"><span class="step-num">1</span><div>Servo supply <strong>off</strong>. Plug the XIAO into this computer by USB-C.</div></div>
+    <div class="step"><span class="step-num">2</span><div>Use Chrome or Edge on a desktop. Click the button for your board and pick its port
+      (on Linux usually <code>/dev/ttyACM0</code>).</div></div>
+    <div class="step"><span class="step-num">3</span><div>A <strong>new board</strong>: let it erase. A <strong>calibrated robot</strong>:
+      export calibration first and install without erasing.</div></div>
+    <div class="step"><span class="step-num">4</span><div>If the port doesn't appear, hold the XIAO's BOOT button while plugging it in, then try again.</div></div>
+  </div>
+  <div class="boards" style="margin-top: .9rem">
     <div class="board-card">
       <h3>Coglet C3</h3>
       <div class="specs">XIAO ESP32-C3 · 4MB · No camera<br>INMP441 mic · MAX98357A amp · PCA9685</div>
@@ -306,9 +390,19 @@
   </div>
 </div>
 
-<!-- SERIAL CONSOLE SECTION -->
+<!-- 3. CONSOLE + BENCH CHECKS -->
 <div class="section">
-  <div class="section-title">2. Serial console</div>
+  <div class="section-title">3. Check the board in the serial console</div>
+  <p class="lead">Close the flashing dialog, click <strong>Connect</strong> and choose the same port.
+  Servo supply still off. Run these checks in order:</p>
+  <div class="table-wrap"><table>
+    <tr><th>Command</th><th>Expect</th><th>If not</th></tr>
+    <tr><td><code>!status</code></td><td>Firmware version and board <code>coglet-c3</code></td><td>Wrong board flashed</td></tr>
+    <tr><td><code>!coglet scan</code></td><td><code>0x40</code> answers</td><td>Nothing: SDA/SCL swapped, or no PCA9685 logic power</td></tr>
+    <tr><td><code>!coglet state</code></td><td><code>"released": true</code>, <code>"pca_initialized": true</code></td><td>Check the scan first</td></tr>
+    <tr><td><code>!speaker</code></td><td>A short tone</td><td>Hiss: D2/D3 swapped. Silence: amp DIN, 5 V, or the speaker</td></tr>
+    <tr><td><code>!mic status</code> while you talk</td><td>A peak well above zero</td><td>Zero: mic SD on the wrong pad, or no 3.3 V</td></tr>
+  </table></div>
 
   <div class="console-toolbar">
     <div class="status-box">
@@ -322,12 +416,15 @@
 
   <div class="quick-btns">
     <button class="quick-btn" data-cmd="!status" disabled>!status</button>
-    <button class="quick-btn" data-cmd="!help" disabled>!help</button>
-    <button class="quick-btn" data-cmd="!wifi list" disabled>!wifi list</button>
-    <button class="quick-btn" data-cmd="!coglet state" disabled>!coglet state</button>
     <button class="quick-btn" data-cmd="!coglet scan" disabled>!coglet scan</button>
-    <button class="quick-btn" data-cmd="!coglet release" disabled>!coglet release</button>
+    <button class="quick-btn" data-cmd="!coglet state" disabled>!coglet state</button>
+    <button class="quick-btn" data-cmd="!speaker" disabled>!speaker</button>
+    <button class="quick-btn" data-cmd="!mic status" disabled>!mic status</button>
+    <button class="quick-btn" data-cmd="!wifi list" disabled>!wifi list</button>
     <button class="quick-btn" data-cmd="!quiet status" disabled>!quiet status</button>
+    <button class="quick-btn" data-cmd="!coglet export" disabled>!coglet export</button>
+    <button class="quick-btn" data-cmd="!coglet release" disabled>!coglet release</button>
+    <button class="quick-btn" data-cmd="!help" disabled>!help</button>
     <button class="quick-btn" data-cmd="!reboot" disabled>!reboot</button>
   </div>
 
@@ -339,26 +436,82 @@
   <pre id="serial-output"><span class="placeholder">Click Connect to open the serial port...</span></pre>
 
   <div class="help-text">
-    <code>!wifi SSID PASS</code> · <code>!server URL</code> · <code>!coglet export</code> ·
-    <code>!quiet on|off</code> · full list in
-    <a href="https://github.com/ricklon/coglet/blob/main/docs/OPERATION.md">OPERATION.md</a>
+    Full command list in <a href="https://github.com/ricklon/coglet/blob/main/docs/OPERATION.md">OPERATION.md</a>.
   </div>
 </div>
 
-<!-- SETUP GUIDE -->
+<!-- 4. AGENT-HUB -->
 <div class="section">
-  <div class="section-title">3. Connect it to agent-hub</div>
+  <div class="section-title">4. Connect it to agent-hub</div>
+  <p class="lead">You need an <a href="https://github.com/ricklon/agent-hub">agent-hub</a> running and
+  reachable from the robot's Wi-Fi. Its check-in endpoint is on port 8003 by default.</p>
   <div class="steps">
-    <div class="step"><span class="step-num">1</span><div>Flash the firmware with the button above, servo supply off.</div></div>
-    <div class="step"><span class="step-num">2</span><div>Click <strong>Connect</strong> and choose the board's port.</div></div>
-    <div class="step"><span class="step-num">3</span><div>Add Wi-Fi: <code>!wifi YourSSID YourPassword</code></div></div>
-    <div class="step"><span class="step-num">4</span><div>Point it at your hub: <code>!server http://HUB_HOST:8003/xiaozhi/ota/</code>
-      (or the hub's HTTPS check-in URL with its enrollment token).</div></div>
-    <div class="step"><span class="step-num">5</span><div>The board checks in, opens a voice session, and agent-hub lists its
-      <code>self.coglet.*</code> MCP tools. It shows up on the hub dashboard.</div></div>
-    <div class="step"><span class="step-num">6</span><div>Before anything moves, calibrate each servo locally. See
-      <a href="https://github.com/ricklon/coglet/blob/main/docs/CALIBRATION.md">CALIBRATION.md</a>.</div></div>
+    <div class="step"><span class="step-num">1</span><div>Add Wi-Fi (2.4 GHz): <code>!wifi YourSSID YourPassword</code></div></div>
+    <div class="step"><span class="step-num">2</span><div>Point it at the hub: <code>!server http://HUB_HOST:8003/xiaozhi/ota/</code>.
+      Use the hub's real address, not <code>localhost</code>. It reboots.</div></div>
+    <div class="step"><span class="step-num">3</span><div>Reconnect the console and run <code>!status</code>. Expect an IP address, a
+      <strong>Hub</strong> WebSocket URL and <strong>Session: listening</strong>.</div></div>
+    <div class="step"><span class="step-num">4</span><div>Open the hub dashboard. The robot appears under its MAC address
+      (<code>!status</code> shows it as <em>Device id</em>), labelled <code>coglet-c3</code>.</div></div>
+    <div class="step"><span class="step-num">5</span><div><strong>Talk to it.</strong> The hub greets it once, then say something.
+      The console logs <code>&gt;&gt; what it heard</code> and <code>&lt;&lt; what it says</code>, and the reply plays
+      through the speaker. Press the BOOT button to stop a reply.</div></div>
   </div>
+  <p class="note">A hub with an enrollment token: use its HTTPS check-in URL with
+  <code>?enrollment_token=...</code>, typed here, never baked into a public build.</p>
+
+  <details>
+    <summary>Troubleshooting</summary>
+    <div class="table-wrap"><table>
+      <tr><th>Symptom</th><th>Check</th></tr>
+      <tr><td>No IP in <code>!status</code></td><td><code>!wifi list</code>; 2.4 GHz network; password. Re-add with <code>!wifi</code></td></tr>
+      <tr><td>"Check-in ... failed: HTTP -1"</td><td>Hub address or port wrong, or a firewall. From a computer on the same Wi-Fi: <code>curl http://HUB_HOST:8003/xiaozhi/ota/</code></td></tr>
+      <tr><td>HTTP 401 at check-in</td><td>The hub wants an enrollment token in the URL</td></tr>
+      <tr><td>Session stuck on <em>connecting</em></td><td>The hub's WebSocket URL (shown by <code>!status</code>) must be reachable from the robot</td></tr>
+      <tr><td>It hears nothing</td><td><code>!mic status</code> while talking; <code>!quiet status</code> must be off</td></tr>
+      <tr><td>No sound from replies</td><td><code>!speaker</code>, then <code>!speaker vol 70</code></td></tr>
+    </table></div>
+  </details>
+</div>
+
+<!-- 5. TOOLS -->
+<div class="section">
+  <div class="section-title">5. Test its MCP tools</div>
+  <p class="lead">Once the session is up, agent-hub lists the robot's tools. On the dashboard the device
+  shows <code>self.coglet.gaze</code>, <code>blink</code>, <code>animate</code>, <code>stop</code>,
+  <code>release</code> and <code>state</code>, plus <code>self.get_device_status</code> and
+  <code>self.audio_speaker.set_volume</code>.</p>
+  <ul>
+    <li><strong>By voice:</strong> "What's your volume?" or "Turn your volume down a bit." These use the status and volume tools.</li>
+    <li><strong>Motion tools return errors until a person engages the robot</strong> after calibration. That's
+      the safety design: the LLM can stop Coglet but never start it.</li>
+    <li><strong>From Claude Code,</strong> through agent-hub's device proxy:</li>
+  </ul>
+  <pre class="cmds">claude mcp add coglet -- python3 /path/to/agent-hub/scripts/device_mcp_proxy.py \
+    --device YOUR_ROBOT_MAC</pre>
+  <p class="note">The proxy is on agent-hub's <code>feat/device-mcp-proxy</code> branch until that's merged. It
+  exposes only tools that can't start motion (state, status, stop, release). See
+  <a href="https://github.com/ricklon/coglet/blob/main/docs/AGENT-HUB.md">AGENT-HUB.md</a>.</p>
+</div>
+
+<!-- 6. CALIBRATE -->
+<div class="section">
+  <div class="section-title">6. Calibrate, one servo at a time</div>
+  <p class="lead">Fit one servo on its channel, servo supply on, hand on the switch. Calibration pauses the
+  voice until you say <code>!quiet off</code>.</p>
+  <pre class="cmds">!coglet fit base          assign base to channel 0 (no movement)
+!coglet builder           outputs on, voice paused, still nothing moves
+!coglet identify 0        the base should twitch
+!coglet explore base      centre it, then:
+!coglet nudge -2          ... step toward one end, stop short of binding
+!coglet mark low
+!coglet nudge 2           ... walk to the other end
+!coglet mark high
+!coglet confirm base      you watched both ends
+!coglet save</pre>
+  <p class="note">Repeat for each servo you fit, then <code>!coglet release</code> and
+  <code>!coglet engage</code> to let agent-hub drive it. Run <code>!quiet off</code> to bring the voice back.
+  Full procedure: <a href="https://github.com/ricklon/coglet/blob/main/docs/CALIBRATION.md">CALIBRATION.md</a>.</p>
 </div>
 
 <script src="serial-console.js"></script>

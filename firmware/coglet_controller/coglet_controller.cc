@@ -303,6 +303,7 @@ cJSON* CogletController::State() {
     for (int i=0;i<kRoles;++i) {
         auto* v=cJSON_CreateObject(); const auto& a=cal_.axes[i];
         cJSON_AddStringToObject(v,"role",names[i]); cJSON_AddNumberToObject(v,"channel",a.channel);
+        cJSON_AddNumberToObject(v,"standard_channel",pins_.channels[i]);
         cJSON_AddNumberToObject(v,"low",a.low); cJSON_AddNumberToObject(v,"high",a.high);
         cJSON_AddNumberToObject(v,"min_us",a.min_us); cJSON_AddNumberToObject(v,"max_us",a.max_us);
         cJSON_AddNumberToObject(v,"trim_us",a.trim_us); cJSON_AddBoolToObject(v,"confirmed",a.confirmed);
@@ -471,6 +472,19 @@ std::string CogletController::Command(const std::string& text, bool local) {
         if (!Valid(candidate,false)) check(ESP_ERR_INVALID_ARG);
         cal_=candidate; return Json(State());
     }
+    if (verb == "fit") {
+        // A servo plugged into its standard channel: assign it with a 90/90
+        // window and default pulses, unconfirmed. Nothing moves; explore,
+        // mark and confirm come next.
+        std::string role;
+        if (!local || !released_ || !(in>>role) || !end()) check(ESP_ERR_INVALID_ARG);
+        int i=AxisIndex(role);
+        if (i<0) check(ESP_ERR_INVALID_ARG);
+        Axis a; a.channel=pins_.channels[i];
+        auto candidate=cal_; candidate.axes[i]=a;
+        if (!Valid(candidate,false)) check(ESP_ERR_INVALID_ARG); // e.g. channel already taken
+        cal_=candidate; return Json(State());
+    }
     if (verb == "lids") {
         float trim, coeff;
         if (!local || !released_ || !(in>>trim>>coeff) || !end() || !Unit(trim) || !Unit(coeff)) check(ESP_ERR_INVALID_ARG);
@@ -549,7 +563,7 @@ esp_err_t CogletController::Http(httpd_req_t* req) {
         return httpd_resp_sendstr(req,R"HTML(<!doctype html><meta name="viewport" content="width=device-width"><title>Coglet builder</title>
 <h1>Coglet builder controls</h1><p>Servos have no position feedback. Keep a hand on the servo-power switch.</p>
 <p>Commands: state, export, release, builder, engage, servo ROLE DEGREES, jog ROLE DELTA, gaze X Y, blink, animate NAME, stop, save.</p>
-<p>Configure while released: configure ROLE CHANNEL LOW HIGH MIN_US MAX_US TRIM_US CONFIRMED. Roles: base neck_tilt neck_roll eye_pan eye_tilt lids jaw ear_left ear_right. Confirmed: 0 or 1.</p>
+<p>Assign a fitted servo while released: fit ROLE (standard channels: base 0, neck_tilt 1, neck_roll 2, eye_pan 3, eye_tilt 4, lids 5, jaw 6, ear_left 7, ear_right 8). Or by hand: configure ROLE CHANNEL LOW HIGH MIN_US MAX_US TRIM_US CONFIRMED. Roles: base neck_tilt neck_roll eye_pan eye_tilt lids jaw ear_left ear_right. Confirmed: 0 or 1.</p>
 <form id="form"><input id="command" size="65" value="state"><button>Run</button></form>
 <button onclick="run('release')">Release outputs</button> <button onclick="run('state')">State</button>
 <pre id="result"></pre><script>

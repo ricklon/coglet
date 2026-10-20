@@ -2,6 +2,22 @@
 
 Why Coglet is the way it is. Newest first.
 
+## 2026-10-20: One pad map for every board, set by the S3
+
+Every Coglet is wired pad-for-pad the same, so a robot can take either a C3 or
+an S3 without rewiring; each board's firmware maps the pads to its GPIOs. The
+S3 is the main board, so its layout is the reference: D0 amp DIN, D1 BCLK,
+D2 WS, D3 mic SD, D4 SDA, D5 SCL, D10 /OE. The C3 bench robot had D2/D3 and
+D4/D5 the other way round and has to be rewired once.
+
+## 2026-10-20: One standard servo wiring, assigned as servos are fitted
+
+Every Coglet plugs role *n* into PCA9685 channel *n* (base 0 … ear_right 8).
+The table is in the firmware, but listing a channel doesn't assign it:
+`engage` needs every assigned role confirmed, and a partly built robot is
+normal, so a role is assigned only when a person runs `!coglet fit ROLE` after
+fitting the servo. `configure` remains for anything wired differently.
+
 ## 2026-10-20: The C3 runs Coglet's own firmware, not the xiaozhi fork
 
 The fork carried about 40 unrelated boards, a second build system, and a

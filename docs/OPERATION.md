@@ -88,7 +88,8 @@ second.
 | `!coglet state` / `!coglet export` | any | JSON diagnostics plus full calibration |
 | `!coglet scan [SDA SCL]` | any | Sweep 0x08–0x77 on the servo bus. With pins, rebuilds the bus on them first (reboot after) |
 | `!coglet release` | any | Latched output release |
-| `!coglet configure ROLE CH LOW HIGH MIN_US MAX_US TRIM_US CONFIRMED` | released | Set one role. `CH` −1 unassigns it. `CONFIRMED` is 0 or 1 |
+| `!coglet fit ROLE` | released | Assign a fitted servo to its standard channel ([WIRING.md](../hardware/WIRING.md#servo-channels)), 90/90 window, unconfirmed |
+| `!coglet configure ROLE CH LOW HIGH MIN_US MAX_US TRIM_US CONFIRMED` | released | Set one role by hand, e.g. on a non-standard channel. `CH` −1 unassigns it. `CONFIRMED` is 0 or 1 |
 | `!coglet lids TRIM COEFF` | released | Upper-lid tracking, 0–1 each |
 | `!coglet save` | released or builder | Persist calibration to NVS. Reports failures |
 | `!coglet builder` | released | Enable outputs for isolated tests. Nothing moves |

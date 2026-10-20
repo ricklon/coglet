@@ -3,12 +3,14 @@
 Wiring, parts and power for both Coglet profiles. The pin numbers the firmware
 compiles against are `firmware/app/main/board.h` (C3) and, in the xiaozhi
 fork, `firmware/xiaozhi-esp32/main/boards/coglet/config.h` (S3). If this page
-and those files disagree, the files win; fix this page. The silkscreen pad names map to different
-GPIOs on the two XIAO boards.
+and those files disagree, the files win; fix this page. The physical pads are
+the same on both boards; only the GPIO numbers behind them differ.
 
 The Fritzing schematic for the C3 build is
 [esp32c3-voice-agent.fzz](esp32c3-voice-agent.fzz) (open it in
-[Fritzing](https://fritzing.org/)).
+[Fritzing](https://fritzing.org/)). It was drawn from the C3 as first built and
+predates the standard pad map below, so it may show D2/D3 and D4/D5 the old way
+round: where it disagrees, the pad map wins.
 
 ## Block diagram (both profiles)
 
@@ -54,51 +56,78 @@ servo current from the XIAO regulator or the USB 3.3 V rail.
 | Servo supply | switched V+ for PCA | sized for the fitted servos; physical switch is the emergency stop |
 | Camera (S3 only) | OV2640 / OV3660 / OV5640 | select in menuconfig; disabled until confirmed |
 
-## Pin map — XIAO ESP32-S3 Sense (`coglet`)
+## Pad map (every board)
 
-| Function | Pad | GPIO |
-|---|---|---|
-| Amp DIN (speaker data) | D0 | 1 |
-| I2S BCLK (shared) | D1 | 2 |
-| I2S WS/LRC (shared) | D2 | 3 |
-| Mic SD (data in) | D3 | 4 |
-| PCA9685 SDA (I2C port 1) | D4 | 5 |
-| PCA9685 SCL (I2C port 1) | D5 | 6 |
-| PCA9685 /OE | D10 | 9 |
-| User LED (active low) | — | 21 |
-| Boot button | — | 0 |
-| Camera SCCB SDA / SCL | — | 40 / 39 |
-| Camera D0..D7 | — | 15, 17, 18, 16, 14, 12, 11, 48 |
-| Camera XCLK / PCLK / VSYNC / HREF | — | 10 / 13 / 38 / 47 |
+Wire every Coglet the same way, pad for pad. Moving a robot between a C3 and
+an S3 is a board swap, not a rewire: each board's firmware maps the same pads
+to its own GPIOs.
+
+| Function | XIAO pad | C3 GPIO | S3 GPIO |
+|---|---|---|---|
+| Amp DIN (speaker data) | D0 | 2 | 1 |
+| I2S BCLK: amp BCLK and mic SCK | D1 | 3 | 2 |
+| I2S WS: amp LRC and mic WS | D2 | 4 | 3 |
+| Mic SD (data out of the mic) | D3 | 5 | 4 |
+| PCA9685 SDA | D4 | 6 | 5 |
+| PCA9685 SCL | D5 | 7 | 6 |
+| PCA9685 /OE | D10 | 10 | 9 |
+
+The S3 Coglet sets this layout; SDA/SCL are the XIAO's default I2C pads. Two
+pairs are easy to swap, and each fails in a recognisable way:
+
+- **D2 is WS, D3 is mic data.** Swapped, the amp runs with no LRC (steady hiss)
+  and capture samples a clock line, reading flat zero.
+- **SDA on D4, SCL on D5.** Swapped, no address on the bus answers at all.
+
+> **The C3 bench robot was wired with both pairs the other way round** (D2 mic,
+> D3 WS, SCL on D4, SDA on D5) and ran like that on the fork firmware until
+> 2026-10-20. Swap both pairs before flashing current firmware onto it.
+
+### C3 specifics (`coglet-c3`)
+
+- Boot button on GPIO9. GPIO8 and GPIO9 are strapping pins, so /OE uses D10
+  (GPIO10).
+- No user-controllable LED; an external one is tracked in
+  ricklon/xiaozhi-esp32#8.
+
+### S3 Sense specifics (`coglet`)
+
+| Function | GPIO |
+|---|---|
+| User LED (active low) | 21 |
+| Boot button | 0 |
+| Camera SCCB SDA / SCL | 40 / 39 |
+| Camera D0..D7 | 15, 17, 18, 16, 14, 12, 11, 48 |
+| Camera XCLK / PCLK / VSYNC / HREF | 10 / 13 / 38 / 47 |
 
 Servo I2C is controller **1** so the camera keeps controller 0. /OE on GPIO9 is
 not the camera's XCLK GPIO10. Use the external I2S microphone, not the Sense
 board's PDM mic; GPIO1–4 stay audio. The Sense microSD slot is not enabled —
-keep SD circuitry off the servo I2C pins.
+keep SD circuitry off the servo I2C pins. The S3 pad map hasn't been checked on
+hardware yet.
 
-## Pin map — XIAO ESP32-C3 (`coglet-c3`)
+## Servo channels
 
-| Function | Pad | GPIO |
+Every Coglet uses the same PCA9685 channel per role, in role order from the
+base up. The firmware carries this table (`SERVO_ROLE_CHANNELS` in
+`firmware/app/main/board.h`, and the default in `CogletPins`), and
+`!coglet fit ROLE` uses it.
+
+| Channel | Role | Has choreography |
 |---|---|---|
-| Amp DIN (speaker data) | D0 | 2 |
-| I2S BCLK (shared) | D1 | 3 |
-| Mic SD (data in) | **D2** | 4 |
-| I2S WS/LRC (shared) | **D3** | 5 |
-| PCA9685 **SCL** | **D4** | 6 |
-| PCA9685 **SDA** | **D5** | 7 |
-| PCA9685 /OE | D10 | 10 |
-| Boot button | — | 9 |
+| 0 | `base` | no |
+| 1 | `neck_tilt` | no |
+| 2 | `neck_roll` | no |
+| 3 | `eye_pan` | gaze, animations |
+| 4 | `eye_tilt` | gaze, animations |
+| 5 | `lids` (both top lids) | blink, lid tracking |
+| 6 | `jaw` | no |
+| 7 | `ear_left` | no |
+| 8 | `ear_right` | no |
+| 9–15 | spare | |
 
-Two pairs run opposite to the S3 and to the XIAO silkscreen default, both
-confirmed against hardware:
-
-- **D2 is mic data, D3 is WS.** Swapped, the amp runs with no LRC (steady hiss)
-  and capture samples a clock line, reading flat zero.
-- **SCL on D4, SDA on D5.** Swapped, no address on the bus answers at all.
-
-GPIO8 and GPIO9 are strapping pins (GPIO9 is the boot button), so /OE uses
-GPIO10. The C3 has no user-controllable LED; an external one is tracked in
-ricklon/xiaozhi-esp32#8.
+A listed channel isn't assigned until the servo is fitted and `fit` is run, so
+a partly built robot only drives what's there.
 
 <a id="oe"></a>
 ## Power and safety
@@ -134,9 +163,9 @@ the bus down, so reboot afterwards.
 1. **Servo model** and its true pulse range. The firmware's 1000-2000 us default
    is a placeholder, which is why a 70-110 degree window moves so little.
 2. **Servo supply** voltage and current rating.
-3. **Channel assignment** for everything above the base. Only `base` is fitted
-   (ch0); the rest get their channel when they are fitted, found with
-   `!coglet identify CH`. Channels need not follow the role order.
+3. **Rewiring to the standard channels.** Only `base` was recorded as fitted
+   (ch0, which matches). Any servo already on another channel either moves to
+   its standard channel or is assigned by hand with `configure`.
 4. **Is /OE wired** on this breakout, and is it pulled up or down?
 5. **Ears**: are they mounted mirrored? If so, "both forward" is two
    opposite angles, which the per-role endpoints can express.

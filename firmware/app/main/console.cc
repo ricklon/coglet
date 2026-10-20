@@ -189,7 +189,7 @@ void Mic(const char* args) {
 
 void Speaker(const char* args) {
     const char* rest;
-    if (*args == '\0') {
+    if (*args == '\0' || strcmp(args, "test") == 0) {
         audio::PlayTestTone();
         printf("Playing a test tone at volume %d.\n", audio::Volume());
     } else if (Is(args, "vol", &rest) && *rest != '\0') {
@@ -198,7 +198,7 @@ void Speaker(const char* args) {
     } else if (strcmp(args, "status") == 0) {
         printf("Volume %d.\n", audio::Volume());
     } else {
-        printf("Usage: !speaker | !speaker vol N | !speaker status\n");
+        printf("Usage: !speaker [test] | !speaker vol N | !speaker status\n");
     }
 }
 

@@ -18,6 +18,11 @@ struct CogletPins {
     gpio_num_t scl;
     gpio_num_t oe;     // PCA9685 /OE, driven high (outputs off) before setup
     uint8_t address;   // usually 0x40
+    // The standard wiring: the PCA9685 channel each role plugs into, in role
+    // order (base, neck_tilt, neck_roll, eye_pan, eye_tilt, lids, jaw,
+    // ear_left, ear_right). "fit ROLE" assigns a role from here once its servo
+    // is fitted; nothing is assigned just because it's listed.
+    std::array<int8_t, 9> channels = {0, 1, 2, 3, 4, 5, 6, 7, 8};
 };
 
 // All entry points and the device timer serialize through one mutex.

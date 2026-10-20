@@ -43,16 +43,19 @@ endpoint hunting impossible, so calibration runs with the voice side quiet:
 
 ## Procedure for one servo
 
-Servo power on, one servo fitted, hand near the power switch.
+Servo power on, one servo fitted, hand near the power switch. Plug each servo
+into its standard channel ([WIRING.md](../hardware/WIRING.md#servo-channels)):
+base 0, neck_tilt 1, neck_roll 2, eye_pan 3, eye_tilt 4, lids 5, jaw 6,
+ear_left 7, ear_right 8.
 
 ```bash
 !coglet builder              # outputs on; nothing moves; voice agent pauses
-!coglet identify 0           # wiggles raw channel 0 ~1.4s; repeat per channel
-                             # until the part you just fitted twitches
+!coglet identify 0           # wiggles raw channel 0 ~1.4s: check the part you
+                             # just fitted is the one that twitches
 !coglet release              # channel mapping is edited while released
-!coglet configure base 0 90 90 1000 2000 0 0
-                             # assign the channel with a 90/90 window: that
-                             # permits only a 90 degree horn-seating command
+!coglet fit base             # assign base to its standard channel with a 90/90
+                             # window: that permits only a 90 degree
+                             # horn-seating command
 !coglet builder
 !coglet explore base         # centres the servo at 1500 us and starts hunting
 !coglet nudge -2             # step up to +-5 degrees at a time
@@ -79,7 +82,11 @@ Notes:
 - `explore` deliberately leaves `commanded_degrees` null: an explored position
   is outside the calibrated window and is not a pose.
 - `identify` holds the bus for about 1.4 s while it wiggles.
-- Release before editing a channel mapping; `configure` refuses while engaged.
+- Release before editing a channel mapping; `fit` and `configure` refuse while
+  engaged or in builder mode.
+- A servo on a non-standard channel: `!coglet configure ROLE CH 90 90 1000 2000 0 0`
+  instead of `fit`. The standard map is `SERVO_ROLE_CHANNELS` in
+  `firmware/app/main/board.h`.
 
 ## When enough servos are fitted
 
