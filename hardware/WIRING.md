@@ -12,6 +12,13 @@ The Fritzing schematic for the C3 build is
 predates the standard pad map below, so it may show D2/D3 and D4/D5 the old way
 round: where it disagrees, the pad map wins.
 
+Other Fritzing drawings are in `docs/`:
+[xiaesp32-s3-voice-agent.fzz](../docs/xiaesp32-s3-voice-agent.fzz) (the S3, which
+sets the pad map), [xiaesp32-c3-voice-agent.fzz](../docs/xiaesp32-c3-voice-agent.fzz),
+and two that aren't Coglet boards:
+[xiaesp32-c6-voice-agent.fzz](../docs/xiaesp32-c6-voice-agent.fzz) and
+[xiaozhi-assistant.fzz](../docs/xiaozhi-assistant.fzz).
+
 ## Block diagram (both profiles)
 
 ```
