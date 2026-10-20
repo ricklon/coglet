@@ -508,8 +508,10 @@
 !coglet nudge 2           ... walk to the other end
 !coglet mark high
 !coglet confirm base      you watched both ends
-!coglet save</pre>
-  <p class="note">Repeat for each servo you fit, then <code>!coglet release</code> and
+!coglet save
+!coglet test base         sweeps centre, low, high, centre to check it</pre>
+  <p class="note">Repeat for each servo you fit. <code>!coglet test</code> (in builder mode) then sweeps every
+  calibrated servo in turn; <code>!coglet release</code> stops it at once. Then <code>!coglet release</code> and
   <code>!coglet engage</code> to let agent-hub drive it. Run <code>!quiet off</code> to bring the voice back.
   Full procedure: <a href="https://github.com/ricklon/coglet/blob/main/docs/CALIBRATION.md">CALIBRATION.md</a>.</p>
 </div>

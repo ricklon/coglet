@@ -72,6 +72,7 @@ Then check the result:
 ```bash
 !coglet servo base 90        # inside the calibrated window now
 !coglet jog base 5
+!coglet test base            # sweeps centre, low, high, centre (~5 s)
 !coglet state                # confirmed:true, low/high as marked
 ```
 
@@ -89,6 +90,10 @@ Notes:
   `firmware/app/main/board.h`.
 
 ## When enough servos are fitted
+
+`!coglet test` (in builder mode) sweeps every calibrated role in turn, base
+upward, which is a quick check that nothing binds or was mis-marked before you
+engage. `!coglet release` ends it immediately.
 
 `engage` needs at least one role fitted and every *assigned* role confirmed.
 Roles left unassigned are treated as not fitted and are skipped.

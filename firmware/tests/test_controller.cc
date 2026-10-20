@@ -1,4 +1,5 @@
 #include <array>
+#include <vector>
 #include <cmath>
 #include <mutex>
 #include <string>
@@ -146,6 +147,43 @@ int main(int argc, char** argv) {
     c.cal_.axes[7].channel=6; c.cal_.axes[6].channel=-1;
     Reject([&]{c.Command("fit jaw",true);});       // channel 6 already taken
     c.Command("builder",true); Reject([&]{c.Command("fit jaw",true);}); // released only
+    c.Command("release"); c.cal_=full;
+    // test sweeps a role through its window on the motion timer.
+    Reject([&]{c.Command("test jaw",true);});      // builder mode only
+    c.Command("builder",true);
+    Reject([&]{c.Command("test jaw");});           // local only
+    Reject([&]{c.Command("test tail",true);});
+    c.Command("test jaw",true); assert(c.testing_==6);
+    {
+        float lo=std::min(c.cal_.axes[6].low,c.cal_.axes[6].high);
+        float hi=std::max(c.cal_.axes[6].low,c.cal_.axes[6].high);
+        float seen_lo=1e9, seen_hi=-1e9;
+        for(int t=0;t<1000 && c.testing_>=0;++t) {
+            fake_now+=10; assert(c.Tick(fake_now)==0);
+            float d=c.commanded_[6]; assert(std::isfinite(d) && d>=lo && d<=hi);
+            seen_lo=std::min(seen_lo,d); seen_hi=std::max(seen_hi,d);
+        }
+        assert(c.testing_<0 && seen_lo==lo && seen_hi==hi);
+        assert(c.commanded_[6]==(lo+hi)/2);        // ends centred
+    }
+    // With no role it visits every calibrated role, base upward.
+    c.Command("test",true);
+    {
+        std::vector<int> order;
+        for(int t=0;t<20000 && c.testing_>=0;++t) {
+            if (order.empty() || order.back()!=c.testing_) order.push_back(c.testing_);
+            fake_now+=10; assert(c.Tick(fake_now)==0);
+        }
+        std::vector<int> expect;
+        for(int i=0;i<9;++i) if (c.Testable(i)) expect.push_back(i);
+        assert(order==expect && !expect.empty());
+    }
+    // Release, stop and other builder moves all end it.
+    c.Command("test jaw",true); fake_now+=10; c.Tick(fake_now);
+    c.Command("release"); assert(c.testing_<0 && c.released_);
+    Reject([&]{c.Command("test jaw",true);});
+    c.Command("builder",true); c.Command("test jaw",true); c.Command("stop"); assert(c.testing_<0);
+    c.Command("test jaw",true); c.Command("explore jaw",true); assert(c.testing_<0);
     c.Command("release"); c.cal_=full;
     std::cout<<"Coglet host safety and motion tests passed (fake I2C/NVS; no hardware).\n";
 }

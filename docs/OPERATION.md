@@ -99,6 +99,7 @@ second.
 | `!coglet mark low\|high` | builder | Record the explored position as that endpoint. Clears `confirmed` |
 | `!coglet confirm ROLE` | any | A person watched both endpoints |
 | `!coglet servo ROLE DEG` / `!coglet jog ROLE DELTA` | builder | Move within the calibrated window. Jog is at most ±5° |
+| `!coglet test [ROLE]` | builder | Sweep a role through its calibrated window: centre, low, high, centre, about 5 s. No role: every calibrated role in turn, base upward. `release`, `stop` or any other builder move ends it |
 | `!coglet engage` | released | Enter normal mode (see above) |
 | `!coglet gaze X Y` | engaged | −100..100 onto the calibrated eye endpoints |
 | `!coglet blink` | engaged | One blink after an established gaze |

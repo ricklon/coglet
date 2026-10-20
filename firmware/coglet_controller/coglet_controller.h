@@ -68,6 +68,12 @@ private:
     int exploring_ = -1;
     float explore_angle_ = 90;
     int64_t frame_start_ = 0, next_blink_ = 0, blink_until_ = 0;
+    // Servo test: sweeps roles through their calibrated windows on the motion
+    // timer, so release and stop cut it short.
+    int testing_ = -1, test_leg_ = 0;
+    bool test_all_ = false;
+    int64_t test_start_ = 0;
+    float test_from_ = NAN;
     esp_err_t Register(uint8_t reg, uint8_t value);
     esp_err_t Probe();
     esp_err_t InitHardware();
@@ -78,6 +84,10 @@ private:
     float Micros(const Axis& axis, float degrees) const;
     esp_err_t Apply(const std::array<float, 3>& pose);
     esp_err_t Tick(int64_t now);
+    bool Testable(int axis) const;
+    int NextTestable(int after) const;
+    void StartTest(int axis, int64_t now);
+    esp_err_t TestTick(int64_t now);
     bool Valid(const Calibration& cal, bool complete) const;
     esp_err_t Save();
     void Load();

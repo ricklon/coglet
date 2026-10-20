@@ -24,6 +24,7 @@ constexpr const char* names[] = {"base", "neck_tilt", "neck_roll",
                                  "eye_pan", "eye_tilt", "lids",
                                  "jaw", "ear_left", "ear_right"};
 constexpr int kRoles = 9;
+constexpr int kTestLegMs = 1200;  // one leg of a servo test sweep
 constexpr int kEyePan = 3, kEyeTilt = 4, kLids = 5;
 // The pose vector is (eye pan, eye tilt, lids); this maps it onto roles.
 constexpr int kMotion[3] = {kEyePan, kEyeTilt, kLids};
@@ -155,6 +156,7 @@ esp_err_t CogletController::InitHardware() {
 }
 esp_err_t CogletController::Release() {
     released_ = true; builder_ = false; animation_ = -1; blink_until_ = 0; exploring_ = -1;
+    testing_ = -1;
     auto oe = gpio_set_level(pins_.oe, 1);
     // Single-register full-off works even before auto-increment is configured.
     auto off = Register(0xfd, 0x10);
@@ -254,7 +256,7 @@ esp_err_t CogletController::Tick(int64_t now) {
     if (released_) return ESP_OK;
     auto e = Probe(); // detects absent/reset PCA even if cached targets repeat
     if (e != ESP_OK) return e;
-    if (builder_) return ESP_OK;
+    if (builder_) return TestTick(now);
     if (animation_ >= 0) {
         const auto& a=animations[animation_]; const auto& f=a.frames[frame_];
         float k=std::min(1.f, float(now-frame_start_)/f.ms);
@@ -280,6 +282,39 @@ esp_err_t CogletController::Tick(int64_t now) {
     }
     return ESP_OK;
 }
+// A role can be tested once it's assigned and has a calibrated window.
+bool CogletController::Testable(int axis) const {
+    const auto& a=cal_.axes[axis];
+    return a.channel>=0 && a.low!=a.high;
+}
+int CogletController::NextTestable(int after) const {
+    for (int i=after+1;i<kRoles;++i) if (Testable(i)) return i;
+    return -1;
+}
+void CogletController::StartTest(int axis, int64_t now) {
+    testing_=axis; test_leg_=0; test_start_=now; test_from_=commanded_[axis];
+}
+// Centre, low end, high end, centre: each leg eased over kTestLegMs, and every
+// command inside the calibrated window.
+esp_err_t CogletController::TestTick(int64_t now) {
+    if (testing_<0) return ESP_OK;
+    const auto& a=cal_.axes[testing_];
+    float mid=(a.low+a.high)/2;
+    const float legs[]={mid,a.low,a.high,mid};
+    float to=legs[test_leg_];
+    float k=std::min(1.f, float(now-test_start_)/kTestLegMs);
+    float angle=std::isfinite(test_from_) ? test_from_+(to-test_from_)*k : to;
+    auto e=Write(testing_, angle);
+    if (e!=ESP_OK) return e;
+    if (k>=1) {
+        if (++test_leg_<4) { test_from_=to; test_start_=now; }
+        else {
+            int next=test_all_ ? NextTestable(testing_) : -1;
+            if (next>=0) StartTest(next, now); else testing_=-1;
+        }
+    }
+    return ESP_OK;
+}
 cJSON* CogletController::State() {
     auto* root=cJSON_CreateObject();
     cJSON_AddBoolToObject(root,"released",released_);
@@ -289,6 +324,8 @@ cJSON* CogletController::State() {
     cJSON_AddStringToObject(root,"last_hardware_error",esp_err_to_name(last_error_));
     cJSON_AddStringToObject(root,"release_error",esp_err_to_name(release_error_));
     cJSON_AddStringToObject(root,"animation",animation_<0 ? "none" : animations[animation_].name);
+    if (testing_>=0) cJSON_AddStringToObject(root,"testing",names[testing_]);
+    else cJSON_AddNullToObject(root,"testing");
     cJSON_AddStringToObject(root,"position_semantics","commanded positions; no feedback; null after release");
     cJSON_AddNumberToObject(root,"calibration_version",cal_.version);
     if (exploring_>=0) {
@@ -380,7 +417,7 @@ std::string CogletController::Command(const std::string& text, bool local) {
             if (std::isfinite(commanded_[kMotion[i]]) && a.low != a.high)
                 pose_[i]=(commanded_[kMotion[i]]-a.low)/(a.high-a.low);
         }
-        animation_=-1; blink_until_=0; next_blink_=BlinkTime(Now()+900);
+        animation_=-1; testing_=-1; blink_until_=0; next_blink_=BlinkTime(Now()+900);
         if (cal_.axes[kLids].channel<0) next_blink_=INT64_MAX;
         for (int i=0;i<3;++i)
             if (cal_.axes[kMotion[i]].channel>=0 && !std::isfinite(commanded_[kMotion[i]])) next_blink_=INT64_MAX;
@@ -406,6 +443,23 @@ std::string CogletController::Command(const std::string& text, bool local) {
     // Endpoint hunting, for a mechanism whose servos are fitted one at a time.
     // These move one axis outside its calibrated window, so they are local and
     // builder-only, and every pulse stays inside the hard 1000-2000us bound.
+    // Any other builder move takes over from a running servo test.
+    if (verb=="identify" || verb=="explore" || verb=="nudge" || verb=="servo" || verb=="jog") testing_=-1;
+    if (verb == "test") {
+        // Sweep one role, or every calibrated role base upward, through its
+        // window. Builder only: it's for checking a calibration by eye.
+        std::string role;
+        if (!local) check(ESP_ERR_INVALID_ARG);
+        if (!builder_ || released_) check(ESP_ERR_INVALID_STATE);
+        bool all=!(in>>role);
+        if (!end()) check(ESP_ERR_INVALID_ARG);
+        int i=all ? NextTestable(-1) : AxisIndex(role);
+        if (all && i<0) check(ESP_ERR_INVALID_STATE);  // nothing calibrated yet
+        if (i<0 || !Testable(i)) check(ESP_ERR_INVALID_ARG);
+        hardware(Probe());
+        exploring_=-1; test_all_=all; StartTest(i, Now());
+        return Json(State());
+    }
     if (verb == "identify") {
         int channel=-1;
         if (!local || !builder_ || released_ || !(in>>channel) || !end() || channel<0 || channel>15) check(ESP_ERR_INVALID_ARG);
@@ -562,7 +616,8 @@ esp_err_t CogletController::Http(httpd_req_t* req) {
         httpd_resp_set_type(req,"text/html");
         return httpd_resp_sendstr(req,R"HTML(<!doctype html><meta name="viewport" content="width=device-width"><title>Coglet builder</title>
 <h1>Coglet builder controls</h1><p>Servos have no position feedback. Keep a hand on the servo-power switch.</p>
-<p>Commands: state, export, release, builder, engage, servo ROLE DEGREES, jog ROLE DELTA, gaze X Y, blink, animate NAME, stop, save.</p>
+<p>Commands: state, export, release, builder, engage, servo ROLE DEGREES, jog ROLE DELTA, test [ROLE], gaze X Y, blink, animate NAME, stop, save.</p>
+<p>test [ROLE] (builder mode) sweeps a role through its calibrated window: centre, low, high, centre. With no role it tests each calibrated role in turn. Release or stop ends it.</p>
 <p>Assign a fitted servo while released: fit ROLE (standard channels: base 0, neck_tilt 1, neck_roll 2, eye_pan 3, eye_tilt 4, lids 5, jaw 6, ear_left 7, ear_right 8). Or by hand: configure ROLE CHANNEL LOW HIGH MIN_US MAX_US TRIM_US CONFIRMED. Roles: base neck_tilt neck_roll eye_pan eye_tilt lids jaw ear_left ear_right. Confirmed: 0 or 1.</p>
 <form id="form"><input id="command" size="65" value="state"><button>Run</button></form>
 <button onclick="run('release')">Release outputs</button> <button onclick="run('state')">State</button>
