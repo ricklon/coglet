@@ -1,0 +1,4 @@
+[submodule "firmware/xiaozhi-esp32"]
+	path = firmware/xiaozhi-esp32
+	url = https://github.com/ricklon/xiaozhi-esp32
+	branch = main

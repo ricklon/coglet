@@ -1,0 +1,6 @@
+dependencies:
+  idf: ">=5.5.0"
+  # Opus encode/decode. Espressif's prebuilt codec library, the same one the
+  # xiaozhi fork used, so the C3's CPU and RAM budget is already proven.
+  espressif/esp_audio_codec: "~2.4.1"
+  espressif/esp_websocket_client: "^1.5.0"

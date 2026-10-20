@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coglet Flasher</title>
+  <link rel="icon" href="data:,">
+  <script type="module" src="vendor/esp-web-tools.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0f1117;
+      color: #e2e8f0;
+      min-height: 100vh;
+      padding: 1.5rem 1rem;
+    }
+
+    header {
+      max-width: 800px;
+      margin: 0 auto 2rem;
+      text-align: center;
+    }
+    header h1 { font-size: 1.8rem; font-weight: 700; color: #fff; margin-bottom: .5rem; }
+    header p  { color: #94a3b8; margin-top: .35rem; font-size: 0.95rem; }
+
+    .section {
+      max-width: 800px;
+      margin: 0 auto 1.5rem;
+      background: #1a1f2e;
+      border: 1px solid #2d3748;
+      border-radius: 10px;
+      padding: 1.25rem;
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Flash section */
+    .boards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .board-card {
+      background: #0f1117;
+      border: 1px solid #2d3748;
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+    }
+    .board-card h3 { font-size: 0.9rem; color: #fff; margin-bottom: 0.25rem; }
+    .board-card .specs { font-size: .7rem; color: #64748b; margin-bottom: 0.75rem; }
+    .board-card .wiring-guide {
+      display: block;
+      margin-top: .6rem;
+      font-size: .72rem;
+      color: #7dd3fc;
+      text-decoration: none;
+    }
+    .board-card .wiring-guide:hover { color: #bfdbfe; text-decoration: underline; }
+
+    .flash-btn {
+      width: 100%;
+      padding: .5rem;
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: .85rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .flash-btn:hover { background: #1d4ed8; }
+
+    /* Serial Console */
+    .console-toolbar {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .status-box {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.75rem;
+      background: #0f1117;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      margin-right: auto;
+    }
+
+    .status-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #64748b;
+    }
+    .status-indicator.connecting { background: #f59e0b; }
+    .status-indicator.connected { background: #22c55e; }
+    .status-indicator.error { background: #ef4444; }
+
+    .status-text { color: #94a3b8; }
+    .status-text.connecting { color: #f59e0b; }
+    .status-text.connected { color: #22c55e; }
+    .status-text.error { color: #ef4444; }
+
+    button {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    button:hover:not(:disabled) { opacity: 0.9; }
+    button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .btn-primary { background: #2563eb; color: #fff; }
+    .btn-danger { background: #ef4444; color: #fff; }
+    .btn-secondary { background: #334155; color: #fff; }
+
+    .quick-btns {
+      display: flex;
+      gap: 0.4rem;
+      margin-bottom: 0.75rem;
+    }
+    .quick-btn {
+      padding: 0.35rem 0.6rem;
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #94a3b8;
+      font-family: monospace;
+      font-size: 0.8rem;
+    }
+    .quick-btn:hover:not(:disabled) {
+      background: #334155;
+      color: #fff;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+    #serial-input {
+      flex: 1;
+      padding: 0.6rem;
+      background: #0f1117;
+      border: 1px solid #2d3748;
+      border-radius: 6px;
+      color: #e2e8f0;
+      font-family: monospace;
+      font-size: 0.9rem;
+    }
+    #serial-input:focus { outline: none; border-color: #3b82f6; }
+    #serial-input:disabled { opacity: 0.5; }
+
+    #serial-output {
+      min-height: 250px;
+      max-height: 350px;
+      overflow: auto;
+      background: #0b1220;
+      border: 1px solid #2d3748;
+      border-radius: 6px;
+      padding: 0.75rem;
+      font-family: monospace;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      white-space: pre-wrap;
+      color: #dbeafe;
+    }
+
+    .placeholder { color: #475569; font-style: italic; }
+    .cmd-sent { color: #7dd3fc; }
+    .cmd-error { color: #f87171; }
+    .cmd-system { color: #64748b; }
+
+    .help-text {
+      margin-top: 0.75rem;
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+    .help-text code {
+      background: #0f1117;
+      padding: 0.1rem 0.3rem;
+      border-radius: 3px;
+      color: #7dd3fc;
+    }
+
+    .docs-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: .75rem;
+      padding: .55rem .8rem;
+      background: #0f1117;
+      border: 1px solid #2d3748;
+      border-radius: 6px;
+      color: #7dd3fc;
+      text-decoration: none;
+      font-size: .85rem;
+      font-weight: 600;
+    }
+    .docs-link:hover {
+      border-color: #3b82f6;
+      color: #bfdbfe;
+    }
+
+    /* Setup guide */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .step {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+      font-size: 0.9rem;
+      color: #94a3b8;
+    }
+    .step-num {
+      width: 22px;
+      height: 22px;
+      background: #2563eb;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    .step strong { color: #e2e8f0; }
+    .step code {
+      background: #0f1117;
+      padding: 0.1rem 0.3rem;
+      border-radius: 3px;
+      color: #7dd3fc;
+      font-size: 0.85em;
+    }
+
+    .quick-btns { flex-wrap: wrap; }
+    .warning { border-color: #b45309; background: #1f1a10; }
+    .warning p { color: #fcd34d; font-size: .9rem; line-height: 1.5; }
+    .warning p + p { margin-top: .5rem; }
+    .section p.lead { color: #94a3b8; font-size: .9rem; line-height: 1.5; margin-bottom: .75rem; }
+    .section a { color: #7dd3fc; }
+    .unsupported { color: #f87171; font-size: 0.8rem; margin-top: 0.5rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Coglet Flasher</h1>
+  <p>Firmware for Coglet, a voice-and-servo robot that agent-hub drives over MCP</p>
+  <a class="docs-link" href="https://github.com/ricklon/coglet#readme">Coglet documentation</a>
+</header>
+
+<div class="section warning">
+  <p><strong>Switch the servo supply off before you plug in USB.</strong> Opening the port can
+  reset the board, and the servo rail switch is the only real emergency stop.</p>
+  <p>Every boot starts released with no servo roles mapped, so a fresh flash moves nothing.
+  Calibration lives in NVS: an erase-and-install wipes it, so export it first
+  (<code>!coglet export</code>).</p>
+</div>
+
+<!-- FLASH SECTION -->
+<div class="section">
+  <div class="section-title">1. Flash firmware</div>
+  <p class="lead">Use Chrome or Edge on a desktop (Web Serial). Pick the board that is in the robot.</p>
+  <div class="boards">
+    <div class="board-card">
+      <h3>Coglet C3</h3>
+      <div class="specs">XIAO ESP32-C3 · 4MB · No camera<br>INMP441 mic · MAX98357A amp · PCA9685</div>
+      <esp-web-install-button manifest="manifest-coglet-c3.json">
+        <button slot="activate" class="flash-btn">Flash Coglet C3</button>
+        <span slot="unsupported" class="unsupported">This browser has no Web Serial. Use Chrome or Edge.</span>
+      </esp-web-install-button>
+    </div>
+    <div class="board-card">
+      <h3>Coglet S3</h3>
+      <div class="specs">XIAO ESP32-S3 Sense · 8MB · Camera (off until confirmed)<br>INMP441 mic · MAX98357A amp · PCA9685</div>
+      <esp-web-install-button manifest="manifest-coglet.json">
+        <button slot="activate" class="flash-btn">Flash Coglet S3</button>
+        <span slot="unsupported" class="unsupported">This browser has no Web Serial. Use Chrome or Edge.</span>
+      </esp-web-install-button>
+    </div>
+  </div>
+</div>
+
+<!-- SERIAL CONSOLE SECTION -->
+<div class="section">
+  <div class="section-title">2. Serial console</div>
+
+  <div class="console-toolbar">
+    <div class="status-box">
+      <span id="status-dot" class="status-indicator"></span>
+      <span id="status-text" class="status-text">Disconnected</span>
+    </div>
+    <button id="btn-connect" class="btn-primary">Connect</button>
+    <button id="btn-disconnect" class="btn-danger" disabled>Disconnect</button>
+    <button id="btn-clear" class="btn-secondary" disabled>Clear</button>
+  </div>
+
+  <div class="quick-btns">
+    <button class="quick-btn" data-cmd="!status" disabled>!status</button>
+    <button class="quick-btn" data-cmd="!help" disabled>!help</button>
+    <button class="quick-btn" data-cmd="!wifi list" disabled>!wifi list</button>
+    <button class="quick-btn" data-cmd="!coglet state" disabled>!coglet state</button>
+    <button class="quick-btn" data-cmd="!coglet scan" disabled>!coglet scan</button>
+    <button class="quick-btn" data-cmd="!coglet release" disabled>!coglet release</button>
+    <button class="quick-btn" data-cmd="!quiet status" disabled>!quiet status</button>
+    <button class="quick-btn" data-cmd="!reboot" disabled>!reboot</button>
+  </div>
+
+  <div class="input-row">
+    <input id="serial-input" type="text" placeholder="Type a command and press Enter" disabled>
+    <button id="btn-send" class="btn-primary" disabled>Send</button>
+  </div>
+
+  <pre id="serial-output"><span class="placeholder">Click Connect to open the serial port...</span></pre>
+
+  <div class="help-text">
+    <code>!wifi SSID PASS</code> · <code>!server URL</code> · <code>!coglet export</code> ·
+    <code>!quiet on|off</code> · full list in
+    <a href="https://github.com/ricklon/coglet/blob/main/docs/OPERATION.md">OPERATION.md</a>
+  </div>
+</div>
+
+<!-- SETUP GUIDE -->
+<div class="section">
+  <div class="section-title">3. Connect it to agent-hub</div>
+  <div class="steps">
+    <div class="step"><span class="step-num">1</span><div>Flash the firmware with the button above, servo supply off.</div></div>
+    <div class="step"><span class="step-num">2</span><div>Click <strong>Connect</strong> and choose the board's port.</div></div>
+    <div class="step"><span class="step-num">3</span><div>Add Wi-Fi: <code>!wifi YourSSID YourPassword</code></div></div>
+    <div class="step"><span class="step-num">4</span><div>Point it at your hub: <code>!server http://HUB_HOST:8003/xiaozhi/ota/</code>
+      (or the hub's HTTPS check-in URL with its enrollment token).</div></div>
+    <div class="step"><span class="step-num">5</span><div>The board checks in, opens a voice session, and agent-hub lists its
+      <code>self.coglet.*</code> MCP tools. It shows up on the hub dashboard.</div></div>
+    <div class="step"><span class="step-num">6</span><div>Before anything moves, calibrate each servo locally. See
+      <a href="https://github.com/ricklon/coglet/blob/main/docs/CALIBRATION.md">CALIBRATION.md</a>.</div></div>
+  </div>
+</div>
+
+<script src="serial-console.js"></script>
+
+</body>
+</html>

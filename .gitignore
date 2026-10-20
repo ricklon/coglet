@@ -1,0 +1,17 @@
+# Firmware is built, never committed
+dist/
+firmware/app/build/
+firmware/app/managed_components/
+firmware/app/sdkconfig
+firmware/app/sdkconfig.old
+web-flasher/firmware/**/*.bin
+web-flasher/firmware/**/metadata.json
+web-flasher/manifest-*.json
+
+# Calibration backups and raw flash dumps can hold Wi-Fi and hub credentials
+*-calibration.json
+restore.txt
+*.flash.bin
+
+__pycache__/
+.venv/

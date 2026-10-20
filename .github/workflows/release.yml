@@ -1,0 +1,81 @@
+name: Build, release and publish the web flasher
+
+# Every push and PR: host tests plus both firmware builds.
+# A v* tag also publishes a GitHub release and deploys web-flasher/ to Pages.
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  host-tests:
+    runs-on: ubuntu-latest
+    container:
+      image: espressif/idf:v5.5.2
+    steps:
+      - uses: actions/checkout@v6
+      - name: Controller host tests (fake IDF, no hardware)
+        run: python3 firmware/tests/run_host_tests.py
+
+  firmware:
+    needs: host-tests
+    strategy:
+      fail-fast: false
+      matrix:
+        board: [c3, s3]
+    runs-on: ubuntu-latest
+    container:
+      image: espressif/idf:v5.5.2
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: recursive
+      - name: Build and package
+        shell: bash
+        run: |
+          git config --global --add safe.directory '*'
+          source "$IDF_PATH/export.sh"
+          # No enrollment token in public firmware.
+          export AGENT_HUB_ENV_FILE=/dev/null
+          python3 scripts/package_firmware.py --board ${{ matrix.board }} --build
+      - uses: actions/upload-artifact@v7
+        with:
+          name: firmware-${{ matrix.board }}
+          path: |
+            web-flasher/firmware/
+            web-flasher/manifest-*.json
+            dist/release-zips/*.zip
+          if-no-files-found: error
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: firmware
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: firmware-*
+          merge-multiple: true
+          path: .
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/release-zips/*.zip
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: web-flasher
+      - id: deploy
+        uses: actions/deploy-pages@v4

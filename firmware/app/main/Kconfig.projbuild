@@ -1,0 +1,10 @@
+menu "Coglet"
+
+config OTA_URL
+    string "Default agent-hub check-in URL"
+    default "http://<your-ota-server>/xiaozhi/ota/"
+    help
+        Where the robot checks in when no URL has been set with !server.
+        Never put an enrollment token in a build that will be published.
+
+endmenu
