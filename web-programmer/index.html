@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Coglet Flasher</title>
+  <title>Coglet Web Programmer</title>
   <link rel="icon" href="data:,">
   <script type="module" src="vendor/esp-web-tools.js"></script>
   <style>
@@ -288,7 +288,7 @@
 <body>
 
 <header>
-  <h1>Coglet Flasher</h1>
+  <h1>Coglet Web Programmer</h1>
   <p>Build, flash and test Coglet, a voice-and-servo robot head that agent-hub drives over MCP</p>
   <a class="docs-link" href="https://github.com/ricklon/coglet#readme">Coglet documentation</a>
 </header>
@@ -305,8 +305,9 @@
 <div class="section">
   <div class="section-title">1. Build the hardware</div>
   <p class="lead">Coglet is a Seeed XIAO ESP32, an I²S microphone and amp, and a PCA9685 driving nine
-  hobby servos. Full details, the Fritzing schematic and the bench notes are in
-  <a href="https://github.com/ricklon/coglet/blob/main/hardware/WIRING.md">WIRING.md</a>.</p>
+  hobby servos. The step-by-step build is in
+  <a href="https://github.com/ricklon/coglet/blob/main/docs/ASSEMBLY.md">ASSEMBLY.md</a>; pins, power and the
+  Fritzing drawings are in <a href="https://github.com/ricklon/coglet/blob/main/hardware/WIRING.md">WIRING.md</a>.</p>
 
   <h4>Parts</h4>
   <ul>
@@ -344,16 +345,16 @@
   <h4>Servo channels</h4>
   <p class="lead">Every Coglet uses the same channel per servo. Plug each one in as you fit it.</p>
   <div class="table-wrap"><table>
-    <tr><th>PCA9685 channel</th><th>Servo</th><th>Driven by the LLM?</th></tr>
-    <tr><td>0</td><td><code>base</code></td><td>no</td></tr>
-    <tr><td>1</td><td><code>neck_tilt</code></td><td>no</td></tr>
-    <tr><td>2</td><td><code>neck_roll</code></td><td>no</td></tr>
-    <tr><td>3</td><td><code>eye_pan</code></td><td>gaze, animations</td></tr>
-    <tr><td>4</td><td><code>eye_tilt</code></td><td>gaze, animations</td></tr>
-    <tr><td>5</td><td><code>lids</code> (one servo, both top lids)</td><td>blink</td></tr>
-    <tr><td>6</td><td><code>jaw</code></td><td>no</td></tr>
-    <tr><td>7</td><td><code>ear_left</code></td><td>no</td></tr>
-    <tr><td>8</td><td><code>ear_right</code></td><td>no</td></tr>
+    <tr><th>PCA9685 channel</th><th>Servo</th><th>MCP motion</th></tr>
+    <tr><td>0</td><td><code>base</code></td><td>head (pan)</td></tr>
+    <tr><td>1</td><td><code>neck_tilt</code></td><td>head (tilt)</td></tr>
+    <tr><td>2</td><td><code>neck_roll</code></td><td>head (roll)</td></tr>
+    <tr><td>3</td><td><code>eye_pan</code></td><td>gaze</td></tr>
+    <tr><td>4</td><td><code>eye_tilt</code></td><td>gaze</td></tr>
+    <tr><td>5</td><td><code>lids</code> (one servo, both top lids)</td><td>lids, blink</td></tr>
+    <tr><td>6</td><td><code>jaw</code></td><td>jaw</td></tr>
+    <tr><td>7</td><td><code>ear_left</code></td><td>ears</td></tr>
+    <tr><td>8</td><td><code>ear_right</code></td><td>ears</td></tr>
   </table></div>
   <p class="note">A partly built robot is normal. The board doesn't drive a channel until you
   assign that servo in step 6.</p>
@@ -477,21 +478,29 @@
 <!-- 5. TOOLS -->
 <div class="section">
   <div class="section-title">5. Test its MCP tools</div>
-  <p class="lead">Once the session is up, agent-hub lists the robot's tools. On the dashboard the device
-  shows <code>self.coglet.gaze</code>, <code>blink</code>, <code>animate</code>, <code>stop</code>,
-  <code>release</code> and <code>state</code>, plus <code>self.get_device_status</code> and
-  <code>self.audio_speaker.set_volume</code>.</p>
+  <p class="lead">MCP is Coglet's one interface: every command is a tool, listed on the hub dashboard once the
+  session is up. They fall into groups:</p>
   <ul>
-    <li><strong>By voice:</strong> "What's your volume?" or "Turn your volume down a bit." These use the status and volume tools.</li>
-    <li><strong>Motion tools return errors until a person engages the robot</strong> after calibration. That's
-      the safety design: the LLM can stop Coglet but never start it.</li>
+    <li><strong>Motion</strong> (once engaged): <code>self.coglet.gaze</code>, <code>head</code>, <code>jaw</code>,
+      <code>ears</code>, <code>lids</code>, <code>blink</code>, <code>animate</code>.</li>
+    <li><strong>Stopping:</strong> <code>self.coglet.stop</code> and <code>release</code>.</li>
+    <li><strong>Modes and calibration:</strong> <code>engage</code>, <code>builder</code>, <code>fit</code>,
+      <code>explore</code>, <code>nudge</code>, <code>mark</code>, <code>confirm</code>, <code>save</code>,
+      <code>test</code> and more.</li>
+    <li><strong>Voice and device:</strong> <code>self.voice.quiet</code>, volume, mic, Wi-Fi, hub URL, reboot,
+      status.</li>
+  </ul>
+  <ul>
+    <li><strong>By voice:</strong> "What's your volume?" or "Turn your volume down a bit."</li>
+    <li><strong>Motion tools return errors until the robot is engaged</strong>, which needs every fitted servo
+      calibrated. Anyone with hub access can engage it, so keep the servo supply switch in reach.</li>
     <li><strong>From Claude Code,</strong> through agent-hub's device proxy:</li>
   </ul>
   <pre class="cmds">claude mcp add coglet -- python3 /path/to/agent-hub/scripts/device_mcp_proxy.py \
-    --device YOUR_ROBOT_MAC</pre>
-  <p class="note">The proxy is on agent-hub's <code>feat/device-mcp-proxy</code> branch until that's merged. It
-  exposes only tools that can't start motion (state, status, stop, release). See
-  <a href="https://github.com/ricklon/coglet/blob/main/docs/AGENT-HUB.md">AGENT-HUB.md</a>.</p>
+    --device YOUR_ROBOT_MAC --all-tools</pre>
+  <p class="note">The proxy is on agent-hub's <code>feat/device-mcp-proxy</code> branch until that's merged.
+  Without <code>--all-tools</code> it exposes only tools that can't start motion. The full command list is in
+  <a href="https://github.com/ricklon/coglet/blob/main/docs/OPERATION.md#robot-commands">OPERATION.md</a>.</p>
 </div>
 
 <!-- 6. CALIBRATE -->

@@ -2,6 +2,33 @@
 
 Why Coglet is the way it is. Newest first.
 
+## 2026-10-20: MCP is the robot's only interface
+
+Coglet is an MCP device for agent-hub, Claude and other MCP clients, so every
+command is an MCP tool: motion for all nine servos, engage and builder,
+calibration, servo tests, diagnostics, audio and device settings. The serial
+console runs the same commands through the same code and exists for a robot
+that isn't on a network yet. The builder web page, a second interface, is gone.
+
+This replaces "the LLM can stop the robot but never start it". What still
+holds:
+
+- Every boot is released, and `engage` commands no pose.
+- Every position stays inside each servo's calibrated window; calibration
+  moves stay inside the hard 1000–2000 µs bound.
+- `stop` and `release` always work, and a hardware fault latches release.
+- The servo-rail switch is the stop that doesn't depend on software. Anything
+  with hub access can now engage the robot.
+
+Quiet mode (which builder mode turns on) now keeps the voice session open with
+the mic and speaker off, because MCP rides inside that session. On the S3,
+still on the fork, builder mode closes the session until the port lands.
+
+New motion: `head` (base pan, neck tilt, neck roll), `jaw`, `ears` and `lids`,
+and animations for the rest of the head (`nod`, `shake`, `tilt`, `perk`,
+`droop`, `talk`, `look_around`). The calibration command that sets lid
+coupling is now `lid_coupling`, since `lids` moves the lids.
+
 ## 2026-10-20: One pad map for every board, set by the S3
 
 Every Coglet is wired pad-for-pad the same, so a robot can take either a C3 or
@@ -51,7 +78,7 @@ and a fork-built robot and an app-built one look the same to the hub.
 - NVS stays where the fork's 4 MB table put it, with the fork's namespaces and
   keys, so a robot moved off the fork should keep its Wi-Fi, hub URL, client id,
   volume and calibration.
-- Left out of the first version: OTA firmware updates (the web flasher does
+- Left out of the first version: OTA firmware updates (the Web Programmer does
   that), the SoftAP Wi-Fi setup page (use `!wifi`), wake word, and serial text
   chat (agent-hub ignores it).
 - The S3 stays on the fork until its camera and board are ported. The
@@ -73,8 +100,8 @@ unrelated boards and make every upstream merge painful.
 
 **What we did instead:**
 
-- This repo is the product home: hardware, docs, controller, host tests, web
-  flasher and releases.
+- This repo is the product home: hardware, docs, controller, host tests, Web
+  Programmer and releases.
 - The fork is a submodule at `firmware/xiaozhi-esp32`. It keeps only what
   xiaozhi's build registry requires: the `coglet` and `coglet-c3` board
   folders, their Kconfig and CMake entries, the serial-command hook, and
@@ -87,10 +114,13 @@ unrelated boards and make every upstream merge painful.
   not as an IDF component. The xiaozhi project uses `MINIMAL_BUILD`, so a
   component would need a Kconfig-conditional entry in `main`'s requirements.
   Plain sources avoid that.
-- Coglet left the fork's supported-board matrix and web flasher. Its flasher
-  and releases live here, and the fork's flasher links to this repo.
+- Coglet left the fork's supported-board matrix and web flasher. Its Web
+  Programmer and releases live here, and the fork's web flasher links to this
+  repo.
 
-## Conversation tools can stop the robot but never start it
+## Conversation tools can stop the robot but never start it (superseded 2026-10-20)
+
+Superseded by "MCP is the robot's only interface", above. Kept for history:
 
 Only `gaze`, `blink`, `animate`, `stop`, `release` and `state` are MCP tools.
 Engaging, mapping, calibrating and raw servo moves are local only, through
@@ -106,6 +136,8 @@ animation. A brown-out or watchdog reset in the middle of the night must never
 lead to motion.
 
 ## Builder mode silences the voice, and leaving it doesn't bring the voice back
+
+(Since 2026-10-20, quiet keeps the session open for MCP.)
 
 A robot answering room noise makes endpoint hunting impossible. An earlier
 auto-resume let the LLM call `self.coglet.release` and talk its way out of a

@@ -1,4 +1,4 @@
-# Coglet — build, test, flash and serve the web flasher.
+# Coglet — build, test, flash and serve the Web Programmer.
 #
 # The C3 builds from this repo's own ESP-IDF app, firmware/app. The S3 still
 # builds through the xiaozhi-esp32 fork, a submodule at firmware/xiaozhi-esp32;
@@ -39,17 +39,17 @@ flash board port="/dev/ttyACM0":
 monitor port="/dev/ttyACM0":
     {{idf}} && python3 -m serial.tools.miniterm --raw {{port}} 115200
 
-# Package built firmware into web-flasher/ and dist/ (add --build to build first)
+# Package built firmware into web-programmer/ and dist/ (add --build to build first)
 package *args:
     XIAOZHI_DIR={{xiaozhi}} python3 scripts/package_firmware.py {{args}}
 
-# Serve the web flasher on localhost
+# Serve the Web Programmer on localhost
 serve port="8080":
-    web-flasher/serve.sh {{port}}
+    web-programmer/serve.sh {{port}}
 
 # Refresh the vendored esp-web-tools (for offline events)
-vendor-flasher:
-    web-flasher/get_esp_web_tools.sh
+vendor-programmer:
+    web-programmer/get_esp_web_tools.sh
 
 # Turn a calibration export into reviewable restore commands
 restore-commands file:

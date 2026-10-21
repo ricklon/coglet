@@ -4,9 +4,9 @@ firmware/app/build/
 firmware/app/managed_components/
 firmware/app/sdkconfig
 firmware/app/sdkconfig.old
-web-flasher/firmware/**/*.bin
-web-flasher/firmware/**/metadata.json
-web-flasher/manifest-*.json
+web-programmer/firmware/**/*.bin
+web-programmer/firmware/**/metadata.json
+web-programmer/manifest-*.json
 
 # Calibration backups and raw flash dumps can hold Wi-Fi and hub credentials
 *-calibration.json

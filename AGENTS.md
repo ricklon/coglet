@@ -15,14 +15,14 @@ agent-hub's xiaozhi wire protocol, plus the servo controller
 
 | Change | Where |
 |---|---|
-| Servo behaviour, calibration, `!coglet` commands, builder page | `firmware/coglet_controller/` (this repo) |
+| Servo behaviour, calibration, animations, robot commands | `firmware/coglet_controller/` (this repo) |
 | Host tests and the fake IDF | `firmware/tests/` |
 | C3: MCP tools, session, audio, Wi-Fi, console, quiet logic | `firmware/app/main/` |
 | C3 pins | `firmware/app/main/board.h` (then update `hardware/WIRING.md`) |
 | S3: MCP tool names, descriptions and arguments | fork: `main/boards/common/coglet_mcp_tools.cc` |
 | S3 pins | fork: `main/boards/coglet/config.h` (then update `hardware/WIRING.md`) |
 | S3 board startup, audio, camera, auto-reconnect, quiet logic | fork: `main/boards/coglet/*.cc` |
-| Flasher page, packaging, releases | `web-flasher/`, `scripts/package_firmware.py`, `.github/workflows/` |
+| Web Programmer, packaging, releases | `web-programmer/`, `scripts/package_firmware.py`, `.github/workflows/` |
 
 A tool change on one board should be mirrored on the other. Changes inside
 the fork are committed and pushed there, and then the submodule
@@ -35,7 +35,7 @@ just test                 # always run after touching the controller
 just build c3             # firmware/app; ESP-IDF 5.5.x
 just build s3             # the fork
 XIAOZHI_DIR=../xiaozhi-esp32 just build s3   # against a sibling fork checkout
-just package              # firmware into web-flasher/
+just package              # firmware into web-programmer/
 ```
 
 ## Rules
@@ -43,8 +43,11 @@ just package              # firmware into web-flasher/
 - **Never flash, open a serial port, or call motion tools on a real robot
   unless the user asks you to in this conversation.** Opening a port can
   reset the board. Ask whether the servo rail is off first.
-- **Don't add MCP tools that engage, calibrate, or move raw servos.** The LLM
-  may stop the robot but never start it. See decisions.md.
+- **MCP is the robot's only interface.** Every command is an MCP tool (C3:
+  `firmware/app/main/mcp.cc`; S3: the fork's `coglet_mcp_tools.cc`). Add the
+  tool in the same change as the command. No local-only commands, no side
+  interfaces. The serial console runs the same code, for robots not yet on a
+  network. Don't break the session MCP rides in. See decisions.md.
 - **Every boot stays released.** Don't add startup motion.
 - **Positions are commands, not measurements.** Don't write docs or tool
   descriptions that claim otherwise.
@@ -53,4 +56,6 @@ just package              # firmware into web-flasher/
 - **No secrets in the repo or in public firmware.** Enrollment tokens, Wi-Fi
   credentials, raw flash dumps. The packager refuses token-bearing builds.
 - Keep the docs in step with the code: tool table in README.md and
-  docs/AGENT-HUB.md, commands in docs/OPERATION.md, pins in hardware/WIRING.md.
+  docs/AGENT-HUB.md, commands in docs/OPERATION.md, pins in hardware/WIRING.md,
+  docs/ASSEMBLY.md and the Web Programmer page. Every board uses the same pad
+  map; change a board's GPIOs, never the wiring.

@@ -20,23 +20,25 @@ Endpoints are **semantic**, and may run numerically backwards:
 | jaw | closed | open |
 | ear_left, ear_right | back | forward |
 
-All calibration commands are **local only** (serial or the builder web page)
-and most are **builder mode only**. Pulses never leave the hard 1000-2000 us
-bound, whatever is asked for.
+Every calibration command is an MCP tool (`self.coglet.fit`, `explore`,
+`nudge`, `mark`, `confirm`, `save`, ...) and also runs at the serial console
+as `!coglet ...`; the steps below use the serial form. Most are **builder
+mode only**. Pulses never leave the hard 1000-2000 us bound, whatever is asked
+for. Someone still has to watch the servo: `confirm` means a person saw both
+endpoints.
 
 ## Silence first
 
 A voice agent answering room noise through the robot's own speaker makes
 endpoint hunting impossible, so calibration runs with the voice side quiet:
 
-- **`!coglet builder` pauses it automatically.** Entering builder mode aborts any
-  reply in progress, pauses listening, and stops the board reconnecting.
-- **Quiet does not lift by itself.** Leaving builder mode keeps the robot quiet,
-  because the LLM can call `self.coglet.release` over MCP: an auto-resume let the
-  robot talk its own way out of a calibration session. Say `!quiet off` when you
-  are done.
-- **`!quiet on` / `!quiet off`** does the same by hand, on any board, and survives
-  until toggled or rebooted. `!quiet status` reports it.
+- **Builder mode makes it quiet automatically.** It stops any reply and turns
+  the mic and speaker off. On the C3 the session stays open, so MCP keeps
+  working; on the S3 the session closes until `!quiet off`.
+- **Quiet does not lift by itself** when builder mode ends. Turn it off with
+  `self.voice.quiet` (`on: false`) or `!quiet off` when you're done.
+- **`self.voice.quiet` / `!quiet on|off|status`** does the same by hand, and
+  lasts until turned off or the robot reboots.
 - **Unplugging the speaker** is the hardware fallback and needs no firmware.
 - The hub's **listen mode** silences replies without touching the robot, but it
   keeps the session open; builder mode is the better fit while calibrating.
@@ -98,9 +100,10 @@ engage. `!coglet release` ends it immediately.
 `engage` needs at least one role fitted and every *assigned* role confirmed.
 Roles left unassigned are treated as not fitted and are skipped.
 
-Only three roles have choreography: `gaze` and the animations drive `eye_pan`
-and `eye_tilt`, and `blink` drives `lids`. The neck, jaw and ears are
-builder-only for now, so they stay still during conversation:
+Once engaged, every role takes motion commands: `gaze` drives `eye_pan` and
+`eye_tilt` (the lids track it), `head` drives `base`, `neck_tilt` and
+`neck_roll`, and `jaw`, `ears` and `lids` drive the rest. Animations move the
+eyes or the rest of the head:
 
 ```bash
 !coglet release
@@ -145,8 +148,9 @@ keeps both kinds of file out of this repo.
 - Never infer endpoints from another servo. Stop short of binding.
 - For channel swaps, unassign the affected roles first (`CH=-1`, `confirmed=0`).
 
-Note `!coglet lids TRIM COEFF` (upper-lid coupling) is a different command
-from the `lids` **role** used by `configure`, `explore` and `confirm`.
+Note `!coglet lid_coupling TRIM COEFF` sets how the lids track the gaze;
+`!coglet lids OPEN` moves the lids; `lids` is also the **role** name used by
+`fit`, `explore` and `confirm`.
 
 ## Still to do
 

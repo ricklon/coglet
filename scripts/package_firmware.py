@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build and package Coglet firmware for the web flasher and GitHub releases.
+"""Build and package Coglet firmware for the Web Programmer and GitHub releases.
 
     python3 scripts/package_firmware.py              # package existing builds, both boards
     python3 scripts/package_firmware.py --build      # build first
@@ -9,8 +9,8 @@ The C3 firmware is this repo's own ESP-IDF app (firmware/app). The S3 is still
 built by the xiaozhi-esp32 fork (firmware/xiaozhi-esp32, or XIAOZHI_DIR) with
 ./switch-board.sh, which finds this repo's controller on its own. Output:
 
-    web-flasher/firmware/<id>/*.bin       what the flasher page serves
-    web-flasher/manifest-<id>.json        esp-web-tools manifest per board
+    web-programmer/firmware/<id>/*.bin       what the Web Programmer serves
+    web-programmer/manifest-<id>.json        esp-web-tools manifest per board
     dist/release-zips/*.zip               one zip per board, for a GitHub release
 
 Standard library only. ESP-IDF must be installed for --build and merge-bin.
@@ -28,11 +28,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 APP = ROOT / "firmware" / "app"
 XIAOZHI = Path(os.environ.get("XIAOZHI_DIR", ROOT / "firmware" / "xiaozhi-esp32")).resolve()
-FLASHER = ROOT / "web-flasher"
+PROGRAMMER = ROOT / "web-programmer"
 DIST = ROOT / "dist"
 
 # source: "app" (firmware/app) or "xiaozhi" (the fork); board: the xiaozhi
-# board name; id: the flasher id, which is also what the firmware reports to
+# board name; id: the Web Programmer id, which is also what the firmware reports to
 # agent-hub as its board id and manifest.
 BOARDS = {
     "c3": {"source": "app", "board": "coglet-c3", "id": "coglet-c3",
@@ -105,11 +105,11 @@ def package(key: str, build: bool, env: dict[str, str], allow_token: bool) -> No
         raise SystemExit(
             f"{entry['board']}: CONFIG_OTA_URL carries an agent-hub enrollment token. Anyone who\n"
             "downloads this firmware can read it. Rebuild with AGENT_HUB_ENV_FILE=/dev/null for a\n"
-            "public flasher, or pass --allow-enrollment-token for a private, local-only one.")
+            "public Web Programmer, or pass --allow-enrollment-token for a private, local-only one.")
     subprocess.run(["idf.py", "-B", str(build_dir), f"-DSDKCONFIG={sdkconfig}", "merge-bin"],
                    cwd=project, check=True, env=env)
 
-    out = FLASHER / "firmware" / entry["id"]
+    out = PROGRAMMER / "firmware" / entry["id"]
     for old in out.glob("*.bin"):
         old.unlink()
     out.mkdir(parents=True, exist_ok=True)
@@ -133,7 +133,7 @@ def package(key: str, build: bool, env: dict[str, str], allow_token: bool) -> No
         "new_install_prompt_erase": True,
         "builds": [{"chipFamily": CHIP_FAMILIES.get(chip, chip.upper()), "parts": parts}],
     }
-    (FLASHER / entry["manifest"]).write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    (PROGRAMMER / entry["manifest"]).write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
 
     metadata = {"board": entry["board"], "flasher_board_id": entry["id"], "manifest": entry["manifest"],
                 "firmware_version": version, "coglet": describe(ROOT)}
@@ -147,7 +147,7 @@ def package(key: str, build: bool, env: dict[str, str], allow_token: bool) -> No
         for path in sorted(out.iterdir()):
             if path.name != ".gitkeep":
                 archive.write(path, arcname=path.name)
-    print(f"{entry['id']}: {len(parts)} parts -> web-flasher/{entry['manifest']}")
+    print(f"{entry['id']}: {len(parts)} parts -> web-programmer/{entry['manifest']}")
 
 
 def main() -> None:

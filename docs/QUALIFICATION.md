@@ -31,17 +31,18 @@ or mocked test is an automated check, **not** physical evidence.
    with one 2° step, measure endpoints with clearance, release, save and export.
    Observe mouth and ears separately. Reboot and verify released state and exact
    calibration round-trip before reconnecting all linkages.
-6. **Coordinated behavior:** after all calibration is confirmed, locally engage;
+6. **Coordinated behavior:** after all calibration is confirmed, engage;
    verify no motion until a command. Test center then small bounded gaze, lid
    tracking, blink, and each named expression. Check reversed lid endpoints,
    collision clearance and supply droop. Confirm stop, then release, and wait
    >10 seconds to verify auto-blink cannot reenergize anything. Use the physical
    rail switch immediately if binding or buzzing occurs.
 7. **MCP discovery/calls:** on Hub's normal voice session, capture check-in and
-   MCP handshake logs; verify all six Coglet MCP tools and absence of engage/raw
-   calibration tools. Call state and release first. While released, gaze/blink/
-   animations must error. After local engagement test valid calls and invalid
-   bounds/names. With V+ off and logic powered, disconnect PCA I²C for a missing
+   MCP handshake logs; verify the full Coglet tool list (see OPERATION.md),
+   paged through `nextCursor`. Call state and release first. While released,
+   every motion tool must error. Engage over MCP, then test each motion tool
+   and animation with valid calls and invalid bounds/names, and builder mode
+   over MCP with the session staying up (C3). With V+ off and logic powered, disconnect PCA I²C for a missing
    device test: immediate calls must error; a timed fault must latch release
    and appear in state. Reboot with V+ off to recover a failed initialization.
 8. **Combined operation:** voice input/output plus repeated camera captures and

@@ -130,11 +130,17 @@ void SendHello() {
     SendJson(root);
 }
 
-// Listening again after a reply, or for the first time after hello.
+// Listening again after a reply, or for the first time after hello. In quiet
+// mode the session stays open for MCP with the mic and speaker off.
 void StartListening() {
     s_draining = false;
     s_reached_listening = true;
     s_open_failures = 0;
+    if (s_quiet) {
+        audio::SetMicEnabled(false);
+        SetState(State::Paused);
+        return;
+    }
     SetState(State::Listening);
     SendListen("start");
     audio::SetMicEnabled(true);
@@ -163,7 +169,7 @@ void ScheduleOpen(int64_t delay_us) {
 
 void OnSessionEnded() {
     Teardown();
-    if (s_state == State::Paused || s_state == State::Offline) return;
+    if (s_state == State::Offline) return;
     SetState(State::Idle);
     if (!s_reached_listening) {
         s_open_failures++;
@@ -179,7 +185,7 @@ void OnSessionEnded() {
 }
 
 void Open() {
-    if (s_state != State::Idle || s_quiet || !s_checked_in) return;
+    if (s_state != State::Idle || !s_checked_in) return;
     SetState(State::Connecting);
     s_reached_listening = false;
 
@@ -370,7 +376,7 @@ void TryCheckIn() {
         s_checked_in = true;
         s_checkin_failures = 0;
         s_open_failures = 0;
-        if (s_state == State::Offline) SetState(s_quiet ? State::Paused : State::Idle);
+        if (s_state == State::Offline) SetState(State::Idle);
         ScheduleOpen(0);
     } else {
         s_checkin_failures++;
@@ -393,13 +399,13 @@ const char* Activity() {
 void Tick() {
     int64_t now = Now();
 
-    // Builder mode silences the voice agent. Leaving it does NOT bring the
-    // voice back: the LLM can call self.coglet.release, and an auto-resume let
-    // the robot talk its own way out of a calibration session. Quiet ends only
-    // when a person says so, with !quiet off.
+    // Builder mode silences the voice: a robot chatting through its speaker
+    // makes endpoint hunting impossible. The session stays open, so MCP keeps
+    // working. Leaving builder mode doesn't bring the voice back; quiet ends
+    // when it's turned off (self.voice.quiet or !quiet off).
     if (CogletController::Instance().BuilderMode() && !s_builder_quieted) {
         s_builder_quieted = true;
-        ESP_LOGI(TAG, "Builder mode: voice paused until !quiet off");
+        ESP_LOGI(TAG, "Builder mode: voice quiet until quiet is turned off");
         SetQuiet(true);
     } else if (s_builder_quieted && !s_quiet) {
         s_builder_quieted = false;
@@ -416,7 +422,7 @@ void Tick() {
         ESP_LOGW(TAG, "No hello from the hub within 10 s");
         OnSessionEnded();
     }
-    if ((state == State::Listening || state == State::Speaking) &&
+    if ((state == State::Listening || state == State::Speaking || state == State::Paused) &&
         now - s_last_rx > kSilenceTimeoutUs) {
         ESP_LOGW(TAG, "Nothing from the hub for 60 s; reopening");
         OnSessionEnded();
@@ -476,7 +482,7 @@ void NetworkUp() {
         if (!s_checked_in) {
             TryCheckIn();
         } else if (s_state == State::Offline) {
-            SetState(s_quiet ? State::Paused : State::Idle);
+            SetState(State::Idle);
             ScheduleOpen(0);
         }
     });
@@ -494,14 +500,15 @@ void SetQuiet(bool on) {
     if (on) s_accept_audio = false;
     Post([on] {
         if (on) {
-            if (s_state == State::Offline) return;
+            // Mic and speaker off; the session, and MCP with it, stays up.
+            if (s_state == State::Speaking) SendJson(Message("abort"));
             if (s_state == State::Listening) SendListen("stop");
-            Teardown();
-            SetState(State::Paused);
+            audio::SetMicEnabled(false);
+            audio::FlushPlayback();
+            s_draining = false;
+            if (s_state == State::Listening || s_state == State::Speaking) SetState(State::Paused);
         } else if (s_state == State::Paused) {
-            SetState(State::Idle);
-            s_open_failures = 0;
-            ScheduleOpen(0);
+            StartListening();
         }
     });
 }

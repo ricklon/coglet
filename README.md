@@ -33,10 +33,11 @@ emergency stop**.
 
 ## Quick start
 
-1. **Wire it.** See [hardware/WIRING.md](hardware/WIRING.md). The Fritzing
+1. **Build it.** Follow [docs/ASSEMBLY.md](docs/ASSEMBLY.md); pins are in
+   [hardware/WIRING.md](hardware/WIRING.md). The Fritzing
    schematic is [hardware/esp32c3-voice-agent.fzz](hardware/esp32c3-voice-agent.fzz)
    (older than the pad map in WIRING.md; the pad map wins).
-2. **Flash it.** Servo supply off. Use the web flasher
+2. **Flash it.** Servo supply off. Use the Web Programmer
    (Chrome or Edge), or build from source:
    ```bash
    just build c3     # firmware/app
@@ -44,7 +45,7 @@ emergency stop**.
    just setup        # S3 only: fetch the xiaozhi-esp32 fork (submodule)
    just build s3
    ```
-   Details, including how to run the flasher locally, are in
+   Details, including how to run the Web Programmer locally, are in
    [docs/FLASHING.md](docs/FLASHING.md).
 3. **Connect it to agent-hub.** On the serial console:
    ```
@@ -54,38 +55,42 @@ emergency stop**.
    It shows up on the hub dashboard with its `self.coglet.*` tools. See
    [docs/AGENT-HUB.md](docs/AGENT-HUB.md).
 4. **Calibrate before anything moves.** Every boot is released with no roles
-   mapped. Map and measure each servo locally:
+   mapped. Map and measure each servo, one at a time:
    [docs/CALIBRATION.md](docs/CALIBRATION.md).
 
 ## MCP tools
 
-What agent-hub (and its LLM) can call:
+What agent-hub, Claude or any MCP client can call. MCP is the robot's one
+interface: every command is a tool.
 
-| Tool | Does |
+| Group | Tools |
 |---|---|
-| `self.coglet.gaze` | Point the eyes, `horizontal`/`vertical` −100..100 inside the calibrated endpoints, with upper-lid tracking |
-| `self.coglet.blink` | One device-timed blink |
-| `self.coglet.animate` | `look`, `roll`, `side_eye`, `wink`, `surprise`, `sleepy` |
-| `self.coglet.stop` | Freeze the current pose |
-| `self.coglet.release` | Latch all servo outputs off |
-| `self.coglet.state` | Diagnostics, calibration, last commanded positions, errors |
+| Motion (engaged) | `self.coglet.gaze`, `head`, `jaw`, `ears`, `lids`, `blink`, `animate` |
+| Stopping | `self.coglet.stop`, `release` |
+| Modes | `self.coglet.engage`, `builder` |
+| Calibration (released or builder) | `self.coglet.fit`, `configure`, `lid_coupling`, `identify`, `explore`, `nudge`, `mark`, `confirm`, `save`, `servo`, `jog`, `test` |
+| Diagnostics | `self.coglet.state`, `export`, `scan` |
+| Voice and audio | `self.voice.quiet`, `self.voice.restart`, `self.audio_speaker.set_volume`, `self.audio_speaker.test_tone`, `self.audio_mic.status`, `self.audio_mic.set` |
+| Device | `self.get_device_status`, `self.device.status`, `self.wifi.list`, `self.wifi.add`, `self.wifi.remove`, `self.hub.set_server`, `self.reboot` |
 
-Plus `self.get_device_status` and `self.audio_speaker.set_volume` and, on the S3
-with a confirmed camera, the camera. **Engaging, calibrating and raw servo moves aren't
-MCP tools.** The LLM can stop the robot, but only a person at the serial console
-or the builder page can make it move again.
+Animations: `look`, `roll`, `side_eye`, `wink`, `surprise`, `sleepy` for the
+eyes; `nod`, `shake`, `tilt`, `perk`, `droop`, `talk`, `look_around` for the
+rest of the head. Every position stays inside each servo's calibrated window.
+Anything with hub access can engage the robot, so the **servo-rail switch**
+is the stop that doesn't depend on software. The full list, with the serial
+form of each command, is in [docs/OPERATION.md](docs/OPERATION.md#robot-commands).
 
 ## Repository layout
 
 ```
 firmware/
   app/                 C3 firmware: Wi-Fi, agent-hub check-in, voice session, Opus, MCP, console
-  coglet_controller/   servo controller: PCA9685, calibration, motion, builder page
+  coglet_controller/   servo controller: PCA9685, calibration, motion, animations
   tests/               host tests: the real controller against a fake ESP-IDF
   xiaozhi-esp32/       submodule: the xiaozhi fork, still used for the S3
 hardware/              Fritzing schematic, wiring and parts
-web-flasher/           browser flasher (esp-web-tools) and serial console
-scripts/               firmware packaging for the flasher and releases
+web-programmer/           browser programmer (esp-web-tools) and serial console
+scripts/               firmware packaging for the Web Programmer and releases
 tools/                 calibration restore-command generator
 docs/                  agent-hub, operation, calibration, flashing, qualification
 ```
@@ -101,9 +106,10 @@ both.
 | Doc | What it covers |
 |---|---|
 | [docs/AGENT-HUB.md](docs/AGENT-HUB.md) | **Start here.** Check-in, MCP discovery, the tools, listen mode, driving Coglet from Claude Code |
+| [docs/ASSEMBLY.md](docs/ASSEMBLY.md) | Putting it together: boards, harness, power, first power-up, servos base upward |
 | [hardware/WIRING.md](hardware/WIRING.md) | Parts, pin maps for C3 and S3, power, `/OE`, bench checks |
-| [docs/FLASHING.md](docs/FLASHING.md) | Web flasher, CLI builds, packaging, releases, backups before reflashing |
-| [docs/OPERATION.md](docs/OPERATION.md) | Serial commands, release/engage/builder, the builder web page, quiet mode |
+| [docs/FLASHING.md](docs/FLASHING.md) | Web Programmer, CLI builds, packaging, releases, backups before reflashing |
+| [docs/OPERATION.md](docs/OPERATION.md) | Every command (MCP tool and serial form), release/engage/builder, quiet mode |
 | [docs/CALIBRATION.md](docs/CALIBRATION.md) | One-servo-at-a-time calibration, backup and restore |
 | [docs/QUALIFICATION.md](docs/QUALIFICATION.md) | Staged physical bring-up checklist and the verification record |
 | [docs/decisions.md](docs/decisions.md) | Why things are the way they are |

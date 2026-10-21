@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Serve the Coglet web flasher locally (Web Serial needs localhost or HTTPS).
+# Serve the Coglet Web Programmer locally (Web Serial needs localhost or HTTPS).
 # Usage: ./serve.sh [port]   (default 8080). Package firmware first: just package
 set -euo pipefail
 cd "$(dirname "$0")"

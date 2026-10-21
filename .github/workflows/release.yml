@@ -1,7 +1,7 @@
-name: Build, release and publish the web flasher
+name: Build, release and publish the Web Programmer
 
 # Every push and PR: host tests plus both firmware builds.
-# A v* tag also publishes a GitHub release and deploys web-flasher/ to Pages.
+# A v* tag also publishes a GitHub release and deploys web-programmer/ to Pages.
 on:
   push:
     branches: [main]
@@ -47,8 +47,8 @@ jobs:
         with:
           name: firmware-${{ matrix.board }}
           path: |
-            web-flasher/firmware/
-            web-flasher/manifest-*.json
+            web-programmer/firmware/
+            web-programmer/manifest-*.json
             dist/release-zips/*.zip
           if-no-files-found: error
 
@@ -76,6 +76,6 @@ jobs:
           files: dist/release-zips/*.zip
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: web-flasher
+          path: web-programmer
       - id: deploy
         uses: actions/deploy-pages@v4

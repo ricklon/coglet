@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""HTTP server for Coglet Web Flasher with proper CORS and caching headers."""
+"""HTTP server for Coglet Web Programmer with proper CORS and caching headers."""
 
 import http.server
 import argparse
@@ -41,7 +41,7 @@ def get_lan_ip():
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Serve the Coglet web flasher.")
+    parser = argparse.ArgumentParser(description="Serve the Coglet Web Programmer.")
     parser.add_argument("port", nargs="?", type=int, default=8080)
     parser.add_argument("--max-port-tries", type=int, default=20)
     args = parser.parse_args()
@@ -67,7 +67,7 @@ def main():
         raise OSError(f"No free port found from {requested_port} to {requested_port + args.max_port_tries - 1}")
 
     with httpd:
-        print("Coglet Web Flasher")
+        print("Coglet Web Programmer")
         print(f"URL: http://localhost:{port}")
         lan_ip = get_lan_ip()
         if lan_ip:

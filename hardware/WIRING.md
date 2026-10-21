@@ -120,17 +120,17 @@ base up. The firmware carries this table (`SERVO_ROLE_CHANNELS` in
 `firmware/app/main/board.h`, and the default in `CogletPins`), and
 `!coglet fit ROLE` uses it.
 
-| Channel | Role | Has choreography |
+| Channel | Role | MCP motion |
 |---|---|---|
-| 0 | `base` | no |
-| 1 | `neck_tilt` | no |
-| 2 | `neck_roll` | no |
-| 3 | `eye_pan` | gaze, animations |
-| 4 | `eye_tilt` | gaze, animations |
-| 5 | `lids` (both top lids) | blink, lid tracking |
-| 6 | `jaw` | no |
-| 7 | `ear_left` | no |
-| 8 | `ear_right` | no |
+| 0 | `base` | head (pan) |
+| 1 | `neck_tilt` | head (tilt) |
+| 2 | `neck_roll` | head (roll) |
+| 3 | `eye_pan` | gaze |
+| 4 | `eye_tilt` | gaze |
+| 5 | `lids` (both top lids) | lids, blink, gaze tracking |
+| 6 | `jaw` | jaw |
+| 7 | `ear_left` | ears |
+| 8 | `ear_right` | ears |
 | 9–15 | spare | |
 
 A listed channel isn't assigned until the servo is fitted and `fit` is run, so

@@ -42,5 +42,5 @@ for a in axes:
 trim, coeff = data['lid_trim'], data['upper_coeff']
 if not all(type(v) in (int, float) and math.isfinite(v) and 0 <= v <= 1 for v in (trim, coeff)):
     raise SystemExit('Invalid lid coupling')
-commands += [f'!coglet lids {trim} {coeff}', '!coglet save', '!coglet export']
+commands += [f'!coglet lid_coupling {trim} {coeff}', '!coglet save', '!coglet export']
 print('\n'.join(commands))

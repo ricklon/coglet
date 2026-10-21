@@ -31,7 +31,7 @@ Coglet                                    agent-hub
 
 1. **Check-in.** The firmware posts to its OTA URL. It sends its device and
    client IDs, the board ID (`coglet-c3` or `coglet`), feature flags (mic,
-   speaker, camera) and firmware metadata, including the web-flasher manifest
+   speaker, camera) and firmware metadata, including the web-programmer manifest
    name. The hub registers the device and returns the voice WebSocket URL and token.
 2. **Voice session.** The hello advertises MCP. The hub sends `initialize`, then
    pages through `tools/list`.
@@ -43,7 +43,7 @@ Coglet                                    agent-hub
 
 ## Pointing Coglet at a hub
 
-Over the serial console (or the web flasher's console):
+Over the serial console (or the Web Programmer's console):
 
 ```
 !wifi YourSSID YourPassword
@@ -58,38 +58,46 @@ its HTTPS check-in URL with `?enrollment_token=...`, and supply it privately:
 ```
 
 The token is a shared fleet secret. Don't commit it, and don't put a build
-with it baked in on a public flasher. The build tooling refuses to package one,
+with it baked in on a public Web Programmer. The build tooling refuses to package one,
 see [FLASHING.md](FLASHING.md#enrollment-tokens). `!status` shows the OTA URL
 in use.
 
 ## The tools
 
+MCP is the robot's one interface: every command is a tool. The full list, with
+arguments and modes, is in [OPERATION.md](OPERATION.md#robot-commands). The
+ones a conversation uses most:
+
 | Tool | Arguments | Notes |
 |---|---|---|
-| `self.coglet.gaze` | `horizontal`, `vertical`: integers −100..100 | Maps onto the calibrated `eye_pan`/`eye_tilt` endpoints, with upper-lid tracking. Needs both eye axes fitted |
-| `self.coglet.blink` | none | One blink. Needs the `lids` servo and an established gaze |
-| `self.coglet.animate` | `name`: `look`, `roll`, `side_eye`, `wink`, `surprise`, `sleepy` | Runs on the device timer |
-| `self.coglet.stop` | none | Freezes at the last commanded pose. Auto-blink resumes after a settling interval |
-| `self.coglet.release` | none | Latches all outputs off. Only a person can engage again |
-| `self.coglet.state` | none | JSON: `released`, `animation`, `last_hardware_error`, `release_error`, per-role calibration, last commanded angles |
-| `self.get_device_status` | none | Volume, Wi-Fi, firmware, uptime, free heap. The C3's JSON is simpler than the S3's |
-| `self.audio_speaker.set_volume` | `volume`: integer 0..100 | Persists across reboots |
+| `self.coglet.gaze` | `horizontal`, `vertical`: −100..100 | Eyes, with upper-lid tracking. Needs both eye axes fitted |
+| `self.coglet.head` | `pan`, `tilt`, `roll`: −100..100 | Base pan, neck tilt, neck roll; 0 is centre |
+| `self.coglet.jaw` | `open`: 0..100 | 0 closed |
+| `self.coglet.ears` | `left`, `right`: 0..100 | 0 back, 100 forward |
+| `self.coglet.lids` | `open`: 0..100 | Holds until the next gaze |
+| `self.coglet.blink` | none | Needs the `lids` servo and an established gaze |
+| `self.coglet.animate` | `name` | Eyes: `look`, `roll`, `side_eye`, `wink`, `surprise`, `sleepy`. Head: `nod`, `shake`, `tilt`, `perk`, `droop`, `talk`, `look_around` |
+| `self.coglet.stop` | none | Ends an animation or test, holds the pose |
+| `self.coglet.release` | none | Latches all outputs off |
+| `self.coglet.engage` | none | Outputs on for motion. Needs every assigned servo confirmed |
+| `self.coglet.state` | none | JSON: `released`, `animation`, `testing`, `last_hardware_error`, `release_error`, per-role calibration, last commanded angles |
 
 Rules the hub and persona should know:
 
-- **Motion needs local engagement.** While released, `gaze`, `blink` and
-  `animate` return errors. A person engages the robot at the serial console or
-  builder page after calibration, and no MCP tool can. `release` from the LLM
-  is therefore a one-way door, and that's on purpose.
-- **Timed actions return "started", not "done".** `blink` and `animate` return
-  once the first frame is commanded. Poll `self.coglet.state` for `animation`,
-  `last_hardware_error` and `release_error`. A fault partway through an
-  animation latches release.
-- **Partly built robots are normal.** Unassigned roles are skipped. Until
-  `eye_pan` and `eye_tilt` are fitted, `gaze` and `animate` return
-  `ESP_ERR_NOT_SUPPORTED`. Without `lids`, so does `blink`.
-- **Neck, jaw and ears have no choreography yet.** They stay still during
-  conversation and only move in local builder tests.
+- **Motion needs the robot engaged.** While released, motion tools return
+  `ESP_ERR_INVALID_STATE`. `self.coglet.engage` works only once every assigned
+  servo is calibrated and confirmed, and commands no pose by itself.
+- **Anything with hub access can engage the robot.** The servo-rail switch is
+  the stop that doesn't depend on software.
+- **Timed actions return "started", not "done".** `blink`, `animate` and
+  `test` return once the first frame is commanded. Poll `self.coglet.state`.
+  A fault partway through latches release.
+- **Partly built robots are normal.** Unfitted servos are skipped; a command
+  or animation with nothing fitted to move returns `ESP_ERR_NOT_SUPPORTED`.
+- **Builder mode makes the voice quiet.** On the C3 the session (and MCP) stays
+  open with the mic and speaker off; `self.voice.quiet` with `on: false` brings
+  the voice back. On the S3 it still closes the session until `!quiet off` at
+  the serial console.
 - **Positions aren't measured.** `state` reports commands, not where the
   servos actually are.
 
@@ -139,7 +147,7 @@ claude mcp add coglet-c3 -- python3 /path/to/agent-hub/scripts/device_mcp_proxy.
 
 None of these are needed. Ideas, not existing features:
 
-- a persona prompt that describes the six tools and the engage rule;
+- a persona prompt that describes the tools, the engage rule and the animations;
 - a dashboard label or Coglet-specific test buttons.
 
 ## Troubleshooting
@@ -148,6 +156,6 @@ None of these are needed. Ideas, not existing features:
 |---|---|
 | Never appears on the dashboard | `!status`: Wi-Fi up? OTA URL right? `curl http://HUB_HOST:8003/xiaozhi/ota/` from the same network |
 | Appears but no Coglet tools | Hub logs for `initialize`/`tools/list`. Confirm the firmware is a Coglet build (`!status` board name) |
-| Every motion tool errors | `self.coglet.state`. If `released: true`, a person has to engage locally. `last_hardware_error` set? Run `!coglet scan` |
+| Every motion tool errors | `self.coglet.state`. If `released: true`, call `self.coglet.engage` (needs calibration confirmed). `last_hardware_error` set? Call `self.coglet.scan` |
 | `gaze` returns `ESP_ERR_NOT_SUPPORTED` | `eye_pan`/`eye_tilt` not mapped yet; expected while building bottom-up |
 | Robot answers room noise while you work on it | `!quiet on`, or `!coglet builder`, which pauses voice until `!quiet off` |

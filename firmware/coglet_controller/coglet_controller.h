@@ -5,9 +5,9 @@
 #include <cmath>
 #include <mutex>
 #include <string>
+#include <vector>
 #include "driver/gpio.h"
 #include "driver/i2c_master.h"
-#include "esp_http_server.h"
 #include "cJSON.h"
 
 // Where the PCA9685 is wired. Each board passes its own pins, so the
@@ -31,11 +31,16 @@ class CogletController {
 public:
     static CogletController& Instance();
     void Start(const CogletPins& pins);
-    std::string Command(const std::string& text, bool builder = false);
+    // Every command, from MCP or the serial console; one command set.
+    std::string Command(const std::string& text);
     // True while a builder is calibrating. Boards use it to keep the voice
-    // agent quiet: a robot chatting through the speaker makes endpoint hunting
-    // impossible, and TTS competes for the same I2S bus.
+    // quiet (mic and speaker off, MCP session up): a robot chatting through
+    // the speaker makes endpoint hunting impossible.
     bool BuilderMode() const { return builder_; }
+    // The animation catalogue, for tool descriptions. eyes: it moves the eyes
+    // and lids; otherwise it moves the rest of the head.
+    struct AnimationInfo { const char* name; bool eyes; };
+    static std::vector<AnimationInfo> Animations();
 
 private:
     struct Axis {
@@ -58,10 +63,12 @@ private:
     i2c_master_dev_handle_t device_ = nullptr;
     bool ready_ = false, released_ = true;
     std::atomic<bool> builder_{false};
-    bool web_enabled_ = false;
     esp_err_t last_error_ = ESP_OK, release_error_ = ESP_OK;
     std::array<float, 9> commanded_;
-    std::array<float, 3> pose_ = {.5f, .5f, NAN}, from_ = pose_;
+    // Target per role as a fraction of its calibrated window, low to high.
+    // NaN means no target: the role isn't driven. A NaN lid follows the gaze.
+    static constexpr std::array<float, 9> kRestPose = {NAN, NAN, NAN, .5f, .5f, NAN, NAN, NAN, NAN};
+    std::array<float, 9> pose_ = kRestPose, from_ = pose_;
     int animation_ = -1, frame_ = 0;
     // Endpoint hunting: the explored axis moves outside its calibrated window,
     // so it is deliberately not reflected in commanded_.
@@ -82,7 +89,7 @@ private:
     esp_err_t Write(int axis, float degrees);
     esp_err_t Pulse(int channel, float us);
     float Micros(const Axis& axis, float degrees) const;
-    esp_err_t Apply(const std::array<float, 3>& pose);
+    esp_err_t Apply(const std::array<float, 9>& pose);
     esp_err_t Tick(int64_t now);
     bool Testable(int axis) const;
     int NextTestable(int after) const;
@@ -92,9 +99,7 @@ private:
     esp_err_t Save();
     void Load();
     cJSON* State();
-    void Web();
-    static esp_err_t Http(httpd_req_t* req);
 };
 
-// Handles a "!coglet ..." serial line; returns false for any other line.
+// Runs a "!coglet ..." serial line; returns false for any other line.
 bool CogletSerialCommand(const char* line);

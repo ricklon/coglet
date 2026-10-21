@@ -4,9 +4,9 @@
 running esptool can reset the MCU, and a board with stored calibration and a
 powered rail shouldn't be reset with your hands in the mechanism.
 
-## Option 1: web flasher (no toolchain)
+## Option 1: Web Programmer (no toolchain)
 
-`web-flasher/` is a static page built on
+`web-programmer/` is a static page built on
 [esp-web-tools](https://esphome.github.io/esp-web-tools/), with a Web Serial
 console for `!wifi`, `!server` and `!coglet` commands. It needs Chrome or Edge on
 a desktop, served from `localhost` or HTTPS.
@@ -16,15 +16,15 @@ a desktop, served from `localhost` or HTTPS.
 - **Local:**
   ```bash
   just build c3 && just build s3     # or: just package --build
-  just package                       # copy images + write manifests into web-flasher/
+  just package                       # copy images + write manifests into web-programmer/
   just serve                         # http://localhost:8080
   ```
   The page lists both boards. A board with no packaged firmware has no
   manifest, so its button fails until you package it.
 
-The esp-web-tools bundle is vendored in `web-flasher/vendor/`, so the page works
+The esp-web-tools bundle is vendored in `web-programmer/vendor/`, so the page works
 offline, for example at a build night with no internet. Refresh it with
-`just vendor-flasher`.
+`just vendor-programmer`.
 
 "Erase and install" wipes NVS: Wi-Fi, OTA URL **and calibration**. Export
 calibration first (`!coglet export`). An update install without erasing keeps
@@ -32,7 +32,7 @@ them, as long as the partition table hasn't changed.
 
 The firmware also reports its manifest name (`manifest-coglet-c3.json` or
 `manifest-coglet.json`) to agent-hub at check-in, so the hub knows which
-flasher build matches the device.
+Web Programmer build matches the device.
 
 ## Option 2: build and flash from source
 
@@ -96,9 +96,9 @@ own bench, but anyone who downloads the image can read the token.
 `scripts/package_firmware.py` refuses to package a build with a token in its
 OTA URL. To package one:
 
-- for a public flasher, rebuild without the token:
+- for a public Web Programmer, rebuild without the token:
   `AGENT_HUB_ENV_FILE=/dev/null just build c3`. CI always does this.
-- for a private, local-only flasher, pass `just package --allow-enrollment-token`.
+- for a private, local-only Web Programmer, pass `just package --allow-enrollment-token`.
 
 ## Packaging
 
@@ -112,8 +112,8 @@ This writes:
 
 | Output | Used by |
 |---|---|
-| `web-flasher/firmware/<id>/*.bin` + `metadata.json` | the flasher page |
-| `web-flasher/manifest-coglet-c3.json`, `manifest-coglet.json` | esp-web-tools |
+| `web-programmer/firmware/<id>/*.bin` + `metadata.json` | the Web Programmer |
+| `web-programmer/manifest-coglet-c3.json`, `manifest-coglet.json` | esp-web-tools |
 | `dist/release-zips/coglet-<c3\|s3>_v<version>.zip` | GitHub releases |
 
 `metadata.json` records the firmware version and the `git describe` of both
@@ -126,7 +126,7 @@ and generated manifests are gitignored.
 
 - **every push and PR:** host tests, then both firmware builds;
 - **`v*` tag:** also publishes a GitHub release with the zips, and deploys
-  `web-flasher/` with that firmware to GitHub Pages.
+  `web-programmer/` with that firmware to GitHub Pages.
 
 To make Pages work, set the repo's Pages source to **GitHub Actions** once.
 

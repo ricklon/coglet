@@ -185,12 +185,12 @@ bool CheckIn(Config& config) {
         settimeofday(&tv, nullptr);
     }
 
-    // Firmware updates come from the web flasher, so the firmware section is
+    // Firmware updates come from the Web Programmer, so the firmware section is
     // only reported.
     cJSON* firmware = cJSON_GetObjectItem(root, "firmware");
     std::string offered = String(firmware, "version");
     if (!String(firmware, "url").empty()) {
-        ESP_LOGI(TAG, "Hub offers firmware %s; update with the web flasher", offered.c_str());
+        ESP_LOGI(TAG, "Hub offers firmware %s; update with the Web Programmer", offered.c_str());
     }
     cJSON_Delete(root);
 
