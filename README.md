@@ -24,7 +24,7 @@ people say, decides what to do, and calls `self.coglet.gaze`,
 | | |
 |---|---|
 | Coglet C3 (XIAO ESP32-C3) | On the bench, talking to agent-hub on the fork firmware; servos being fitted and calibrated from the base upward. The new `firmware/app` builds but hasn't run on the robot yet |
-| Coglet S3 (XIAO ESP32-S3 Sense) | Builds. Detects its camera (OV2640, OV3660 or OV5640) at boot and listens for the wake word "Computer". Not yet physically qualified |
+| Coglet S3 (XIAO ESP32-S3 Sense) | Builds, in two versions: wake word "Computer", or a phrase you choose ("Hey Coglet" to start). Detects its camera (OV2640, OV3660 or OV5640) at boot. Not yet physically qualified |
 | Mechanism | Nine roles defined (confirmed 2026-09-15). Servos fitted one at a time; a partly built robot is normal |
 
 No servo gives position feedback. Every position the firmware reports is the
@@ -43,7 +43,7 @@ emergency stop**.
    just build c3     # firmware/app
    just flash c3 /dev/ttyACM0
    just setup        # S3 only: fetch the xiaozhi-esp32 fork (submodule)
-   just build s3
+   just build s3     # or s3-phrase: your own wake phrase
    ```
    Details, including how to run the Web Programmer locally, are in
    [docs/FLASHING.md](docs/FLASHING.md).
@@ -70,7 +70,7 @@ interface: every command is a tool.
 | Modes | `self.coglet.engage`, `calibrate` |
 | Calibration (released or calibration mode) | `self.coglet.fit`, `configure`, `lid_coupling`, `identify`, `explore`, `nudge`, `mark`, `confirm`, `save`, `servo`, `jog`, `test` |
 | Diagnostics | `self.coglet.state`, `export`, `scan` |
-| Voice and audio | `self.voice.quiet`, `self.voice.restart`, `self.audio_speaker.set_volume`, `self.audio_speaker.test_tone`, `self.audio_mic.status`, `self.audio_mic.set` |
+| Voice and audio | `self.voice.quiet`, `self.voice.restart`, `self.voice.wake_word` (S3), `self.audio_speaker.set_volume`, `self.audio_speaker.test_tone`, `self.audio_mic.status`, `self.audio_mic.set` |
 | Device | `self.get_device_status`, `self.device.status`, `self.wifi.list`, `self.wifi.add`, `self.wifi.remove`, `self.hub.set_server`, `self.reboot` |
 
 Both boards have every tool; a few S3 arguments are strings (see

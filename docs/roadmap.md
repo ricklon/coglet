@@ -50,4 +50,8 @@
 - Jaw motion tied to speech. Ear choreography.
 - A listen-mode indicator LED on the C3 (ricklon/xiaozhi-esp32#8).
 - Check the S3's camera on hardware (likely an OV3660): image, orientation, hub upload.
+- Train our own wake word (microWakeWord, from synthetic voices) in
+  `tools/wakeword/`, add an engine for it in the fork, and offer trained models
+  in the Web Programmer. The typed phrase (`s3-phrase`) shows how much accuracy
+  it needs to beat.
 - A persona prompt and dashboard buttons for Coglet in agent-hub.

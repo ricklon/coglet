@@ -22,7 +22,9 @@ or mocked test is an automated check, **not** physical evidence.
    chime, distortion and supply behavior. A successful I²S write is insufficient.
 3. **Microphone alone, V+ off:** use `!mic` diagnostics and a voice session;
    record nonzero changing capture levels and intelligible transcription of a
-   known phrase. Check mute/unmute. Software levels do not prove intelligibility.
+   known phrase. Check mute/unmute. On the S3, record how often the wake word
+   triggers from about 1 m and 3 m, and how often it wakes on its own over a
+   recorded stretch of room noise or speech, for each build in use. Software levels do not prove intelligibility.
 4. **Camera, V+ off:** read the module marking and compare it with the model
    the boot log detected (`Camera: OV3660 (PID ...)`), then capture with
    `!camera` and camera MCP. Record logged PID and an inspected

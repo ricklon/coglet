@@ -33,7 +33,8 @@ pointer here is bumped. Never edit the submodule without saying so.
 ```bash
 just test                 # always run after touching the controller
 just build c3             # firmware/app; ESP-IDF 5.5.x
-just build s3             # the fork
+just build s3             # the fork; wake word "Computer"
+just build s3-phrase      # the fork; a typed wake phrase (boards/coglet/phrase)
 XIAOZHI_DIR=../xiaozhi-esp32 just build s3   # against a sibling fork checkout
 just package              # firmware into web-programmer/
 ```

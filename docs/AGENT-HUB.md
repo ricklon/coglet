@@ -37,8 +37,10 @@ Coglet                                    agent-hub
    pages through `tools/list`.
 3. **Listening.** The session, and MCP with it, stays open in every mode;
    only the mic changes.
-   - **S3: wake word.** The robot waits for "Computer" with the session open,
-     then streams the mic. It goes back to waiting 12 s after the last voice
+   - **S3: wake word.** The robot waits for its wake word with the session
+     open, then streams the mic. That's "Computer" on the `s3` build, or a
+     phrase you choose on `s3-phrase` ("Hey Coglet" to start; `self.voice.wake_word`
+     changes it). It goes back to waiting 12 s after the last voice
      it heard, which leaves room for follow-up questions. The wake word itself
      isn't sent. The boot button starts listening too.
    - **C3: always listening.** There's no wake word, VAD or AEC on the device,

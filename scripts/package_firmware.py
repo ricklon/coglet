@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build and package Coglet firmware for the Web Programmer and GitHub releases.
 
-    python3 scripts/package_firmware.py              # package existing builds, both boards
+    python3 scripts/package_firmware.py              # package existing builds, every board
     python3 scripts/package_firmware.py --build      # build first
     python3 scripts/package_firmware.py --board c3   # one board
 
@@ -39,6 +39,9 @@ BOARDS = {
            "name": "Coglet C3 (XIAO ESP32-C3)", "manifest": "manifest-coglet-c3.json"},
     "s3": {"source": "xiaozhi", "board": "coglet", "id": "coglet",
            "name": "Coglet S3 (XIAO ESP32-S3 Sense)", "manifest": "manifest-coglet.json"},
+    "s3-phrase": {"source": "xiaozhi", "board": "coglet/phrase", "id": "coglet-phrase",
+                  "name": "Coglet S3, typed wake phrase (XIAO ESP32-S3 Sense)",
+                  "manifest": "manifest-coglet-phrase.json"},
 }
 
 CHIP_FAMILIES = {"esp32c3": "ESP32-C3", "esp32s3": "ESP32-S3"}
@@ -95,7 +98,8 @@ def package(key: str, build: bool, env: dict[str, str], allow_token: bool) -> No
     else:
         if not (XIAOZHI / "switch-board.sh").exists():
             raise SystemExit(f"xiaozhi-esp32 not found at {XIAOZHI}; run: just setup (or set XIAOZHI_DIR)")
-        project, build_dir, app_bin = XIAOZHI, XIAOZHI / f"build-{entry['board']}", "xiaozhi.bin"
+        # switch-board.sh names nested boards' build dirs with dashes.
+        project, build_dir, app_bin = XIAOZHI, XIAOZHI / f"build-{entry['board'].replace('/', '-')}", "xiaozhi.bin"
         sdkconfig = build_dir / "sdkconfig"
         if build:
             subprocess.run(["bash", "./switch-board.sh", entry["board"], "build"], cwd=XIAOZHI, check=True, env=env)
@@ -152,7 +156,7 @@ def package(key: str, build: bool, env: dict[str, str], allow_token: bool) -> No
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--board", choices=sorted(BOARDS), help="package one board (default: both)")
+    parser.add_argument("--board", choices=sorted(BOARDS), help="package one board (default: all)")
     parser.add_argument("--build", action="store_true", help="build first")
     parser.add_argument("--allow-enrollment-token", action="store_true",
                         help="package a build whose OTA URL embeds an agent-hub enrollment token")

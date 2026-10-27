@@ -105,6 +105,7 @@ strings.
 |---|---|---|
 | `self.voice.quiet` | `!quiet [on\|off\|status]` | [Quiet mode](#quiet-mode) on or off |
 | `self.voice.restart` | `!stop` | Close and reopen the voice session |
+| `self.voice.wake_word` | `!wake [PHRASE\|threshold N\|default]` | S3 only. What the robot listens for. On the `s3-phrase` build, sets this robot's phrase (English words) or sensitivity (1–99, lower is more sensitive); `default` restores "hey coglet". A change reboots, released |
 | `self.audio_speaker.set_volume` | `!speaker vol N` | Volume 0–100, kept across reboots |
 | `self.audio_speaker.test_tone` | `!speaker` / `!speaker test` | A short tone |
 | `self.audio_mic.status` | `!mic status` | Mute, gain, and the peak level over the last second |

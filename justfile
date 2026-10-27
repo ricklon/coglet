@@ -12,9 +12,11 @@ app := justfile_directory() / "firmware/app"
 xiaozhi := env("XIAOZHI_DIR", justfile_directory() / "firmware/xiaozhi-esp32")
 idf := ". ${IDF_PATH:-$HOME/esp/esp-idf}/export.sh >/dev/null 2>&1"
 
-# board names: c3 -> coglet-c3, s3 -> coglet
+# board names: c3 -> coglet-c3, s3 -> coglet (wake word "Computer"),
+# s3-phrase -> coglet/phrase (a typed wake phrase, "hey coglet" by default)
 board_c3 := "coglet-c3"
 board_s3 := "coglet"
+board_s3_phrase := "coglet/phrase"
 
 default:
     @just --list
@@ -27,13 +29,13 @@ setup:
 test:
     python3 firmware/tests/run_host_tests.py
 
-# Build firmware for c3 (firmware/app/build) or s3 (the fork's build-coglet)
+# Build firmware for c3 (firmware/app/build), s3 or s3-phrase (the fork's build-coglet, build-coglet-phrase)
 build board:
-    {{ if board == "c3" { "cd " + app + " && " + idf + " && idf.py build" } else if board == "s3" { "cd " + xiaozhi + " && " + idf + " && ./switch-board.sh " + board_s3 + " build" } else { error("board is c3 or s3") } }}
+    {{ if board == "c3" { "cd " + app + " && " + idf + " && idf.py build" } else if board == "s3" { "cd " + xiaozhi + " && " + idf + " && ./switch-board.sh " + board_s3 + " build" } else if board == "s3-phrase" { "cd " + xiaozhi + " && " + idf + " && ./switch-board.sh " + board_s3_phrase + " build" } else { error("board is c3, s3 or s3-phrase") } }}
 
 # Flash over USB (cut servo V+ first: opening the port can reset the MCU)
 flash board port="/dev/ttyACM0":
-    {{ if board == "c3" { "cd " + app + " && " + idf + " && idf.py -p " + port + " flash" } else if board == "s3" { "cd " + xiaozhi + " && " + idf + " && ./switch-board.sh " + board_s3 + " flash " + port } else { error("board is c3 or s3") } }}
+    {{ if board == "c3" { "cd " + app + " && " + idf + " && idf.py -p " + port + " flash" } else if board == "s3" { "cd " + xiaozhi + " && " + idf + " && ./switch-board.sh " + board_s3 + " flash " + port } else if board == "s3-phrase" { "cd " + xiaozhi + " && " + idf + " && ./switch-board.sh " + board_s3_phrase + " flash " + port } else { error("board is c3, s3 or s3-phrase") } }}
 
 # Serial console at 115200 (Ctrl-] to quit)
 monitor port="/dev/ttyACM0":

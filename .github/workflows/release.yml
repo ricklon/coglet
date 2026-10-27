@@ -27,7 +27,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        board: [c3, s3]
+        board: [c3, s3, s3-phrase]
     runs-on: ubuntu-latest
     container:
       image: espressif/idf:v5.5.2

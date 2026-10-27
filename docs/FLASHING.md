@@ -15,12 +15,13 @@ a desktop, served from `localhost` or HTTPS.
   release's firmware (see [Releases](#releases)).
 - **Local:**
   ```bash
-  just build c3 && just build s3     # or: just package --build
+  just build c3 && just build s3 && just build s3-phrase   # or: just package --build
   just package                       # copy images + write manifests into web-programmer/
   just serve                         # http://localhost:8080
   ```
-  The page lists both boards. A board with no packaged firmware has no
-  manifest, so its button fails until you package it.
+  The page lists every build: the C3, and two S3 builds that differ only in
+  the wake word (see [below](#the-two-s3-builds)). A build with no packaged
+  firmware has no manifest, so its button fails until you package it.
 
 The esp-web-tools bundle is vendored in `web-programmer/vendor/`, so the page works
 offline, for example at a build night with no internet. Refresh it with
@@ -28,10 +29,11 @@ offline, for example at a build night with no internet. Refresh it with
 
 "Erase and install" wipes NVS: Wi-Fi, OTA URL **and calibration**. Export
 calibration first (`!coglet export`). An update install without erasing keeps
-them, as long as the partition table hasn't changed.
+them, as long as NVS stays at the same offset and size; it has in every Coglet
+partition table so far.
 
-The firmware also reports its manifest name (`manifest-coglet-c3.json` or
-`manifest-coglet.json`) to agent-hub at check-in, so the hub knows which
+The firmware also reports its manifest name (`manifest-coglet-c3.json`,
+`manifest-coglet.json` or `manifest-coglet-phrase.json`) to agent-hub at check-in, so the hub knows which
 Web Programmer build matches the device.
 
 ## Option 2: build and flash from source
@@ -57,7 +59,28 @@ The S3 Sense profile still builds from the xiaozhi fork:
 ```bash
 just setup                    # git submodule update --init --recursive
 just build s3                 # -> firmware/xiaozhi-esp32/build-coglet/
+just build s3-phrase          # -> firmware/xiaozhi-esp32/build-coglet-phrase/
 ```
+
+### The two S3 builds
+
+| Build | Wake word | Changed by |
+|---|---|---|
+| `s3` (`manifest-coglet.json`) | "Computer", a trained WakeNet model: the most reliable | Reflashing |
+| `s3-phrase` (`manifest-coglet-phrase.json`) | "Hey Coglet" to start, through English MultiNet: any phrase, no training, but more misses and false wakes | `!wake PHRASE` or `self.voice.wake_word`, per robot, any time (it reboots to apply) |
+
+Both use the same partition table (`partitions/v2/8m_one_app.csv` in the
+fork): one 4 MB app slot and a 3.9 MB `assets` partition for the wake word
+model, sounds and fonts. The typed-phrase build needs both: its app is 3.0 MB,
+with the phrase recogniser and an English phonetic converter, and its assets
+are 3.0 MB. The second app slot, for network firmware updates,
+is gone; the Web Programmer is the update path, as on the C3. MultiNet's
+English model (2.7 MB) wouldn't fit the old 2 MB `assets`.
+
+NVS is at the same offset and size in both builds and in the old layout, so
+switching between the two builds, or onto them from an S3 flashed before
+2026-10-27, keeps Wi-Fi, the hub URL and calibration without erasing. That
+hasn't been checked on a robot yet: export calibration first.
 
 ### Moving a C3 from the fork firmware to firmware/app
 
@@ -113,8 +136,8 @@ This writes:
 | Output | Used by |
 |---|---|
 | `web-programmer/firmware/<id>/*.bin` + `metadata.json` | the Web Programmer |
-| `web-programmer/manifest-coglet-c3.json`, `manifest-coglet.json` | esp-web-tools |
-| `dist/release-zips/coglet-<c3\|s3>_v<version>.zip` | GitHub releases |
+| `web-programmer/manifest-coglet-c3.json`, `manifest-coglet.json`, `manifest-coglet-phrase.json` | esp-web-tools |
+| `dist/release-zips/coglet-<c3\|s3\|s3-phrase>_v<version>.zip` | GitHub releases |
 
 `metadata.json` records the firmware version and the `git describe` of both
 this repo and the fork, so you can tell which build is flashed. Built images

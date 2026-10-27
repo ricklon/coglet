@@ -2,6 +2,20 @@
 
 Why Coglet is the way it is. Newest first.
 
+## 2026-10-27: Two S3 builds, one app slot
+
+The S3 comes in two builds that differ only in the wake word: `s3`, with the
+trained "Computer" model, and `s3-phrase`, which listens for a typed phrase
+through English MultiNet ("Hey Coglet" to start, changed per robot with `!wake`
+or `self.voice.wake_word`). A typed phrase needs no training but misses and
+false-wakes more; a trained model of our own (microWakeWord) is the later fix.
+
+MultiNet's English model (2.7 MB) didn't fit the 2 MB `assets` partition of
+xiaozhi's 8 MB layout, which spends nearly 6 MB on two app slots for network
+updates. Coglet updates over USB through the Web Programmer, so both S3 builds
+now use one 4 MB app slot and a 3.9 MB `assets`: the typed-phrase build is
+3.0 MB of app and 3.0 MB of assets. NVS keeps its offset.
+
 ## 2026-10-27: The S3 waits for a wake word with the session open
 
 agent-hub only has a device's MCP tools while its voice session is open, so

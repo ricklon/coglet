@@ -381,14 +381,30 @@
       </esp-web-install-button>
     </div>
     <div class="board-card">
-      <h3>Coglet S3</h3>
-      <div class="specs">XIAO ESP32-S3 Sense · 8MB · Camera (detected at boot)<br>INMP441 mic · MAX98357A amp · PCA9685</div>
+      <h3>Coglet S3 · "Computer"</h3>
+      <div class="specs">XIAO ESP32-S3 Sense · 8MB · Camera (detected at boot)<br>INMP441 mic · MAX98357A amp · PCA9685<br>
+        Wake word <strong>"Computer"</strong>: a trained model, the most reliable.</div>
       <esp-web-install-button manifest="manifest-coglet.json">
         <button slot="activate" class="flash-btn">Flash Coglet S3</button>
         <span slot="unsupported" class="unsupported">This browser has no Web Serial. Use Chrome or Edge.</span>
       </esp-web-install-button>
     </div>
+    <div class="board-card">
+      <h3>Coglet S3 · your own phrase</h3>
+      <div class="specs">XIAO ESP32-S3 Sense · 8MB · Camera (detected at boot)<br>INMP441 mic · MAX98357A amp · PCA9685<br>
+        Wake phrase <strong>"Hey Coglet"</strong> to start; change it any time with
+        <code>!wake PHRASE</code> in the console below. Typed, not trained, so expect more misses and false
+        wakes than "Computer".</div>
+      <esp-web-install-button manifest="manifest-coglet-phrase.json">
+        <button slot="activate" class="flash-btn">Flash Coglet S3 (phrase)</button>
+        <span slot="unsupported" class="unsupported">This browser has no Web Serial. Use Chrome or Edge.</span>
+      </esp-web-install-button>
+    </div>
   </div>
+  <p class="note">Both S3 builds use the same flash layout, so you can switch between them without erasing:
+  Wi-Fi, hub and calibration stay. The first install of either onto an S3 flashed before 2026-10-27 moves the
+  wake word storage to a larger partition. Settings live elsewhere and should survive it, but export
+  calibration first, as for any install.</p>
 </div>
 
 <!-- 3. CONSOLE + BENCH CHECKS -->
