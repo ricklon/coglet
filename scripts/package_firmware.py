@@ -130,7 +130,9 @@ def package(key: str, build: bool, env: dict[str, str], allow_token: bool) -> No
         if (out / name).exists():
             parts.append({"path": f"firmware/{entry['id']}/{name}", "offset": int(offset, 16)})
 
-    version = firmware_version(project)
+    # Every build carries the Coglet version; the fork's own PROJECT_VER is
+    # overridden for Coglet boards by switch-board.sh.
+    version = firmware_version(APP)
     manifest = {
         "name": entry["name"],
         "version": version,
