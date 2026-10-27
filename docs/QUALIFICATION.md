@@ -26,7 +26,7 @@ or mocked test is an automated check, **not** physical evidence.
 4. **Camera, V+ off:** confirm fitted model, select/build its configuration, then
    capture with `!camera` and camera MCP. Record logged PID and an inspected
    image, resolution, orientation and successful Hub image handling.
-5. **Individual servos:** one unloaded channel at a time, builder mode, known
+5. **Individual servos:** one unloaded channel at a time, calibration mode, known
    conservative pulse/window, hand on the rail switch. Confirm role/direction
    with one 2° step, measure endpoints with clearance, release, save and export.
    Observe mouth and ears separately. Reboot and verify released state and exact
@@ -41,8 +41,8 @@ or mocked test is an automated check, **not** physical evidence.
    MCP handshake logs; verify the full Coglet tool list (see OPERATION.md),
    paged through `nextCursor`. Call state and release first. While released,
    every motion tool must error. Engage over MCP, then test each motion tool
-   and animation with valid calls and invalid bounds/names, and builder mode
-   over MCP with the session staying up (C3). With V+ off and logic powered, disconnect PCA I²C for a missing
+   and animation with valid calls and invalid bounds/names, and calibration mode
+   over MCP with the session staying up (both boards). With V+ off and logic powered, disconnect PCA I²C for a missing
    device test: immediate calls must error; a timed fault must latch release
    and appear in state. Reboot with V+ off to recover a failed initialization.
 8. **Combined operation:** voice input/output plus repeated camera captures and
@@ -55,7 +55,7 @@ or mocked test is an automated check, **not** physical evidence.
 
 Automated coverage: real controller compiled against fake IDF I²C/NVS, testing
 released boot, no-motion engagement, mapping/calibration validation, reversed
-lid tracking, all animation completion, builder isolation, error propagation,
+lid tracking, all animation completion, calibration-mode isolation, error propagation,
 failed-write cache behavior, absent-PCA detection and latched release.
 Firmware build results and outstanding physical checks should be recorded with
 any deployment; do not turn this procedure into a claim that it has been run.
@@ -64,8 +64,8 @@ any deployment; do not turn this procedure into a claim that it has been run.
 
 `just test` compiles the real controller against a fake ESP-IDF (I²C, GPIO, NVS,
 HTTP) and checks: released boot, no-motion engagement, mapping and calibration
-validation, reversed lid tracking, every animation running to completion, builder
-isolation, error propagation, failed-write cache behaviour, absent-PCA detection,
+validation, reversed lid tracking, every animation running to completion,
+calibration-mode isolation, error propagation, failed-write cache behaviour, absent-PCA detection,
 latched release, and the calibration restore-command generator. It opens no
 device. CI runs it on every push.
 

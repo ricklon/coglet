@@ -67,11 +67,14 @@ interface: every command is a tool.
 |---|---|
 | Motion (engaged) | `self.coglet.gaze`, `head`, `jaw`, `ears`, `lids`, `blink`, `animate` |
 | Stopping | `self.coglet.stop`, `release` |
-| Modes | `self.coglet.engage`, `builder` |
-| Calibration (released or builder) | `self.coglet.fit`, `configure`, `lid_coupling`, `identify`, `explore`, `nudge`, `mark`, `confirm`, `save`, `servo`, `jog`, `test` |
+| Modes | `self.coglet.engage`, `calibrate` |
+| Calibration (released or calibration mode) | `self.coglet.fit`, `configure`, `lid_coupling`, `identify`, `explore`, `nudge`, `mark`, `confirm`, `save`, `servo`, `jog`, `test` |
 | Diagnostics | `self.coglet.state`, `export`, `scan` |
 | Voice and audio | `self.voice.quiet`, `self.voice.restart`, `self.audio_speaker.set_volume`, `self.audio_speaker.test_tone`, `self.audio_mic.status`, `self.audio_mic.set` |
 | Device | `self.get_device_status`, `self.device.status`, `self.wifi.list`, `self.wifi.add`, `self.wifi.remove`, `self.hub.set_server`, `self.reboot` |
+
+The S3 has only some of the voice and device tools so far; see
+[OPERATION.md](docs/OPERATION.md#device-commands).
 
 Animations: `look`, `roll`, `side_eye`, `wink`, `surprise`, `sleepy` for the
 eyes; `nod`, `shake`, `tilt`, `perk`, `droop`, `talk`, `look_around` for the
@@ -109,7 +112,7 @@ both.
 | [docs/ASSEMBLY.md](docs/ASSEMBLY.md) | Putting it together: boards, harness, power, first power-up, servos base upward |
 | [hardware/WIRING.md](hardware/WIRING.md) | Parts, pin maps for C3 and S3, power, `/OE`, bench checks |
 | [docs/FLASHING.md](docs/FLASHING.md) | Web Programmer, CLI builds, packaging, releases, backups before reflashing |
-| [docs/OPERATION.md](docs/OPERATION.md) | Every command (MCP tool and serial form), release/engage/builder, quiet mode |
+| [docs/OPERATION.md](docs/OPERATION.md) | Every command (MCP tool and serial form), release/engage/calibrate, quiet mode |
 | [docs/CALIBRATION.md](docs/CALIBRATION.md) | One-servo-at-a-time calibration, backup and restore |
 | [docs/QUALIFICATION.md](docs/QUALIFICATION.md) | Staged physical bring-up checklist and the verification record |
 | [docs/decisions.md](docs/decisions.md) | Why things are the way they are |

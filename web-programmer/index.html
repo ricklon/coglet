@@ -484,7 +484,7 @@
     <li><strong>Motion</strong> (once engaged): <code>self.coglet.gaze</code>, <code>head</code>, <code>jaw</code>,
       <code>ears</code>, <code>lids</code>, <code>blink</code>, <code>animate</code>.</li>
     <li><strong>Stopping:</strong> <code>self.coglet.stop</code> and <code>release</code>.</li>
-    <li><strong>Modes and calibration:</strong> <code>engage</code>, <code>builder</code>, <code>fit</code>,
+    <li><strong>Modes and calibration:</strong> <code>engage</code>, <code>calibrate</code>, <code>fit</code>,
       <code>explore</code>, <code>nudge</code>, <code>mark</code>, <code>confirm</code>, <code>save</code>,
       <code>test</code> and more.</li>
     <li><strong>Voice and device:</strong> <code>self.voice.quiet</code>, volume, mic, Wi-Fi, hub URL, reboot,
@@ -509,7 +509,7 @@
   <p class="lead">Fit one servo on its channel, servo supply on, hand on the switch. Calibration pauses the
   voice until you say <code>!quiet off</code>.</p>
   <pre class="cmds">!coglet fit base          assign base to channel 0 (no movement)
-!coglet builder           outputs on, voice paused, still nothing moves
+!coglet calibrate         outputs on, voice quiet, still nothing moves
 !coglet identify 0        the base should twitch
 !coglet explore base      centre it, then:
 !coglet nudge -2          ... step toward one end, stop short of binding
@@ -519,7 +519,7 @@
 !coglet confirm base      you watched both ends
 !coglet save
 !coglet test base         sweeps centre, low, high, centre to check it</pre>
-  <p class="note">Repeat for each servo you fit. <code>!coglet test</code> (in builder mode) then sweeps every
+  <p class="note">Repeat for each servo you fit. <code>!coglet test</code> (in calibration mode) then sweeps every
   calibrated servo in turn; <code>!coglet release</code> stops it at once. Then <code>!coglet release</code> and
   <code>!coglet engage</code> to let agent-hub drive it. Run <code>!quiet off</code> to bring the voice back.
   Full procedure: <a href="https://github.com/ricklon/coglet/blob/main/docs/CALIBRATION.md">CALIBRATION.md</a>.</p>

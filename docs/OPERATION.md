@@ -35,10 +35,10 @@ access to the servos.
           boot (always)
               │
               ▼
-        ┌──────────┐       builder        ┌──────────┐
-        │ released │ ───────────────────▶ │ builder  │  calibration, servo tests
-        │ (latched)│ ◀─────────────────── │          │  voice quiet
-        └──────────┘       release        └──────────┘
+        ┌──────────┐      calibrate       ┌─────────────┐
+        │ released │ ───────────────────▶ │ calibration │  endpoints, servo tests
+        │ (latched)│ ◀─────────────────── │             │  voice quiet
+        └──────────┘       release        └─────────────┘
           │      ▲
   engage  │      │ release, or any hardware fault
           ▼      │
@@ -52,8 +52,9 @@ access to the servos.
 - **`engage`** needs at least one fitted role, and every *assigned* role
   confirmed. It clears per-channel pulses before enabling outputs, and it
   commands no position. Nothing moves until a motion command.
-- **`builder`** enables outputs for calibration and servo tests, and puts the
-  voice in [quiet mode](#quiet-mode).
+- **`calibrate`** enables outputs for calibration and servo tests, and puts the
+  voice in [quiet mode](#quiet-mode). It works over the serial console before
+  there's any hub (first setup), and over MCP once agent-hub is connected.
 - **Any later I²C error** during an animation or timer step aborts motion and
   latches release.
 - **Every position stays inside each servo's calibrated window**, and is a
@@ -70,18 +71,18 @@ Each is an MCP tool; the serial form is `!coglet` plus the command.
 | `self.coglet.release` | `!coglet release` | any | Latched output release |
 | `self.coglet.stop` | `!coglet stop` | any | End an animation or servo test and hold the pose. Doesn't latch |
 | `self.coglet.engage` | `!coglet engage` | released | Normal motion (see above) |
-| `self.coglet.builder` | `!coglet builder` | released | Outputs on for calibration. Nothing moves |
+| `self.coglet.calibrate` | `!coglet calibrate` | released | Outputs on for calibration. Nothing moves |
 | `self.coglet.fit` | `!coglet fit ROLE` | released | Assign a fitted servo to its standard channel ([WIRING.md](../hardware/WIRING.md#servo-channels)), 90/90 window, unconfirmed |
 | `self.coglet.configure` | `!coglet configure ROLE CH LOW HIGH MIN_US MAX_US TRIM_US CONFIRMED` | released | Set one role by hand, e.g. on a non-standard channel. `CH` −1 unassigns it |
 | `self.coglet.lid_coupling` | `!coglet lid_coupling TRIM COEFF` | released | How the top lids track the gaze, 0–1 each |
-| `self.coglet.save` | `!coglet save` | released or builder | Persist calibration to NVS. Reports failures |
-| `self.coglet.identify` | `!coglet identify CH` | builder | Wiggle a raw channel for about 1.4 s to find which servo is on it |
-| `self.coglet.explore` | `!coglet explore ROLE` | builder | Centre at 1500 µs and start hunting endpoints |
-| `self.coglet.nudge` | `!coglet nudge DELTA` | builder | Up to ±5°, clamped to the hard 1000–2000 µs bound |
-| `self.coglet.mark` | `!coglet mark low\|high` | builder | Record the explored position as that endpoint. Clears `confirmed` |
+| `self.coglet.save` | `!coglet save` | released or calibration | Persist calibration to NVS. Reports failures |
+| `self.coglet.identify` | `!coglet identify CH` | calibration | Wiggle a raw channel for about 1.4 s to find which servo is on it |
+| `self.coglet.explore` | `!coglet explore ROLE` | calibration | Centre at 1500 µs and start hunting endpoints |
+| `self.coglet.nudge` | `!coglet nudge DELTA` | calibration | Up to ±5°, clamped to the hard 1000–2000 µs bound |
+| `self.coglet.mark` | `!coglet mark low\|high` | calibration | Record the explored position as that endpoint. Clears `confirmed` |
 | `self.coglet.confirm` | `!coglet confirm ROLE` | any | Someone watched both endpoints |
-| `self.coglet.servo` / `jog` | `!coglet servo ROLE DEG` / `jog ROLE DELTA` | builder | Move within the calibrated window. Jog is at most ±5° |
-| `self.coglet.test` | `!coglet test [ROLE]` | builder | Sweep a role centre, low, high, centre, about 5 s. No role: every calibrated role in turn, base upward. `release`, `stop` or any other builder move ends it |
+| `self.coglet.servo` / `jog` | `!coglet servo ROLE DEG` / `jog ROLE DELTA` | calibration | Move within the calibrated window. Jog is at most ±5° |
+| `self.coglet.test` | `!coglet test [ROLE]` | calibration | Sweep a role centre, low, high, centre, about 5 s. No role: every calibrated role in turn, base upward. `release`, `stop` or any other calibration move ends it |
 | `self.coglet.gaze` | `!coglet gaze X Y` | engaged | Eyes, −100..100 each; the lids track the gaze |
 | `self.coglet.head` | `!coglet head PAN TILT ROLL` | engaged | Base pan, neck tilt and neck roll, −100..100 each, 0 centre |
 | `self.coglet.jaw` | `!coglet jaw OPEN` | engaged | 0 closed to 100 open |
@@ -96,8 +97,7 @@ Roles, bottom of the mechanism upward: `base`, `neck_tilt`, `neck_roll`,
 animation with nothing fitted to move returns `ESP_ERR_NOT_SUPPORTED`.
 
 On the S3 (still the xiaozhi fork), fractional arguments such as `degrees` are
-strings, and entering builder mode closes the MCP session until `!quiet off` at
-the serial console. The C3 keeps the session open.
+strings.
 
 ## Device commands
 
@@ -116,7 +116,9 @@ the serial console. The C3 keeps the session open.
 | `self.reboot` | `!reboot` | Restart. It comes back released |
 | | `!help` | List the serial commands |
 
-These are the C3's device tools. The S3 has xiaozhi's own equivalents.
+These are the C3's device tools. Over MCP the S3 has `self.voice.quiet`,
+`self.get_device_status`, `self.audio_speaker.set_volume` and, with a confirmed
+camera, `self.camera.take_photo`; the rest are serial-only on the S3 for now.
 `!wifi SSID PASSWORD` splits at the last space, so an SSID may contain spaces
 but a password may not. Wi-Fi is set over serial or MCP; the C3 has no setup
 hotspot (the S3's xiaozhi firmware does).
@@ -132,9 +134,10 @@ opening the port.** Opening it can reset the board.
 A robot answering room noise through its own speaker makes calibration
 impossible.
 
-- **Builder mode turns quiet on.** It stops any reply, turns the mic and
-  speaker off, and keeps the session open, so MCP keeps working (on the C3).
-- **Quiet doesn't lift by itself** when builder mode ends. Turn it off with
+- **Calibration mode turns quiet on.** It stops any reply, turns the mic and
+  speaker off, and keeps the session open, so MCP keeps working. On the S3 a
+  session that drops while quiet is reopened, still quiet, within about 10 s.
+- **Quiet doesn't lift by itself** when calibration mode ends. Turn it off with
   `self.voice.quiet` (`on: false`) or `!quiet off`.
 - **`self.voice.quiet` / `!quiet on|off|status`** does the same by hand at any
   time. It lasts until turned off or the robot reboots.

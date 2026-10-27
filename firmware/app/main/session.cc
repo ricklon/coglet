@@ -45,7 +45,7 @@ int64_t s_open_at = 0;      // when to open the session, 0 = not scheduled
 int64_t s_hello_deadline = 0;
 bool s_reached_listening = false;
 bool s_draining = false;    // tts stop seen; waiting for the speaker to finish
-bool s_builder_quieted = false;
+bool s_calibration_quieted = false;
 std::string s_session_id;
 
 // Shared with the WebSocket, audio and console tasks.
@@ -399,16 +399,16 @@ const char* Activity() {
 void Tick() {
     int64_t now = Now();
 
-    // Builder mode silences the voice: a robot chatting through its speaker
+    // Calibration mode silences the voice: a robot chatting through its speaker
     // makes endpoint hunting impossible. The session stays open, so MCP keeps
-    // working. Leaving builder mode doesn't bring the voice back; quiet ends
+    // working. Leaving calibration mode doesn't bring the voice back; quiet ends
     // when it's turned off (self.voice.quiet or !quiet off).
-    if (CogletController::Instance().BuilderMode() && !s_builder_quieted) {
-        s_builder_quieted = true;
-        ESP_LOGI(TAG, "Builder mode: voice quiet until quiet is turned off");
+    if (CogletController::Instance().CalibrationMode() && !s_calibration_quieted) {
+        s_calibration_quieted = true;
+        ESP_LOGI(TAG, "Calibration mode: voice quiet until quiet is turned off");
         SetQuiet(true);
-    } else if (s_builder_quieted && !s_quiet) {
-        s_builder_quieted = false;
+    } else if (s_calibration_quieted && !s_quiet) {
+        s_calibration_quieted = false;
     }
 
     if (!s_checked_in && s_checkin_at != 0 && now >= s_checkin_at) TryCheckIn();

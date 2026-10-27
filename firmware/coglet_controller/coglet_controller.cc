@@ -238,7 +238,7 @@ esp_err_t CogletController::InitHardware() {
     return Register(0, 0xa0);
 }
 esp_err_t CogletController::Release() {
-    released_ = true; builder_ = false; animation_ = -1; blink_until_ = 0; exploring_ = -1;
+    released_ = true; calibrating_ = false; animation_ = -1; blink_until_ = 0; exploring_ = -1;
     testing_ = -1;
     pose_ = kRestPose;  // a later engage must not resume an old head or jaw pose
     auto oe = gpio_set_level(pins_.oe, 1);
@@ -345,7 +345,7 @@ esp_err_t CogletController::Tick(int64_t now) {
     if (released_) return ESP_OK;
     auto e = Probe(); // detects absent/reset PCA even if cached targets repeat
     if (e != ESP_OK) return e;
-    if (builder_) return TestTick(now);
+    if (calibrating_) return TestTick(now);
     if (animation_ >= 0) {
         const auto& a=animations[animation_]; const auto& f=a.frames[frame_];
         float k=std::min(1.f, float(now-frame_start_)/f.ms);
@@ -408,7 +408,7 @@ cJSON* CogletController::State() {
     auto* root=cJSON_CreateObject();
     cJSON_AddBoolToObject(root,"released",released_);
     cJSON_AddBoolToObject(root,"calibrated",Valid(cal_,true));
-    cJSON_AddBoolToObject(root,"builder",builder_);
+    cJSON_AddBoolToObject(root,"calibrating",calibrating_);
     cJSON_AddBoolToObject(root,"pca_initialized",ready_);
     cJSON_AddStringToObject(root,"last_hardware_error",esp_err_to_name(last_error_));
     cJSON_AddStringToObject(root,"release_error",esp_err_to_name(release_error_));
@@ -511,7 +511,7 @@ std::string CogletController::Command(const std::string& text) {
             if (cal_.axes[kMotion[i]].channel>=0 && !std::isfinite(commanded_[kMotion[i]])) next_blink_=INT64_MAX;
         hardware(Probe()); return Json(State());
     }
-    if (verb == "engage" || verb == "builder") {
+    if (verb == "engage" || verb == "calibrate") {
         if (!end()) check(ESP_ERR_INVALID_ARG);
         if (!released_) check(ESP_ERR_INVALID_STATE);
         if (verb == "engage" && !Valid(cal_,true)) check(ESP_ERR_INVALID_STATE);
@@ -523,21 +523,21 @@ std::string CogletController::Command(const std::string& text) {
         }
         hardware(Register(0xfd,0));
         hardware(gpio_set_level(pins_.oe,0));
-        released_=false; builder_=verb=="builder"; last_error_=ESP_OK;
+        released_=false; calibrating_=verb=="calibrate"; last_error_=ESP_OK;
         // Engagement alone commands no pose; auto-blink starts after gaze/anim.
         next_blink_=INT64_MAX;
         return Json(State());
     }
     // Endpoint hunting, for a mechanism whose servos are fitted one at a time.
     // These move one axis outside its calibrated window, so they are
-    // builder-only, and every pulse stays inside the hard 1000-2000us bound.
-    // Any other builder move takes over from a running servo test.
+    // calibration-only, and every pulse stays inside the hard 1000-2000us bound.
+    // Any other calibration move takes over from a running servo test.
     if (verb=="identify" || verb=="explore" || verb=="nudge" || verb=="servo" || verb=="jog") testing_=-1;
     if (verb == "test") {
         // Sweep one role, or every calibrated role base upward, through its
-        // window. Builder only: it's for checking a calibration by eye.
+        // window. Calibration only: it's for checking a calibration by eye.
         std::string role;
-        if (!builder_ || released_) check(ESP_ERR_INVALID_STATE);
+        if (!calibrating_ || released_) check(ESP_ERR_INVALID_STATE);
         bool all=!(in>>role);
         if (!end()) check(ESP_ERR_INVALID_ARG);
         int i=all ? NextTestable(-1) : AxisIndex(role);
@@ -549,7 +549,7 @@ std::string CogletController::Command(const std::string& text) {
     }
     if (verb == "identify") {
         int channel=-1;
-        if (!builder_ || released_ || !(in>>channel) || !end() || channel<0 || channel>15) check(ESP_ERR_INVALID_ARG);
+        if (!calibrating_ || released_ || !(in>>channel) || !end() || channel<0 || channel>15) check(ESP_ERR_INVALID_ARG);
         hardware(Probe());
         // A small visible wiggle answers "which part is on this channel?"
         // before any role is assigned to it.
@@ -562,7 +562,7 @@ std::string CogletController::Command(const std::string& text) {
     }
     if (verb == "explore") {
         std::string role;
-        if (!builder_ || released_ || !(in>>role) || !end()) check(ESP_ERR_INVALID_ARG);
+        if (!calibrating_ || released_ || !(in>>role) || !end()) check(ESP_ERR_INVALID_ARG);
         int i=AxisIndex(role);
         if (i<0 || cal_.axes[i].channel<0) check(ESP_ERR_INVALID_ARG);
         hardware(Probe());
@@ -573,7 +573,7 @@ std::string CogletController::Command(const std::string& text) {
     }
     if (verb == "nudge") {
         float delta;
-        if (!builder_ || released_ || exploring_<0 || !(in>>delta) || !end() ||
+        if (!calibrating_ || released_ || exploring_<0 || !(in>>delta) || !end() ||
             !std::isfinite(delta) || std::abs(delta)>5) check(ESP_ERR_INVALID_ARG);
         float next=std::min(180.f, std::max(0.f, explore_angle_+delta));
         hardware(Probe());
@@ -633,13 +633,13 @@ std::string CogletController::Command(const std::string& text) {
     }
     if (verb == "save") {
         // Saving moves nothing, and incremental bring-up wants each servo
-        // persisted as it is finished, without leaving builder mode.
-        if ((!released_ && !builder_) || !end()) check(ESP_ERR_INVALID_STATE);
+        // persisted as it is finished, without leaving calibration mode.
+        if ((!released_ && !calibrating_) || !end()) check(ESP_ERR_INVALID_STATE);
         check(Save()); return Json(State());
     }
     if (verb == "servo" || verb == "jog") {
         std::string role; float angle;
-        if (!builder_ || released_ || !(in>>role>>angle) || !end() || !std::isfinite(angle)) check(ESP_ERR_INVALID_ARG);
+        if (!calibrating_ || released_ || !(in>>role>>angle) || !end() || !std::isfinite(angle)) check(ESP_ERR_INVALID_ARG);
         int i=AxisIndex(role); if (i<0) check(ESP_ERR_INVALID_ARG);
         if (verb=="jog") {
             if (std::abs(angle)>5 || !std::isfinite(commanded_[i])) check(ESP_ERR_INVALID_ARG);
@@ -651,7 +651,7 @@ std::string CogletController::Command(const std::string& text) {
     }
     if (verb != "gaze" && verb != "blink" && verb != "animate" && verb != "head" &&
         verb != "jaw" && verb != "ears" && verb != "lids") check(ESP_ERR_NOT_SUPPORTED);
-    if (released_ || builder_ || !Valid(cal_,true)) check(ESP_ERR_INVALID_STATE);
+    if (released_ || calibrating_ || !Valid(cal_,true)) check(ESP_ERR_INVALID_STATE);
     if (verb=="head" || verb=="jaw" || verb=="ears" || verb=="lids") {
         // Direct poses for the rest of the head, as fractions of each role's
         // calibrated window. Roles that aren't fitted are skipped; a command

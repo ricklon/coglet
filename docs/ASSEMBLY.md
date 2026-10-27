@@ -148,7 +148,7 @@ For each servo:
 4. **Servo switch on**, hand on the switch. Calibrate it, following
    [CALIBRATION.md](CALIBRATION.md#procedure-for-one-servo):
    ```
-   !coglet builder           # outputs on, voice paused, nothing moves yet
+   !coglet calibrate         # outputs on, voice quiet, nothing moves yet
    !coglet identify 0        # the part you just fitted should twitch
    !coglet explore base
    !coglet nudge -2          # ... toward one end, stop short of binding
@@ -164,7 +164,7 @@ For each servo:
    !coglet release
    ```
 6. **Servo switch off.** *TODO: connect the linkage*, then repeat the
-   endpoint check (`builder`, `test`, adjusting with `explore`/`mark` if the
+   endpoint check (`calibrate`, `test`, adjusting with `explore`/`mark` if the
    linkage changed the safe range) before moving on.
 7. Export a backup: `!coglet export`, and save the output somewhere safe.
 
@@ -172,12 +172,12 @@ For each servo:
 
 When the servos you plan to fit are in:
 
-1. `!coglet builder`, then `!coglet test` sweeps every calibrated servo in
+1. `!coglet calibrate`, then `!coglet test` sweeps every calibrated servo in
    turn. Watch for binding, collisions and supply droop. `!coglet release`
    stops it at once.
 2. `!coglet release`, then `!coglet engage`. Nothing should move until a
    command arrives.
-3. `!quiet off` to bring the voice back (builder mode paused it).
+3. `!quiet off` to bring the voice back (calibration mode quieted it).
 4. Run qualification stages 6–8: coordinated motion, MCP discovery and calls,
    then combined operation. See [QUALIFICATION.md](QUALIFICATION.md).
 

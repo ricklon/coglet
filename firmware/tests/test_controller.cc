@@ -73,7 +73,7 @@ int main(int argc, char** argv) {
     fake_probe_error=-1; Reject([&]{c.Command("gaze 0 0");});assert(c.released_);
     fake_probe_error=0; c.Command("engage"); c.Command("animate look");
     fake_fail_after=0;c.Fail(c.Tick(fake_now+100));assert(c.released_ && c.animation_<0);
-    fake_fail_after=-1;c.Command("release");c.Command("builder");
+    fake_fail_after=-1;c.Command("release");c.Command("calibrate");
     c.Command("servo jaw 90");c.Command("jog jaw 2");
     Reject([&]{c.Command("jog jaw 10");});
     assert(c.commanded_[6]==92 && std::isnan(c.commanded_[0]));
@@ -84,7 +84,7 @@ int main(int argc, char** argv) {
     CogletController fresh; fresh.Load(); assert(!fresh.Valid(fresh.cal_,true));
     fake_fail_after=0; assert(fresh.InitHardware()!=ESP_OK && fresh.released_);
     fake_fail_after=-1; // the InitHardware check above left I2C failing
-    // Endpoint hunting: builder-only, bounded step, and a marked endpoint
+    // Endpoint hunting: calibration-only, bounded step, and a marked endpoint
     // drops confirmation until a human has watched it again.
     Reject([&]{c.Command("explore lids junk");});
     c.Command("explore jaw");
@@ -142,11 +142,11 @@ int main(int argc, char** argv) {
     Reject([&]{c.Command("fit tail");});
     c.cal_.axes[7].channel=6; c.cal_.axes[6].channel=-1;
     Reject([&]{c.Command("fit jaw");});       // channel 6 already taken
-    c.Command("builder"); Reject([&]{c.Command("fit jaw");}); // released only
+    c.Command("calibrate"); Reject([&]{c.Command("fit jaw");}); // released only
     c.Command("release"); c.cal_=full;
     // test sweeps a role through its window on the motion timer.
-    Reject([&]{c.Command("test jaw");});      // builder mode only
-    c.Command("builder");
+    Reject([&]{c.Command("test jaw");});      // calibration mode only
+    c.Command("calibrate");
     Reject([&]{c.Command("test tail");});
     c.Command("test jaw"); assert(c.testing_==6);
     {
@@ -173,11 +173,11 @@ int main(int argc, char** argv) {
         for(int i=0;i<9;++i) if (c.Testable(i)) expect.push_back(i);
         assert(order==expect && !expect.empty());
     }
-    // Release, stop and other builder moves all end it.
+    // Release, stop and other calibration moves all end it.
     c.Command("test jaw"); fake_now+=10; c.Tick(fake_now);
     c.Command("release"); assert(c.testing_<0 && c.released_);
     Reject([&]{c.Command("test jaw");});
-    c.Command("builder"); c.Command("test jaw"); c.Command("stop"); assert(c.testing_<0);
+    c.Command("calibrate"); c.Command("test jaw"); c.Command("stop"); assert(c.testing_<0);
     c.Command("test jaw"); c.Command("explore jaw"); assert(c.testing_<0);
     c.Command("release"); c.cal_=full;
     // Head, jaw, ears and lids: fractions of each calibrated window.

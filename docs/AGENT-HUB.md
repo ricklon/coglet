@@ -94,10 +94,9 @@ Rules the hub and persona should know:
   A fault partway through latches release.
 - **Partly built robots are normal.** Unfitted servos are skipped; a command
   or animation with nothing fitted to move returns `ESP_ERR_NOT_SUPPORTED`.
-- **Builder mode makes the voice quiet.** On the C3 the session (and MCP) stays
+- **Calibration mode makes the voice quiet.** The session (and MCP) stays
   open with the mic and speaker off; `self.voice.quiet` with `on: false` brings
-  the voice back. On the S3 it still closes the session until `!quiet off` at
-  the serial console.
+  the voice back.
 - **Positions aren't measured.** `state` reports commands, not where the
   servos actually are.
 
@@ -113,8 +112,9 @@ device tool, so the servos stay still. The robot speaks only when the mode
 changes. The mode is held in hub memory per MAC, so it survives a robot reboot
 but not a hub restart.
 
-For calibration, prefer the firmware's own quiet mode (`!coglet builder` or
-`!quiet on`), which stops the voice session entirely. See
+For calibration, prefer the firmware's own quiet mode (`!coglet calibrate` or
+`!quiet on`), which turns the mic and speaker off and keeps the session, and
+MCP, open. See
 [OPERATION.md](OPERATION.md#quiet-mode).
 
 ## Driving Coglet from Claude Code (or any MCP client)
@@ -158,4 +158,4 @@ None of these are needed. Ideas, not existing features:
 | Appears but no Coglet tools | Hub logs for `initialize`/`tools/list`. Confirm the firmware is a Coglet build (`!status` board name) |
 | Every motion tool errors | `self.coglet.state`. If `released: true`, call `self.coglet.engage` (needs calibration confirmed). `last_hardware_error` set? Call `self.coglet.scan` |
 | `gaze` returns `ESP_ERR_NOT_SUPPORTED` | `eye_pan`/`eye_tilt` not mapped yet; expected while building bottom-up |
-| Robot answers room noise while you work on it | `!quiet on`, or `!coglet builder`, which pauses voice until `!quiet off` |
+| Robot answers room noise while you work on it | `!quiet on`, or `!coglet calibrate`, which quiets the voice until `!quiet off` |

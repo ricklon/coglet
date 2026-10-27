@@ -4,7 +4,7 @@
 
 - Coglet C3 and S3 profiles in the xiaozhi fork: voice, OTA, agent-hub check-in,
   `self.coglet.*` MCP tools (now the full command set; see OPERATION.md).
-- Nine-role controller with released boot, builder mode, endpoint hunting
+- Nine-role controller with released boot, calibration mode, endpoint hunting
   (`identify`, `explore`, `nudge`, `mark`), NVS calibration and JSON export.
 - `!coglet scan` bus diagnostics, voice quiet mode. (The builder web page was
   removed on 2026-10-20: MCP is the one interface.)
@@ -20,10 +20,13 @@
       (see [WIRING.md](../hardware/WIRING.md#pad-map-every-board)).
 - [ ] Flash `firmware/app` onto the bench C3 (servo rail off) and check:
       check-in, hello, a full voice turn, MCP discovery and a tool call, the
-      boot button interrupting a reply, `!quiet`, builder-mode quiet, and that
+      boot button interrupting a reply, `!quiet`, calibration-mode quiet, and that
       Wi-Fi, hub URL and calibration survived the move off the fork.
 - [ ] Port the S3 (camera, its pins) to `firmware/app`, then drop the
-      submodule. Until then, builder mode on the S3 closes the MCP session.
+      submodule.
+- [ ] On the S3, check on hardware that `self.coglet.calibrate` over MCP leaves
+      the session up, that a hub restart while quiet reconnects without
+      listening, and that `self.voice.quiet` off brings listening back.
 - [ ] Ask agent-hub to let its device proxy expose the new tools (it defaults
       to tools that can't start motion; `--all-tools` works today).
 - [ ] CI: the firmware job still checks out the submodule for every board;

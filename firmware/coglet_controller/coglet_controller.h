@@ -33,10 +33,10 @@ public:
     void Start(const CogletPins& pins);
     // Every command, from MCP or the serial console; one command set.
     std::string Command(const std::string& text);
-    // True while a builder is calibrating. Boards use it to keep the voice
+    // True in calibration mode. Boards use it to keep the voice
     // quiet (mic and speaker off, MCP session up): a robot chatting through
     // the speaker makes endpoint hunting impossible.
-    bool BuilderMode() const { return builder_; }
+    bool CalibrationMode() const { return calibrating_; }
     // The animation catalogue, for tool descriptions. eyes: it moves the eyes
     // and lids; otherwise it moves the rest of the head.
     struct AnimationInfo { const char* name; bool eyes; };
@@ -62,7 +62,7 @@ private:
     i2c_master_bus_handle_t bus_ = nullptr;
     i2c_master_dev_handle_t device_ = nullptr;
     bool ready_ = false, released_ = true;
-    std::atomic<bool> builder_{false};
+    std::atomic<bool> calibrating_{false};
     esp_err_t last_error_ = ESP_OK, release_error_ = ESP_OK;
     std::array<float, 9> commanded_;
     // Target per role as a fraction of its calibrated window, low to high.

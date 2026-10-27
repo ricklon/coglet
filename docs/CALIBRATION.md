@@ -22,26 +22,35 @@ Endpoints are **semantic**, and may run numerically backwards:
 
 Every calibration command is an MCP tool (`self.coglet.fit`, `explore`,
 `nudge`, `mark`, `confirm`, `save`, ...) and also runs at the serial console
-as `!coglet ...`; the steps below use the serial form. Most are **builder
+as `!coglet ...`; the steps below use the serial form. Most are **calibration
 mode only**. Pulses never leave the hard 1000-2000 us bound, whatever is asked
 for. Someone still has to watch the servo: `confirm` means a person saw both
 endpoints.
+
+## Two ways in
+
+- **First setup, no hub yet:** plug the robot in over USB and use the serial
+  console (the Web Programmer's console, `just monitor`, or any terminal at
+  115200). Calibration needs no Wi-Fi and no agent-hub, so a robot can be
+  calibrated straight after flashing. Cut servo V+ before opening the port.
+- **Once agent-hub is connected:** the same steps as MCP tools, starting with
+  `self.coglet.calibrate`. The session stays open the whole time, so you can
+  move between serial and MCP.
 
 ## Silence first
 
 A voice agent answering room noise through the robot's own speaker makes
 endpoint hunting impossible, so calibration runs with the voice side quiet:
 
-- **Builder mode makes it quiet automatically.** It stops any reply and turns
-  the mic and speaker off. On the C3 the session stays open, so MCP keeps
-  working; on the S3 the session closes until `!quiet off`.
-- **Quiet does not lift by itself** when builder mode ends. Turn it off with
+- **Calibration mode makes it quiet automatically.** It stops any reply and
+  turns the mic and speaker off. The session stays open, so MCP keeps working.
+- **Quiet does not lift by itself** when calibration mode ends. Turn it off with
   `self.voice.quiet` (`on: false`) or `!quiet off` when you're done.
 - **`self.voice.quiet` / `!quiet on|off|status`** does the same by hand, and
   lasts until turned off or the robot reboots.
 - **Unplugging the speaker** is the hardware fallback and needs no firmware.
 - The hub's **listen mode** silences replies without touching the robot, but it
-  keeps the session open; builder mode is the better fit while calibrating.
+  keeps the mic going; calibration mode is the better fit while calibrating.
 
 ## Procedure for one servo
 
@@ -51,14 +60,14 @@ base 0, neck_tilt 1, neck_roll 2, eye_pan 3, eye_tilt 4, lids 5, jaw 6,
 ear_left 7, ear_right 8.
 
 ```bash
-!coglet builder              # outputs on; nothing moves; voice agent pauses
+!coglet calibrate            # outputs on; nothing moves; voice goes quiet
 !coglet identify 0           # wiggles raw channel 0 ~1.4s: check the part you
                              # just fitted is the one that twitches
 !coglet release              # channel mapping is edited while released
 !coglet fit base             # assign base to its standard channel with a 90/90
                              # window: that permits only a 90 degree
                              # horn-seating command
-!coglet builder
+!coglet calibrate
 !coglet explore base         # centres the servo at 1500 us and starts hunting
 !coglet nudge -2             # step up to +-5 degrees at a time
 !coglet nudge -2             # ... keep going, stopping SHORT of binding
@@ -66,7 +75,7 @@ ear_left 7, ear_right 8.
 !coglet nudge 2              # ... walk out to the other end
 !coglet mark high            # this position is the RIGHT end
 !coglet confirm base         # a human watched both ends
-!coglet save                 # persists; allowed in builder mode
+!coglet save                 # persists; allowed in calibration mode
 ```
 
 Then check the result:
@@ -86,14 +95,14 @@ Notes:
   is outside the calibrated window and is not a pose.
 - `identify` holds the bus for about 1.4 s while it wiggles.
 - Release before editing a channel mapping; `fit` and `configure` refuse while
-  engaged or in builder mode.
+  engaged or in calibration mode.
 - A servo on a non-standard channel: `!coglet configure ROLE CH 90 90 1000 2000 0 0`
   instead of `fit`. The standard map is `SERVO_ROLE_CHANNELS` in
   `firmware/app/main/board.h`.
 
 ## When enough servos are fitted
 
-`!coglet test` (in builder mode) sweeps every calibrated role in turn, base
+`!coglet test` (in calibration mode) sweeps every calibrated role in turn, base
 upward, which is a quick check that nothing binds or was mis-marked before you
 engage. `!coglet release` ends it immediately.
 
@@ -139,7 +148,7 @@ keeps both kinds of file out of this repo.
 
 ## Before reading the procedure
 
-- Start with a **narrow builder-approved window** and `confirmed=0`. A 90/90
+- Start with a **narrow, deliberately chosen window** and `confirmed=0`. A 90/90
   window permits only a 90° horn-seating command.
 - Pulse mapping is linear over 0–180° across `MIN_US..MAX_US` plus trim. The
   1000–2000 µs defaults are placeholders, not measured values — the fitted

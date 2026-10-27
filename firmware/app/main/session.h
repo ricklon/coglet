@@ -22,7 +22,7 @@ void NetworkUp();
 void NetworkDown();
 
 // Quiet mode: no listening and no speaking until turned off; MCP stays up.
-// Entering builder mode turns it on; it stays on after builder mode ends.
+// Entering calibration mode turns it on; it stays on after calibration mode ends.
 void SetQuiet(bool on);
 bool Quiet();
 // Stop a reply that's playing (the boot button).

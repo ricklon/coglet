@@ -2,10 +2,27 @@
 
 Why Coglet is the way it is. Newest first.
 
+## 2026-10-27: Builder mode is calibration mode, and it keeps the session
+
+The mode that turns servo outputs on for endpoint hunting and servo tests is
+now `calibrate` (`!coglet calibrate`, `self.coglet.calibrate`; `state` reports
+`calibrating`). "Builder" said who used it, not what it does.
+
+Calibration has to work before there's a hub: a robot is flashed and
+calibrated over USB first, then pointed at agent-hub. The serial console runs
+the same commands, so that path needs no network. Once the hub is connected,
+the same mode is there over MCP.
+
+That only works if entering the mode over MCP leaves MCP reachable. The S3
+used to close the voice session when quiet mode started, leaving the servos
+powered and no MCP until someone typed `!quiet off`. Both boards now keep the
+session open while quiet; the S3 reopens a dropped session without listening
+and has `self.voice.quiet`.
+
 ## 2026-10-20: MCP is the robot's only interface
 
 Coglet is an MCP device for agent-hub, Claude and other MCP clients, so every
-command is an MCP tool: motion for all nine servos, engage and builder,
+command is an MCP tool: motion for all nine servos, engage and calibration mode,
 calibration, servo tests, diagnostics, audio and device settings. The serial
 console runs the same commands through the same code and exists for a robot
 that isn't on a network yet. The builder web page, a second interface, is gone.
@@ -20,9 +37,9 @@ holds:
 - The servo-rail switch is the stop that doesn't depend on software. Anything
   with hub access can now engage the robot.
 
-Quiet mode (which builder mode turns on) now keeps the voice session open with
-the mic and speaker off, because MCP rides inside that session. On the S3,
-still on the fork, builder mode closes the session until the port lands.
+Quiet mode (which calibration mode turns on) now keeps the voice session open
+with the mic and speaker off, because MCP rides inside that session. (The S3
+caught up on 2026-10-27, above.)
 
 New motion: `head` (base pan, neck tilt, neck roll), `jaw`, `ears` and `lids`,
 and animations for the rest of the head (`nod`, `shake`, `tilt`, `perk`,
@@ -135,9 +152,10 @@ commands no pose, and auto-blink starts only after an explicit gaze or
 animation. A brown-out or watchdog reset in the middle of the night must never
 lead to motion.
 
-## Builder mode silences the voice, and leaving it doesn't bring the voice back
+## Calibration mode silences the voice, and leaving it doesn't bring the voice back
 
-(Since 2026-10-20, quiet keeps the session open for MCP.)
+(Called builder mode until 2026-10-27. Since 2026-10-20, quiet keeps the
+session open for MCP.)
 
 A robot answering room noise makes endpoint hunting impossible. An earlier
 auto-resume let the LLM call `self.coglet.release` and talk its way out of a

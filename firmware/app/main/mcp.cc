@@ -336,11 +336,11 @@ void RegisterTools() {
          "them off.",
          {}, Command("stop")},
         {"self.coglet.release",
-         "Turn every servo output off and latch it off until engage or builder. Doesn't cut servo power: the "
+         "Turn every servo output off and latch it off until engage or calibrate. Doesn't cut servo power: the "
          "rail switch does that.",
          {}, Command("release")},
         {"self.coglet.state",
-         "Robot state: released, builder, animation, servo test, per-role calibration and last commanded angles, "
+         "Robot state: released, calibration mode, animation, servo test, per-role calibration and last commanded angles, "
          "and hardware errors." + window,
          {}, Command("state")},
         // --- Modes.
@@ -348,10 +348,10 @@ void RegisterTools() {
          "Turn servo outputs on for normal motion. Needs every assigned servo calibrated and confirmed. Commands "
          "no pose by itself. Only from released.",
          {}, Command("engage")},
-        {"self.coglet.builder",
+        {"self.coglet.calibrate",
          "Turn servo outputs on for calibration and servo tests. Puts the voice in quiet mode (mic and speaker "
          "off; MCP stays connected) until it's turned off. Only from released.",
-         {}, Command("builder")},
+         {}, Command("calibrate")},
         // --- Calibration, one servo at a time.
         {"self.coglet.fit",
          "Assign a fitted servo to its standard PCA9685 channel (base 0 through ear_right 8), unconfirmed, with "
@@ -367,13 +367,13 @@ void RegisterTools() {
          "Set how the top lids track the gaze: trim and coefficient, 0 to 1 each. Only while released.",
          {Num("trim", 0, 1), Num("coefficient", 0, 1)}, Command("lid_coupling", {"trim", "coefficient"})},
         {"self.coglet.identify",
-         "Wiggle a raw PCA9685 channel for about 1.4 s to see which part is on it. Builder mode only.",
+         "Wiggle a raw PCA9685 channel for about 1.4 s to see which part is on it. Calibration mode only.",
          {Int("channel", 0, 15)}, Command("identify", {"channel"})},
         {"self.coglet.explore",
-         "Start hunting a role's endpoints: centre it at 1500 us, then nudge. Builder mode only. " + roles,
+         "Start hunting a role's endpoints: centre it at 1500 us, then nudge. Calibration mode only. " + roles,
          {Str("role")}, Command("explore", {"role"})},
         {"self.coglet.nudge",
-         "Move the role being explored by up to 5 degrees, inside the hard 1000-2000 us bound. Builder mode only.",
+         "Move the role being explored by up to 5 degrees, inside the hard 1000-2000 us bound. Calibration mode only.",
          {Num("degrees", -5, 5)}, Command("nudge", {"degrees"})},
         {"self.coglet.mark",
          "Record the explored position as the role's low or high endpoint. Clears its confirmation.",
@@ -382,20 +382,20 @@ void RegisterTools() {
          "Confirm a role's endpoints after someone has watched the servo reach both. " + roles,
          {Str("role")}, Command("confirm", {"role"})},
         {"self.coglet.save",
-         "Save the calibration on the robot. Released or builder mode.",
+         "Save the calibration on the robot. Released or calibration mode.",
          {}, Command("save")},
         {"self.coglet.export",
          "The full calibration and state as JSON, for a backup.",
          {}, Command("export")},
         {"self.coglet.servo",
-         "Move one role to an angle inside its calibrated window. Builder mode only. " + roles,
+         "Move one role to an angle inside its calibrated window. Calibration mode only. " + roles,
          {Str("role"), Num("degrees", 0, 180)}, Command("servo", {"role", "degrees"})},
         {"self.coglet.jog",
-         "Move one role by up to 5 degrees from its last commanded angle, inside its window. Builder mode only.",
+         "Move one role by up to 5 degrees from its last commanded angle, inside its window. Calibration mode only.",
          {Str("role"), Num("degrees", -5, 5)}, Command("jog", {"role", "degrees"})},
         {"self.coglet.test",
          "Servo test: sweep a role centre, low, high, centre (about 5 s), or with no role every calibrated role "
-         "in turn. Builder mode only. Stop or release ends it. " + roles,
+         "in turn. Calibration mode only. Stop or release ends it. " + roles,
          {Str("role", false)}, Command("test", {"role"})},
         {"self.coglet.scan",
          "List the addresses answering on the servo I2C bus (the PCA9685 is 0x40). With sda and scl GPIOs, "
@@ -408,7 +408,7 @@ void RegisterTools() {
         // --- Voice, audio and the device.
         {"self.voice.quiet",
          "Quiet mode on or off. On: the mic and speaker stop and the robot neither listens nor speaks; this MCP "
-         "connection stays up. Builder mode turns it on.",
+         "connection stays up. Calibration mode turns it on.",
          {Bool("on")}, [](const cJSON* a) { return Device(std::string("!quiet ") + (cJSON_IsTrue(cJSON_GetObjectItem(a, "on")) ? "on" : "off")); }},
         {"self.voice.restart",
          "Close and reopen the voice session.",
