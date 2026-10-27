@@ -2,6 +2,24 @@
 
 Why Coglet is the way it is. Newest first.
 
+## 2026-10-27: The S3 waits for a wake word with the session open
+
+agent-hub only has a device's MCP tools while its voice session is open, so
+closing the session between conversations would make the robot unreachable.
+The S3 keeps the session open and gates only the mic: it waits for
+"Computer", listens, and goes back to waiting 12 s after the last voice it
+heard. The C3 has no wake word engine and stays always listening. The wake
+word is one setting in the fork's `boards/coglet/sdkconfig.defaults`.
+
+## 2026-10-27: The S3 detects its camera
+
+The S3 Sense has shipped with different sensors (OV2640 or OV3660),
+and a module can be swapped. The firmware accepts whichever supported sensor
+answers and logs it, instead of staying off until a build confirms the model.
+menuconfig can still pin one model, or turn the camera off. The camera's I2C
+port and clock channel were also moved off the servo bus and the LED, which
+had kept it from starting at all.
+
 ## 2026-10-27: Builder mode is calibration mode, and it keeps the session
 
 The mode that turns servo outputs on for endpoint hunting and servo tests is

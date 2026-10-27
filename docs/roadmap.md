@@ -49,5 +49,5 @@
 - Neck motion that follows gaze beyond the eyes' travel.
 - Jaw motion tied to speech. Ear choreography.
 - A listen-mode indicator LED on the C3 (ricklon/xiaozhi-esp32#8).
-- Confirm the S3's camera module and enable it.
+- Check the S3's camera on hardware (likely an OV3660): image, orientation, hub upload.
 - A persona prompt and dashboard buttons for Coglet in agent-hub.

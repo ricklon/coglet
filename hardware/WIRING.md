@@ -61,7 +61,7 @@ servo current from the XIAO regulator or the USB 3.3 V rail.
 | PCA9685 breakout | 16-channel servo PWM | address 0x40, 100 kHz I2C, ~50 Hz output |
 | Hobby servos x9 | base, neck_tilt, neck_roll, eye_pan, eye_tilt, lids (one servo for both top lids), jaw, ear_left, ear_right | model not yet recorded — see Unknowns |
 | Servo supply | switched V+ for PCA | sized for the fitted servos; physical switch is the emergency stop |
-| Camera (S3 only) | OV2640 / OV3660 / OV5640 | select in menuconfig; disabled until confirmed |
+| Camera (S3 only) | OV2640 / OV3660 / OV5640 | detected at boot; menuconfig can pin one model or turn it off |
 
 ## Pad map (every board)
 

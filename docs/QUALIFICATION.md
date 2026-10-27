@@ -23,8 +23,9 @@ or mocked test is an automated check, **not** physical evidence.
 3. **Microphone alone, V+ off:** use `!mic` diagnostics and a voice session;
    record nonzero changing capture levels and intelligible transcription of a
    known phrase. Check mute/unmute. Software levels do not prove intelligibility.
-4. **Camera, V+ off:** confirm fitted model, select/build its configuration, then
-   capture with `!camera` and camera MCP. Record logged PID and an inspected
+4. **Camera, V+ off:** read the module marking and compare it with the model
+   the boot log detected (`Camera: OV3660 (PID ...)`), then capture with
+   `!camera` and camera MCP. Record logged PID and an inspected
    image, resolution, orientation and successful Hub image handling.
 5. **Individual servos:** one unloaded channel at a time, calibration mode, known
    conservative pulse/window, hand on the rail switch. Confirm role/direction

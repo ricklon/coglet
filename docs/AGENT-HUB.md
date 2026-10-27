@@ -35,11 +35,18 @@ Coglet                                    agent-hub
    name. The hub registers the device and returns the voice WebSocket URL and token.
 2. **Voice session.** The hello advertises MCP. The hub sends `initialize`, then
    pages through `tools/list`.
-3. **Always listening.** The board reopens the session about a second after
-   every drop to idle. On the C3 there's no wake word, VAD or AEC on the
-   device, so it streams the mic and the hub's VAD decides where each utterance
-   ends. The mic isn't sent while a reply plays. On the C3, the boot button is
-   the only way to interrupt a reply.
+3. **Listening.** The session, and MCP with it, stays open in every mode;
+   only the mic changes.
+   - **S3: wake word.** The robot waits for "Computer" with the session open,
+     then streams the mic. It goes back to waiting 12 s after the last voice
+     it heard, which leaves room for follow-up questions. The wake word itself
+     isn't sent. The boot button starts listening too.
+   - **C3: always listening.** There's no wake word, VAD or AEC on the device,
+     so it streams the mic and the hub's VAD decides where each utterance ends.
+     The boot button is the only way to interrupt a reply.
+
+   On both, the mic isn't sent while a reply plays, and a dropped session
+   reopens on its own.
 
 ## Pointing Coglet at a hub
 

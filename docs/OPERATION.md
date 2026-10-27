@@ -116,9 +116,14 @@ strings.
 | `self.reboot` | `!reboot` | Restart. It comes back released |
 | | `!help` | List the serial commands |
 
-These are the C3's device tools. Over MCP the S3 has `self.voice.quiet`,
-`self.get_device_status`, `self.audio_speaker.set_volume` and, with a confirmed
-camera, `self.camera.take_photo`; the rest are serial-only on the S3 for now.
+Both boards have all of these. On the S3 (xiaozhi's properties have no
+number type, and no way to leave a boolean out): `self.audio_mic.set` takes
+`muted` as `"true"`/`"false"` and `gain` as a decimal string, either left empty
+to keep it; `self.audio_mic.status` reports mute and gain but no peak level;
+`self.wifi.add` saves the network for the next connect rather than switching
+now; `self.hub.set_server` with a bare host uses port 8003 and
+`/xiaozhi/ota/`. The S3 also has `self.camera.take_photo` when a camera is
+detected.
 `!wifi SSID PASSWORD` splits at the last space, so an SSID may contain spaces
 but a password may not. Wi-Fi is set over serial or MCP; the C3 has no setup
 hotspot (the S3's xiaozhi firmware does).

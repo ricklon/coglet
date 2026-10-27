@@ -24,7 +24,7 @@ people say, decides what to do, and calls `self.coglet.gaze`,
 | | |
 |---|---|
 | Coglet C3 (XIAO ESP32-C3) | On the bench, talking to agent-hub on the fork firmware; servos being fitted and calibrated from the base upward. The new `firmware/app` builds but hasn't run on the robot yet |
-| Coglet S3 (XIAO ESP32-S3 Sense) | Builds. Camera stays off until the fitted module is confirmed. Not yet physically qualified |
+| Coglet S3 (XIAO ESP32-S3 Sense) | Builds. Detects its camera (OV2640, OV3660 or OV5640) at boot and listens for the wake word "Computer". Not yet physically qualified |
 | Mechanism | Nine roles defined (confirmed 2026-09-15). Servos fitted one at a time; a partly built robot is normal |
 
 No servo gives position feedback. Every position the firmware reports is the
@@ -73,8 +73,9 @@ interface: every command is a tool.
 | Voice and audio | `self.voice.quiet`, `self.voice.restart`, `self.audio_speaker.set_volume`, `self.audio_speaker.test_tone`, `self.audio_mic.status`, `self.audio_mic.set` |
 | Device | `self.get_device_status`, `self.device.status`, `self.wifi.list`, `self.wifi.add`, `self.wifi.remove`, `self.hub.set_server`, `self.reboot` |
 
-The S3 has only some of the voice and device tools so far; see
-[OPERATION.md](docs/OPERATION.md#device-commands).
+Both boards have every tool; a few S3 arguments are strings (see
+[OPERATION.md](docs/OPERATION.md#device-commands)). The S3 adds
+`self.camera.take_photo` when a camera is detected.
 
 Animations: `look`, `roll`, `side_eye`, `wink`, `surprise`, `sleepy` for the
 eyes; `nod`, `shake`, `tilt`, `perk`, `droop`, `talk`, `look_around` for the
