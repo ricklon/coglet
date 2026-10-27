@@ -49,6 +49,13 @@ Coglet                                    agent-hub
 
    On both, the mic isn't sent while a reply plays, and a dropped session
    reopens on its own.
+4. **Idle and interrupted sessions.** After 60 s with nothing sent, agent-hub
+   sends a `keepalive` frame (`server.keepalive_seconds`; 0 turns it off), so
+   an S3 waiting for its wake word keeps its session instead of reconnecting
+   every two minutes. The S3 serial log shows `Unknown message type:
+   keepalive`; that's expected. When the robot interrupts a reply (boot
+   button, quiet or calibration mode) it sends `abort`, and the hub stops the
+   reply: nothing more from that turn arrives.
 
 ## Pointing Coglet at a hub
 
@@ -139,8 +146,10 @@ claude mcp add coglet-c3 -- python3 /path/to/agent-hub/scripts/device_mcp_proxy.
 ```
 
 - Device tools show up as `self_coglet_state`, `self_coglet_release` and so on.
-- By default the proxy exposes only tools that **can't start motion**: status,
-  state, stop and release. Use `--tools a,b` or `--all-tools` to widen that.
+- By default the proxy exposes only tools that **can't start motion**: reads
+  (`self_get_device_status`, `self_device_status`, `self_audio_mic_status`,
+  `*_state`), stop and release. Calibrate, engage, motion, Wi-Fi, reboot and
+  hub settings are hidden. Use `--tools a,b` or `--all-tools` to widen that.
 - It adds two hub tools. `hub_speak` says a line verbatim. `hub_ask` runs a
   full voice turn as if the robot heard the text. Note that `hub_ask` hands the
   text to the persona's LLM, which can call any tool the *persona* allows,
@@ -148,9 +157,7 @@ claude mcp add coglet-c3 -- python3 /path/to/agent-hub/scripts/device_mcp_proxy.
 - If the dashboard has a password, set `AGENT_HUB_SERVER_DASHBOARD_USERNAME` and
   `AGENT_HUB_SERVER_DASHBOARD_PASSWORD`.
 
-> As of 2026-10-13 the proxy is on agent-hub's `feat/device-mcp-proxy` branch
-> and not yet on `main`. A Claude Code config that points at it fails to
-> connect from a `main` checkout.
+The proxy has been on agent-hub's `main` since 2026-10-27 (`5f973f6`).
 
 ## Optional hub-side extras
 
@@ -168,3 +175,5 @@ None of these are needed. Ideas, not existing features:
 | Every motion tool errors | `self.coglet.state`. If `released: true`, call `self.coglet.engage` (needs calibration confirmed). `last_hardware_error` set? Call `self.coglet.scan` |
 | `gaze` returns `ESP_ERR_NOT_SUPPORTED` | `eye_pan`/`eye_tilt` not mapped yet; expected while building bottom-up |
 | Robot answers room noise while you work on it | `!quiet on`, or `!coglet calibrate`, which quiets the voice until `!quiet off` |
+| Hub warns that a persona allowlist names a tool the device didn't list | Usually `self_coglet_builder`, renamed `self_coglet_calibrate` in v0.1.2. Fix the allowlist; until then the hub won't match that persona to the robot by its tools |
+| Photos never reach the hub, or the robot can't open its session | The vision and WebSocket URLs the hub hands out are built the same way. With the hub in Docker bridge networking or WSL, set `server.websocket` to an address the robot can reach |
