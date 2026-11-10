@@ -381,6 +381,15 @@
       </esp-web-install-button>
     </div>
     <div class="board-card">
+      <h3>Coglet C6</h3>
+      <div class="specs">XIAO ESP32-C6 · 4MB · No camera · No wake word<br>INMP441 mic · MAX98357A amp · PCA9685<br>
+        <strong>Not yet run on a robot:</strong> the pin map is unchecked on hardware.</div>
+      <esp-web-install-button manifest="manifest-coglet-c6.json">
+        <button slot="activate" class="flash-btn">Flash Coglet C6</button>
+        <span slot="unsupported" class="unsupported">This browser has no Web Serial. Use Chrome or Edge.</span>
+      </esp-web-install-button>
+    </div>
+    <div class="board-card">
       <h3>Coglet S3 · "Computer"</h3>
       <div class="specs">XIAO ESP32-S3 Sense · 8MB · Camera (detected at boot)<br>INMP441 mic · MAX98357A amp · PCA9685<br>
         Wake word <strong>"Computer"</strong>: a trained model, the most reliable.</div>
@@ -414,7 +423,7 @@
   Servo supply still off. Run these checks in order:</p>
   <div class="table-wrap"><table>
     <tr><th>Command</th><th>Expect</th><th>If not</th></tr>
-    <tr><td><code>!status</code></td><td>Firmware version and board <code>coglet-c3</code></td><td>Wrong board flashed</td></tr>
+    <tr><td><code>!status</code></td><td>Firmware version and your board: <code>coglet-c3</code>, <code>coglet-c6</code> or the S3's</td><td>Wrong board flashed</td></tr>
     <tr><td><code>!coglet scan</code></td><td><code>0x40</code> answers</td><td>Nothing: SDA/SCL swapped, or no PCA9685 logic power</td></tr>
     <tr><td><code>!coglet state</code></td><td><code>"released": true</code>, <code>"pca_initialized": true</code></td><td>Check the scan first</td></tr>
     <tr><td><code>!speaker</code></td><td>A short tone</td><td>Hiss: D2/D3 swapped. Silence: amp DIN, 5 V, or the speaker</td></tr>
@@ -469,7 +478,7 @@
     <div class="step"><span class="step-num">3</span><div>Reconnect the console and run <code>!status</code>. Expect an IP address, a
       <strong>Hub</strong> WebSocket URL and <strong>Session: listening</strong>.</div></div>
     <div class="step"><span class="step-num">4</span><div>Open the hub dashboard. The robot appears under its MAC address
-      (<code>!status</code> shows it as <em>Device id</em>), labelled <code>coglet-c3</code>.</div></div>
+      (<code>!status</code> shows it as <em>Device id</em>), labelled with its board (<code>coglet-c3</code>, <code>coglet-c6</code> or <code>coglet</code>).</div></div>
     <div class="step"><span class="step-num">5</span><div><strong>Talk to it.</strong> The hub greets it once, then say something.
       The console logs <code>&gt;&gt; what it heard</code> and <code>&lt;&lt; what it says</code>, and the reply plays
       through the speaker. Press the BOOT button to stop a reply.</div></div>

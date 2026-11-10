@@ -32,7 +32,7 @@ pad for pad ([hardware/WIRING.md](hardware/WIRING.md)).
 | Camera | Yes | No | No |
 | Wake word | Yes ("Computer", or a phrase you choose) | No | No |
 | Firmware | The xiaozhi-esp32 fork (`just build s3`) | This repo's `firmware/app` (`just build c3`) | This repo's `firmware/app` (`just build c6`) |
-| Web Programmer build | `coglet` | `coglet-c3` | Not published yet |
+| Web Programmer build | `coglet` | `coglet-c3` | `coglet-c6` (untested on a robot) |
 
 A tool change on one board is mirrored on the other, except tools that need the camera or the wake word.
 

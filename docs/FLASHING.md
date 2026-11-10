@@ -15,11 +15,11 @@ a desktop, served from `localhost` or HTTPS.
   release's firmware (see [Releases](#releases)).
 - **Local:**
   ```bash
-  just build c3 && just build s3 && just build s3-phrase   # or: just package --build
+  just build c3 && just build c6 && just build s3 && just build s3-phrase   # or: just package --build
   just package                       # copy images + write manifests into web-programmer/
   just serve                         # http://localhost:8080
   ```
-  The page lists every build: the C3, and two S3 builds that differ only in
+  The page lists every build: the C3, the C6, and two S3 builds that differ only in
   the wake word (see [below](#the-two-s3-builds)). A build with no packaged
   firmware has no manifest, so its button fails until you package it.
 
@@ -139,8 +139,8 @@ This writes:
 | Output | Used by |
 |---|---|
 | `web-programmer/firmware/<id>/*.bin` + `metadata.json` | the Web Programmer |
-| `web-programmer/manifest-coglet-c3.json`, `manifest-coglet.json`, `manifest-coglet-phrase.json` | esp-web-tools |
-| `dist/release-zips/coglet-<c3\|s3\|s3-phrase>_v<version>.zip` | GitHub releases |
+| `web-programmer/manifest-coglet-c3.json`, `manifest-coglet-c6.json`, `manifest-coglet.json`, `manifest-coglet-phrase.json` | esp-web-tools |
+| `dist/release-zips/coglet-<c3\|c6\|s3\|s3-phrase>_v<version>.zip` | GitHub releases |
 
 `metadata.json` records the firmware version and the `git describe` of both
 this repo and the fork, so you can tell which build is flashed. Built images
