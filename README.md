@@ -19,7 +19,22 @@ people say, decides what to do, and calls `self.coglet.gaze`,
                     └──────────── tools/call self.coglet.* ◀───────┘
 ```
 
-## Status
+## Supported boards
+
+The S3 is the primary board and supports everything. The C3 and C6 can be used
+with the project but can't do every feature. All three take the same wiring,
+pad for pad ([hardware/WIRING.md](hardware/WIRING.md)).
+
+| | S3 (XIAO ESP32-S3 Sense) | C3 (XIAO ESP32-C3) | C6 (XIAO ESP32-C6) |
+|---|---|---|---|
+| Role | Primary | Reduced | Reduced |
+| Voice session, MCP tools, servo control | Yes | Yes | Not yet: no firmware build |
+| Camera | Yes | No | No |
+| Wake word | Yes ("Computer", or a phrase you choose) | No | No |
+| Firmware | The xiaozhi-esp32 fork (`just build s3`) | This repo's `firmware/app` (`just build c3`) | None yet |
+| Web Programmer build | `coglet` | `coglet-c3` | None |
+
+A tool change on one board is mirrored on the other, except tools that need the camera or the wake word.
 
 | | |
 |---|---|
