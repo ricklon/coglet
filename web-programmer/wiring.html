@@ -60,6 +60,8 @@
     }
     .pager button:disabled { opacity: .35; cursor: default; }
     .pager button.ghost { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+    .crumb { color: var(--muted); font-size: .8rem; margin-bottom: .15rem; }
+    .step th { width: 5.5rem; }
     .legend { display: flex; flex-wrap: wrap; gap: .3rem 1rem; font-size: .8rem; color: var(--muted); }
     .legend i { display: inline-block; width: 1.4rem; height: 4px; border-radius: 2px; vertical-align: middle; margin-right: .3rem; }
     footer { max-width: 860px; margin: 1.25rem auto 0; color: var(--muted); font-size: .85rem; }
@@ -69,8 +71,8 @@
 <body>
 <header>
   <h1>Wire a Coglet, step by step</h1>
-  <p>Eight short stages. Each one adds a few wires, then has you check them before moving on, so a
-  mistake shows up where you made it. Every board uses the same pads, so the S3 (the main board),
+  <p>One wire per step, in eight stages. Each stage ends with a check, so a mistake shows up where you
+  made it. Every wire has an ID that matches <a href="https://github.com/ricklon/coglet/blob/main/hardware/wires.csv">hardware/wires.csv</a>. Every board uses the same pads, so the S3 (the main board),
   the C3 and the C6 take the same harness. <a href="index.html">Back to the Web Programmer</a>.</p>
 </header>
 
@@ -120,22 +122,34 @@ const PARTS = {
   S: { name: 'Servo supply', sub: '4.8–6 V', x: 640, y: 490, w: 100, h: 90,
        pins: { 'V+': [640, 520], 'GND': [640, 560] } },
 };
-const WIRE_STYLE = {
-  p33: ['#fb923c', '3.3 V'], p5: ['#f87171', '5 V'], gnd: ['#94a3b8', 'ground'],
-  i2s: ['#60a5fa', 'I²S audio'], mic: ['#4ade80', 'mic data'], i2c: ['#c084fc', 'I²C'],
-  oe: ['#facc15', '/OE'], spk: ['#f472b6', 'speaker'], pwr: ['#ef4444', 'servo power'],
-};
-// [step, from, to, style, options]
+// Colours are suggestions: what matters is where each end lands. `hex` is only how the diagram draws it.
+const C = { red: ['red', '#ef4444'], black: ['black', '#1f2937'], orange: ['orange', '#fb923c'], white: ['white', '#e5e7eb'],
+  yellow: ['yellow', '#facc15'], green: ['green', '#4ade80'], blue: ['blue', '#60a5fa'], violet: ['violet', '#c084fc'],
+  grey: ['grey', '#94a3b8'], brown: ['brown', '#a16207'] };
+const SHARED = ' The XIAO has few pads: solder this wire and the other one from the same pad to the same XIAO pad, or run one wire to the pad and a short jumper between the two board pins.';
+const GROUND = ' Solder all the XIAO-end ground wires to the same XIAO GND pad, or to a short ground bus wire that goes to it. Twist and solder them rather than forcing three wires into one hole.';
+// { id, step, from, to, color, note, loop?, sw? }   (this table is mirrored in hardware/wires.csv)
 const WIRES = [
-  [1, 'M.L/R', 'M.GND', 'gnd', { loop: true }],
-  [3, 'X.3V3', 'M.VDD', 'p33'], [3, 'X.3V3', 'P.VCC', 'p33'], [3, 'X.5V', 'A.Vin', 'p5'],
-  [3, 'X.GND', 'M.GND', 'gnd'], [3, 'X.GND', 'A.GND', 'gnd'], [3, 'X.GND', 'P.GND', 'gnd'],
-  [4, 'X.D0', 'A.DIN', 'i2s'], [4, 'X.D1', 'A.BCLK', 'i2s'], [4, 'X.D2', 'A.LRC', 'i2s'],
-  [4, 'A.+', 'K.+', 'spk'], [4, 'A.−', 'K.−', 'spk'],
-  [5, 'X.D1', 'M.SCK', 'i2s'], [5, 'X.D2', 'M.WS', 'i2s'], [5, 'X.D3', 'M.SD', 'mic'],
-  [6, 'X.D4', 'P.SDA', 'i2c'], [6, 'X.D5', 'P.SCL', 'i2c'],
-  [7, 'X.D10', 'P./OE', 'oe'],
-  [8, 'P.V+', 'S.V+', 'pwr', { sw: true }], [8, 'P.GND2', 'S.GND', 'gnd'],
+  { id: 'J1',  step: 1, from: 'M.L/R', to: 'M.GND', color: 'black', loop: true, note: 'A short jumper, or a solder bridge, on the mic board between the L/R pin and the GND pin.' },
+  { id: 'W1',  step: 3, from: 'X.3V3', to: 'M.VDD', color: 'orange', note: 'The mic runs on 3.3 V. Not 5 V.' },
+  { id: 'W2',  step: 3, from: 'X.3V3', to: 'P.VCC', color: 'orange', note: 'This is the PCA9685 logic supply, not the servo supply.' },
+  { id: 'W3',  step: 3, from: 'X.5V',  to: 'A.Vin', color: 'red',    note: 'The amp runs on 5 V.' },
+  { id: 'W4',  step: 3, from: 'X.GND', to: 'M.GND', color: 'black',  note: GROUND },
+  { id: 'W5',  step: 3, from: 'X.GND', to: 'A.GND', color: 'black',  note: GROUND },
+  { id: 'W6',  step: 3, from: 'X.GND', to: 'P.GND', color: 'black',  note: GROUND },
+  { id: 'W7',  step: 4, from: 'X.D0',  to: 'A.DIN', color: 'white',  note: 'The speaker data line.' },
+  { id: 'W8',  step: 4, from: 'X.D1',  to: 'A.BCLK', color: 'yellow', note: 'D1 will also feed the mic in the next stage.' + SHARED },
+  { id: 'W9',  step: 4, from: 'X.D2',  to: 'A.LRC', color: 'green',  note: 'D2 will also feed the mic in the next stage.' + SHARED },
+  { id: 'W10', step: 4, from: 'A.+',   to: 'K.+',   color: 'red',    note: 'Speaker polarity does not matter for sound, but keep + to + so every build looks alike.' },
+  { id: 'W11', step: 4, from: 'A.−',   to: 'K.−',   color: 'black' },
+  { id: 'W12', step: 5, from: 'X.D1',  to: 'M.SCK', color: 'yellow', note: 'Same pad as W8.' + SHARED },
+  { id: 'W13', step: 5, from: 'X.D2',  to: 'M.WS',  color: 'green',  note: 'Same pad as W9. This is the word-select line, not the data line.' + SHARED },
+  { id: 'W14', step: 5, from: 'X.D3',  to: 'M.SD',  color: 'blue',   note: 'The mic\'s data out. D3, not D2.' },
+  { id: 'W15', step: 6, from: 'X.D4',  to: 'P.SDA', color: 'violet', note: 'SDA on D4.' },
+  { id: 'W16', step: 6, from: 'X.D5',  to: 'P.SCL', color: 'grey',   note: 'SCL on D5.' },
+  { id: 'W17', step: 7, from: 'X.D10', to: 'P./OE', color: 'brown',  note: 'Pull /OE up to the PCA9685 3.3 V logic rail through about 10 kΩ, as prepared in stage 1.' },
+  { id: 'W18', step: 8, from: 'P.V+',  to: 'S.V+',  color: 'red',    sw: true, note: 'Put the switch in this wire. Use wire rated for the servo current you plan to draw (22 AWG or heavier). The switch stays off.' },
+  { id: 'W19', step: 8, from: 'P.GND2', to: 'S.GND', color: 'black', note: 'Joins the supply ground to the shared ground. Same gauge as W18.' },
 ];
 const WIRE_NAMES = { 'P.GND2': 'PCA9685 GND (terminal block)', 'P.V+': 'PCA9685 V+ (terminal block)',
   'M.L/R': 'INMP441 L/R', 'S.V+': 'Servo supply +', 'S.GND': 'Servo supply −', 'K.+': 'Speaker +', 'K.−': 'Speaker −' };
@@ -147,10 +161,11 @@ const STEPS = [
     intro: 'Do these on the bench before any wire goes in. They are one-off fixes that are hard to see later.',
     todo: [
       'Solder headers to the XIAO, the INMP441, the MAX98357A and the PCA9685.',
-      '<b>INMP441:</b> tie <b>L/R to GND</b> (the highlighted loop). The firmware reads the left slot, and the mic only drives it with L/R low.',
       '<b>MAX98357A:</b> leave SD and GAIN unconnected unless you know you need them.',
       '<b>PCA9685:</b> leave every address jumper open (address 0x40).',
       '<b>PCA9685 /OE:</b> many breakouts pull /OE <em>down</em>, which keeps the outputs on across a reset. Replace that pull-down with a pull-up (for example 10 kΩ) to the PCA9685 3.3 V logic rail. Look at your breakout before cutting or desoldering anything.',
+      '<b>Wire:</b> any thin hook-up wire (26–30 AWG) is fine for the logic. Colours below are suggestions; what matters is where each end lands. Tin every stripped end.',
+      '<b>INMP441:</b> tie <b>L/R to GND</b>. The firmware reads the left slot, and the mic only drives it with L/R low. That is wire J1, below.',
     ],
     check: ['Meter between L/R and GND on the INMP441: continuity.', 'Nothing else is connected yet.'],
     mistake: 'Leaving L/R floating: the mic can come up on the wrong slot and read zero.' },
@@ -163,60 +178,39 @@ const STEPS = [
     check: ['<code>!status</code> prints the firmware version and board name.'],
     mistake: 'A board that doesn\'t show up as a serial port: try another USB cable (some are charge-only) or hold BOOT while plugging in.' },
   { title: 'Logic power and grounds',
-    intro: 'Three supply rails and a shared ground. This is the part that must be right before anything else is plugged in.',
-    todo: [
-      'XIAO <b>3V3</b> → INMP441 VDD and PCA9685 VCC (the logic supply).',
-      'XIAO <b>5V</b> → MAX98357A Vin.',
-      'XIAO <b>GND</b> → INMP441 GND, MAX98357A GND and PCA9685 GND.',
-    ],
+    intro: 'Three supply rails and a shared ground. This must be right before anything else is plugged in.',
+    todo: [],
     check: [
       'USB unplugged: meter between XIAO 3V3 and GND, and between 5V and GND. Neither should beep (no short).',
       'USB plugged in: about 3.3 V at INMP441 VDD and PCA9685 VCC, about 5 V at the amp Vin.',
     ],
     mistake: 'Powering the PCA9685 logic from 5 V. VCC is the 3.3 V logic supply; servo power comes later, from its own supply, on the V+ terminal.' },
   { title: 'Amp and speaker',
-    intro: 'Audio out first, because it is the easiest to hear. The amp shares two lines with the mic, so you add the mic after this.',
-    todo: [
-      'XIAO <b>D0</b> → amp DIN.',
-      'XIAO <b>D1</b> → amp BCLK.',
-      'XIAO <b>D2</b> → amp LRC.',
-      'Amp + and − → the speaker.',
-    ],
+    intro: 'Audio out first, because it is the easiest to hear. The amp shares two lines with the mic, so the mic comes after this.',
+    todo: [],
     check: ['<code>!speaker</code> plays a short tone through the speaker.'],
     mistake: 'A steady hiss and no tone usually means the amp has no LRC: D2 is not reaching LRC, or it landed on D3.' },
   { title: 'Microphone',
     intro: 'The mic joins the same two clock lines the amp uses, and adds its own data line.',
-    todo: [
-      'XIAO <b>D1</b> → INMP441 SCK (the same pad as amp BCLK).',
-      'XIAO <b>D2</b> → INMP441 WS (the same pad as amp LRC).',
-      'XIAO <b>D3</b> → INMP441 SD.',
-    ],
-    check: ['Talk or tap near the mic and run <code>!mic status</code>: the peak should be well above zero. The tone from the last step should still play.'],
+    todo: [],
+    check: ['Talk or tap near the mic and run <code>!mic status</code>: the peak should be well above zero. The tone from the last stage should still play.'],
     mistake: 'D2 and D3 swapped: the amp hisses and the mic reads flat zero. Swap those two wires back.' },
   { title: 'Servo board on I²C',
     intro: 'Only the two data wires. The servos and their supply are still not connected.',
-    todo: [
-      'XIAO <b>D4</b> → PCA9685 <b>SDA</b>.',
-      'XIAO <b>D5</b> → PCA9685 <b>SCL</b>.',
-    ],
+    todo: [],
     check: ['<code>!coglet scan</code> reports <code>0x40</code>.', '<code>!coglet state</code> shows <code>"released": true</code> and <code>"pca_initialized": true</code>.'],
     mistake: 'SDA and SCL swapped: nothing answers on the bus at all. <code>!coglet scan &lt;sda&gt; &lt;scl&gt;</code> with the two GPIOs swapped tries them the other way round, and a reboot afterwards restores the normal bus.' },
   { title: 'Output-enable (/OE)',
     intro: 'This is what keeps the servo outputs off while the board resets. It only works if /OE is really wired and pulled up.',
-    todo: [
-      'XIAO <b>D10</b> → PCA9685 <b>/OE</b>.',
-      'Confirm the pull-up from step 1 is in place: /OE to the PCA9685 3.3 V logic rail through about 10 kΩ.',
-    ],
+    todo: [],
     check: [
       'Hold the XIAO in reset and measure /OE to GND: it should sit near 3.3 V. Near 0 V means the breakout\'s own pull-down is still there.',
       'The firmware also drives /OE high at boot, but that alone does not hold outputs off through a reset.',
     ],
-    mistake: 'Skipping this on a breakout with a pull-down: the board then relies on I²C alone and nothing can stop the outputs if that bus fails.' },
+    mistake: 'Skipping the pull-up on a breakout with a pull-down: the board then relies on I²C alone and nothing can stop the outputs if that bus fails.' },
   { title: 'Servo power, switched and off',
-    intro: 'The last wiring step. You are connecting the supply, not turning it on.',
+    intro: 'The last wiring stage. You are connecting the supply, not turning it on.',
     todo: [
-      'Servo supply + → <b>a switch</b> → the PCA9685 <b>V+</b> terminal.',
-      'Servo supply − → the PCA9685 <b>GND</b> terminal, so the XIAO, PCA9685 and supply share one ground.',
       '<b>Never</b> power servos from the XIAO or from USB.',
       'Leave the switch <b>off</b> and leave every servo unplugged.',
     ],
@@ -234,9 +228,9 @@ const el = (tag, attrs = {}, text) => {
   return n;
 };
 function pin(ref) { const [p, n] = ref.split('.'); return PARTS[p].pins[n]; }
-function drawParts(svg, step) {
+function drawParts(svg, done, now) {
   const used = new Set();
-  WIRES.filter(w => w[0] <= step).forEach(w => { used.add(w[1]); used.add(w[2]); });
+  done.forEach(w => { used.add(w.from); used.add(w.to); });
   for (const key in PARTS) {
     const p = PARTS[key];
     svg.appendChild(el('rect', { x: p.x, y: p.y, width: p.w, height: p.h, rx: 8, fill: 'var(--part)', stroke: 'var(--part-stroke)' }));
@@ -244,83 +238,109 @@ function drawParts(svg, step) {
     svg.appendChild(el('text', { x: p.x + p.w / 2, y: p.y + 35, 'text-anchor': 'middle', 'font-size': 10, fill: 'var(--muted)' }, p.sub));
     for (const n in p.pins) {
       const [px, py] = p.pins[n];
-      const onRight = px === p.x + p.w, label = n === 'GND2' ? 'GND' : n;
-      const live = used.has(key + '.' + n);
-      svg.appendChild(el('circle', { cx: px, cy: py, r: 4, fill: live ? 'var(--head)' : 'var(--part-stroke)' }));
+      const onRight = px === p.x + p.w, label = n === 'GND2' ? 'GND' : n, ref = key + '.' + n;
+      if (now && (ref === now.from || ref === now.to))
+        svg.appendChild(el('circle', { cx: px, cy: py, r: 10, fill: 'none', stroke: 'var(--warn)', 'stroke-width': 2.5 }));
+      svg.appendChild(el('circle', { cx: px, cy: py, r: 4, fill: used.has(ref) ? 'var(--head)' : 'var(--part-stroke)' }));
       svg.appendChild(el('text', { x: onRight ? px - 9 : px + 9, y: py + 4, 'text-anchor': onRight ? 'end' : 'start',
         'font-size': 12, fill: 'var(--text)' }, label));
     }
   }
 }
-function drawWire(svg, w, current) {
-  const [, a, b, style, o = {}] = w;
-  const [x1, y1] = pin(a), [x2, y2] = pin(b);
-  const col = WIRE_STYLE[style][0];
+function drawWire(svg, w, level) { // level: 0 earlier stage, 1 earlier in this stage, 2 this step
+  const [x1, y1] = pin(w.from), [x2, y2] = pin(w.to), col = C[w.color][1];
   let d;
-  if (o.loop) { d = `M${x1},${y1} C${x1 - 46},${y1} ${x2 - 46},${y2} ${x2},${y2}`; }
+  if (w.loop) d = `M${x1},${y1} C${x1 - 46},${y1} ${x2 - 46},${y2} ${x2},${y2}`;
   else { const dx = Math.max(70, Math.abs(x2 - x1) * 0.4); d = `M${x1},${y1} C${x1 + dx},${y1} ${x2 - dx},${y2} ${x2},${y2}`; }
-  svg.appendChild(el('path', { d, fill: 'none', stroke: col, 'stroke-width': current ? 3.2 : 1.6,
-    opacity: current ? 1 : 0.3, 'stroke-linecap': 'round' }));
-  if (o.sw) {
+  const width = [1.6, 2.4, 3.8][level], opacity = [0.3, 0.75, 1][level];
+  if (w.color === 'black') // a dark wire needs an outline to show on the dark page
+    svg.appendChild(el('path', { d, fill: 'none', stroke: '#94a3b8', 'stroke-width': width + 2, opacity, 'stroke-linecap': 'round' }));
+  svg.appendChild(el('path', { d, fill: 'none', stroke: col, 'stroke-width': width, opacity, 'stroke-linecap': 'round' }));
+  if (level === 2) {
+    const [mx, my] = [(x1 + x2) / 2, (y1 + y2) / 2 - (w.loop ? 0 : 0)];
+    svg.appendChild(el('text', { x: w.loop ? x1 - 56 : mx, y: w.loop ? (y1 + y2) / 2 + 4 : my - 8, 'text-anchor': w.loop ? 'end' : 'middle',
+      'font-size': 13, 'font-weight': 700, fill: 'var(--head)', stroke: 'var(--bg)', 'stroke-width': 4, 'paint-order': 'stroke' }, w.id));
+  }
+  if (w.sw) {
     const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
-    svg.appendChild(el('rect', { x: mx - 22, y: my - 11, width: 44, height: 22, rx: 4, fill: 'var(--part)', stroke: col, 'stroke-width': 1.5 }));
-    svg.appendChild(el('text', { x: mx, y: my + 4, 'text-anchor': 'middle', 'font-size': 11, fill: 'var(--text)' }, 'switch'));
+    svg.appendChild(el('rect', { x: mx - 22, y: my - 11, width: 44, height: 22, rx: 4, fill: 'var(--part)', stroke: col, 'stroke-width': 1.5, opacity }));
+    svg.appendChild(el('text', { x: mx, y: my + 4, 'text-anchor': 'middle', 'font-size': 11, fill: 'var(--text)', opacity }, 'switch'));
   }
 }
-function diagram(step) {
+function diagram(page) {
+  const n = page.stage + 1, cur = page.wire;
+  const earlier = WIRES.filter(w => w.step < n);
+  const sameBefore = WIRES.filter(w => w.step === n && (!cur || WIRES.indexOf(w) < WIRES.indexOf(cur)));
   const svg = el('svg', { viewBox: '0 0 760 680', class: 'diagram', role: 'img',
-    'aria-label': 'Wiring diagram for step ' + step + '. The connections it adds are listed below it.' });
-  drawParts(svg, step);
-  WIRES.filter(w => w[0] < step).forEach(w => drawWire(svg, w, false));
-  WIRES.filter(w => w[0] === step).forEach(w => drawWire(svg, w, true));
+    'aria-label': cur ? `Wiring diagram. This step connects ${cur.id}: ${nameOf(cur.from)} to ${nameOf(cur.to)}.` : 'Wiring diagram so far.' });
+  drawParts(svg, earlier.concat(sameBefore, cur ? [cur] : []), cur);
+  earlier.forEach(w => drawWire(svg, w, 0));
+  sameBefore.forEach(w => drawWire(svg, w, 1));
+  if (cur) drawWire(svg, cur, 2);
   return svg;
 }
 
-// ---- Page ----
+// ---- Pages: one wire per page; a stage with no wires is one page ----
+const pages = [];
+STEPS.forEach((s, i) => {
+  const ws = WIRES.filter(w => w.step === i + 1);
+  if (!ws.length) pages.push({ stage: i, wire: null, first: true, last: true });
+  else ws.forEach((w, k) => pages.push({ stage: i, wire: w, first: k === 0, last: k === ws.length - 1 }));
+});
 const stepsEl = document.getElementById('steps'), navEl = document.getElementById('nav');
-let current = 0;
+const h3 = (t) => Object.assign(document.createElement('h3'), { textContent: t });
 function li(html) { const n = document.createElement('li'); n.innerHTML = html; return n; }
-function build(i) {
-  const s = STEPS[i], n = i + 1, sec = document.createElement('section');
-  sec.className = 'step'; sec.id = 'step-' + n;
-  sec.innerHTML = `<h2>Step ${n} of ${STEPS.length}: ${s.title}</h2><p>${s.intro}</p>`;
-  sec.appendChild(diagram(n));
-  const styles = [...new Set(WIRES.filter(w => w[0] === n).map(w => w[3]))];
-  if (styles.length) {
-    const lg = document.createElement('div'); lg.className = 'legend';
-    lg.innerHTML = styles.map(k => `<span><i style="background:${WIRE_STYLE[k][0]}"></i>${WIRE_STYLE[k][1]}</span>`).join('') +
-      '<span>Faded wires are from earlier steps.</span>';
-    sec.appendChild(lg);
-  }
-  const ws = WIRES.filter(w => w[0] === n);
-  if (ws.length) {
+function list(tag, cls, items) { const l = document.createElement(tag); if (cls) l.className = cls; items.forEach(t => l.appendChild(li(t))); return l; }
+function build(page, idx) {
+  const s = STEPS[page.stage], w = page.wire, sec = document.createElement('section');
+  sec.className = 'step'; sec.id = 'step-' + (idx + 1);
+  const head = document.createElement('h2');
+  head.textContent = w ? `${w.id}: ${nameOf(w.from)} → ${nameOf(w.to)}` : s.title;
+  const crumb = document.createElement('p'); crumb.className = 'crumb';
+  crumb.textContent = `Step ${idx + 1} of ${pages.length} · Stage ${page.stage + 1} of ${STEPS.length}: ${s.title}`;
+  sec.append(crumb, head);
+  if (page.first) { const p = document.createElement('p'); p.innerHTML = s.intro; sec.appendChild(p); }
+  if (page.first && s.todo.length) { sec.appendChild(h3('Before this stage')); sec.appendChild(list('ul', '', s.todo)); }
+  sec.appendChild(diagram(page));
+  if (w) {
+    const [cname, chex] = C[w.color];
     const t = document.createElement('table');
-    t.innerHTML = '<tr><th>From</th><th>To</th></tr>' +
-      ws.map(w => `<tr><td>${nameOf(w[1])}</td><td>${nameOf(w[2])}${w[4] && w[4].sw ? ' (through the switch)' : ''}</td></tr>`).join('');
-    sec.appendChild(Object.assign(document.createElement('h3'), { textContent: 'Connections' }));
+    t.innerHTML = `<tr><th>Wire</th><td><b>${w.id}</b>, suggested colour <i style="display:inline-block;width:.9rem;height:.9rem;border-radius:50%;vertical-align:-2px;background:${chex};border:1px solid var(--part-stroke)"></i> ${cname}</td></tr>` +
+      `<tr><th>From</th><td>${nameOf(w.from)}</td></tr><tr><th>To</th><td>${nameOf(w.to)}${w.sw ? ' (through the switch)' : ''}</td></tr>`;
     sec.appendChild(t);
+    if (w.note) { const p = document.createElement('p'); p.style.marginTop = '.6rem'; p.textContent = w.note.trim(); sec.appendChild(p); }
   }
-  sec.appendChild(Object.assign(document.createElement('h3'), { textContent: 'Do' }));
-  const ol = document.createElement('ol'); s.todo.forEach(t => ol.appendChild(li(t))); sec.appendChild(ol);
-  sec.appendChild(Object.assign(document.createElement('h3'), { textContent: 'Check before you go on' }));
-  const ck = document.createElement('ul'); ck.className = 'check'; s.check.forEach(t => ck.appendChild(li(t))); sec.appendChild(ck);
-  sec.appendChild(Object.assign(document.createElement('h3'), { textContent: 'Common mistake' }));
-  const mk = document.createElement('p'); mk.className = 'mistake'; mk.innerHTML = s.mistake; sec.appendChild(mk);
-  if (s.after) { const a = document.createElement('p'); a.style.marginTop = '1rem'; a.innerHTML = s.after; sec.appendChild(a); }
+  if (page.last) {
+    const ws = WIRES.filter(x => x.step === page.stage + 1);
+    if (ws.length > 1) {
+      sec.appendChild(h3('Wires in this stage'));
+      const t = document.createElement('table');
+      t.innerHTML = '<tr><th>Wire</th><th>From</th><th>To</th></tr>' +
+        ws.map(x => `<tr><td>${x.id}</td><td>${nameOf(x.from)}</td><td>${nameOf(x.to)}${x.sw ? ' (via switch)' : ''}</td></tr>`).join('');
+      sec.appendChild(t);
+    }
+    sec.appendChild(h3('Check before you go on'));
+    sec.appendChild(list('ul', 'check', s.check));
+    sec.appendChild(h3('Common mistake'));
+    const mk = document.createElement('p'); mk.className = 'mistake'; mk.innerHTML = s.mistake; sec.appendChild(mk);
+    if (s.after) { const a = document.createElement('p'); a.style.marginTop = '1rem'; a.innerHTML = s.after; sec.appendChild(a); }
+  }
   return sec;
 }
-const sections = STEPS.map((_, i) => build(i));
+const sections = pages.map(build);
 sections.forEach(s => stepsEl.appendChild(s));
+const firstOfStage = STEPS.map((_, i) => pages.findIndex(p => p.stage === i));
 const buttons = STEPS.map((s, i) => {
   const b = document.createElement('button'); b.textContent = (i + 1) + '. ' + s.title;
-  b.addEventListener('click', () => show(i)); navEl.appendChild(b); return b;
+  b.addEventListener('click', () => show(firstOfStage[i])); navEl.appendChild(b); return b;
 });
+let current = 0;
 function show(i, push = true) {
-  current = Math.max(0, Math.min(STEPS.length - 1, i));
+  current = Math.max(0, Math.min(pages.length - 1, i));
   sections.forEach((s, k) => { s.hidden = k !== current; });
-  buttons.forEach((b, k) => k === current ? b.setAttribute('aria-current', 'step') : b.removeAttribute('aria-current'));
+  buttons.forEach((b, k) => k === pages[current].stage ? b.setAttribute('aria-current', 'step') : b.removeAttribute('aria-current'));
   document.getElementById('prev').disabled = current === 0;
-  const nx = document.getElementById('next'); nx.disabled = current === STEPS.length - 1;
+  document.getElementById('next').disabled = current === pages.length - 1;
   if (push) history.replaceState(null, '', '#step-' + (current + 1));
   window.scrollTo({ top: 0 });
 }

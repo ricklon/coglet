@@ -1,0 +1,14 @@
+group,ref,qty,part,spec,notes
+electronics,U1,1,Seeed Studio XIAO ESP32-S3 Sense,main board; camera and wake word,or XIAO ESP32-C3 / C6 (reduced: no camera or wake word)
+electronics,U2,1,INMP441 I2S microphone breakout,3.3 V,L/R tied to GND
+electronics,U3,1,MAX98357A I2S amplifier breakout,5 V,SD and GAIN left unconnected
+electronics,U4,1,PCA9685 16-channel servo board,address 0x40,/OE pulled up to its 3.3 V logic rail
+electronics,LS1,1,Speaker,4-8 ohm,
+electronics,R1,1,resistor,about 10 kohm,/OE pull-up (replaces the breakout's pull-down)
+servos,,up to 9,hobby servos,model not yet recorded,base; neck_tilt; neck_roll; eye_pan; eye_tilt; lids; jaw; ear_left; ear_right
+power,PS1,1,switched servo supply,4.8-6 V sized for the servos fitted,its switch is the emergency stop
+power,SW1,1,switch,rated for the servo supply current,in the supply + leg
+wire,,1,hook-up wire 26-30 AWG,assorted colours,logic wiring J1 and W1-W17
+wire,,1,hook-up wire 22 AWG or heavier,red and black,servo supply W18 and W19
+misc,,1,USB-C cable,data-capable,
+misc,,1,headers,for the XIAO and the three breakouts,

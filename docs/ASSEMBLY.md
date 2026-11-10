@@ -7,8 +7,8 @@ mechanical steps (printed parts, horns, linkages) aren't written yet**; they're
 marked *TODO* where they belong.
 
 The [step-by-step wiring guide](https://ricklon.github.io/coglet/wiring.html)
-(`web-programmer/wiring.html`) walks sections 2–4 below one connection group at a
-time, with a diagram and a check for each. If you change a pad there, change it
+(`web-programmer/wiring.html`) walks sections 2–4 below one wire at a
+time, with a diagram per wire and a check for each stage. Its wire IDs are in `hardware/wires.csv`, and `scripts/check_wiring.py` checks the two agree. If you change a pad there, change it
 here and in WIRING.md.
 
 Pin and power details live in [WIRING.md](../hardware/WIRING.md), calibration
