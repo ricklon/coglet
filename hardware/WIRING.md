@@ -1,4 +1,4 @@
-# Coglet wiring and parts (C3 and S3)
+# Coglet wiring and parts (S3, C3 and C6)
 
 Wiring, parts and power for both Coglet profiles. The pin numbers the firmware
 compiles against are `firmware/app/main/board.h` (C3) and, in the xiaozhi
@@ -69,15 +69,15 @@ Wire every Coglet the same way, pad for pad. Moving a robot between a C3 and
 an S3 is a board swap, not a rewire: each board's firmware maps the same pads
 to its own GPIOs.
 
-| Function | XIAO pad | C3 GPIO | S3 GPIO |
-|---|---|---|---|
-| Amp DIN (speaker data) | D0 | 2 | 1 |
-| I2S BCLK: amp BCLK and mic SCK | D1 | 3 | 2 |
-| I2S WS: amp LRC and mic WS | D2 | 4 | 3 |
-| Mic SD (data out of the mic) | D3 | 5 | 4 |
-| PCA9685 SDA | D4 | 6 | 5 |
-| PCA9685 SCL | D5 | 7 | 6 |
-| PCA9685 /OE | D10 | 10 | 9 |
+| Function | XIAO pad | C3 GPIO | C6 GPIO | S3 GPIO |
+|---|---|---|---|---|
+| Amp DIN (speaker data) | D0 | 2 | 0 | 1 |
+| I2S BCLK: amp BCLK and mic SCK | D1 | 3 | 1 | 2 |
+| I2S WS: amp LRC and mic WS | D2 | 4 | 2 | 3 |
+| Mic SD (data out of the mic) | D3 | 5 | 21 | 4 |
+| PCA9685 SDA | D4 | 6 | 22 | 5 |
+| PCA9685 SCL | D5 | 7 | 23 | 6 |
+| PCA9685 /OE | D10 | 10 | 18 | 9 |
 
 The S3 Coglet sets this layout; SDA/SCL are the XIAO's default I2C pads. Two
 pairs are easy to swap, and each fails in a recognisable way:
@@ -96,6 +96,20 @@ pairs are easy to swap, and each fails in a recognisable way:
   (GPIO10).
 - No user-controllable LED; an external one is tracked in
   ricklon/xiaozhi-esp32#8.
+
+### C6 specifics (`coglet-c6`)
+
+- Build: `just build c6` (`firmware/app`, target `esp32c6`). No camera and no
+  wake word, like the C3.
+- Boot button on GPIO9, a strapping pin, so it is only ever read. /OE uses D10
+  (GPIO18), which is not a strapping pin.
+- The XIAO ESP32-C6 sends its radio through an RF switch: **GPIO3** low enables
+  it and **GPIO14** low picks the on-board antenna. The firmware drives both
+  low at boot, before Wi-Fi starts. Neither is a pad. This is why the C6 map
+  can't reuse the C3's GPIOs: the C3's D1 is GPIO3.
+- D0, D1, D2, D3 and D4 follow the XIAO ESP32-C6 pinout as used in
+  cam-rotation-starter; D5 (GPIO23) and D10 (GPIO18) are from Seeed's pinout.
+  **This map hasn't been checked on hardware.**
 
 ### S3 Sense specifics (`coglet`)
 

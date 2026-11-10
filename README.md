@@ -28,11 +28,11 @@ pad for pad ([hardware/WIRING.md](hardware/WIRING.md)).
 | | S3 (XIAO ESP32-S3 Sense) | C3 (XIAO ESP32-C3) | C6 (XIAO ESP32-C6) |
 |---|---|---|---|
 | Role | Primary | Reduced | Reduced |
-| Voice session, MCP tools, servo control | Yes | Yes | Not yet: no firmware build |
+| Voice session, MCP tools, servo control | Yes | Yes | Builds; not run on a robot yet |
 | Camera | Yes | No | No |
 | Wake word | Yes ("Computer", or a phrase you choose) | No | No |
-| Firmware | The xiaozhi-esp32 fork (`just build s3`) | This repo's `firmware/app` (`just build c3`) | None yet |
-| Web Programmer build | `coglet` | `coglet-c3` | None |
+| Firmware | The xiaozhi-esp32 fork (`just build s3`) | This repo's `firmware/app` (`just build c3`) | This repo's `firmware/app` (`just build c6`) |
+| Web Programmer build | `coglet` | `coglet-c3` | Not published yet |
 
 A tool change on one board is mirrored on the other, except tools that need the camera or the wake word.
 
@@ -55,7 +55,7 @@ emergency stop**.
 2. **Flash it.** Servo supply off. Use the Web Programmer
    (Chrome or Edge), or build from source:
    ```bash
-   just build c3     # firmware/app
+   just build c3     # firmware/app (or c6, for the XIAO ESP32-C6)
    just flash c3 /dev/ttyACM0
    just setup        # S3 only: fetch the xiaozhi-esp32 fork (submodule)
    just build s3     # or s3-phrase: your own wake phrase

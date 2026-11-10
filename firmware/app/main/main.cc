@@ -40,9 +40,25 @@ void ButtonTask(void*) {
     }
 }
 
+#if BOARD_HAS_RF_SWITCH
+// The XIAO ESP32-C6 antenna switch: GPIO3 low enables it, GPIO14 low selects
+// the on-board antenna. Must be set before Wi-Fi starts.
+void RfSwitchInit() {
+    gpio_config_t config = {};
+    config.pin_bit_mask = (1ULL << RF_SWITCH_ENABLE_GPIO) | (1ULL << RF_ANTENNA_SELECT_GPIO);
+    config.mode = GPIO_MODE_OUTPUT;
+    gpio_config(&config);
+    gpio_set_level(RF_SWITCH_ENABLE_GPIO, 0);
+    gpio_set_level(RF_ANTENNA_SELECT_GPIO, 0);
+}
+#endif
+
 }  // namespace
 
 extern "C" void app_main() {
+#if BOARD_HAS_RF_SWITCH
+    RfSwitchInit();
+#endif
     esp_err_t err = nvs_flash_init();
     if (err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND) {
         ESP_LOGW(TAG, "NVS unreadable; erasing it (Wi-Fi, hub URL and calibration are lost)");

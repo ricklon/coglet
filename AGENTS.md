@@ -18,7 +18,7 @@ agent-hub's xiaozhi wire protocol, plus the servo controller
 | Servo behaviour, calibration, animations, robot commands | `firmware/coglet_controller/` (this repo) |
 | Host tests and the fake IDF | `firmware/tests/` |
 | C3: MCP tools, session, audio, Wi-Fi, console, quiet logic | `firmware/app/main/` |
-| C3 pins | `firmware/app/main/board.h` (then update `hardware/WIRING.md`) |
+| C3 and C6 pins | `firmware/app/main/board.h` (then update `hardware/WIRING.md`) |
 | S3: MCP tool names, descriptions and arguments | fork: `main/boards/common/coglet_mcp_tools.cc` |
 | S3 pins | fork: `main/boards/coglet/config.h` (then update `hardware/WIRING.md`) |
 | S3 board startup, audio, camera, auto-reconnect, quiet logic | fork: `main/boards/coglet/*.cc` |
@@ -33,6 +33,7 @@ pointer here is bumped. Never edit the submodule without saying so.
 ```bash
 just test                 # always run after touching the controller
 just build c3             # firmware/app; ESP-IDF 5.5.x
+just build c6             # firmware/app for the XIAO ESP32-C6 (build-c6/, sdkconfig.c6)
 just build s3             # the fork; wake word "Computer"
 just build s3-phrase      # the fork; a typed wake phrase (boards/coglet/phrase)
 XIAOZHI_DIR=../xiaozhi-esp32 just build s3   # against a sibling fork checkout

@@ -1,9 +1,12 @@
 # Firmware is built, never committed
 dist/
 firmware/app/build/
+firmware/app/build-c6/
 firmware/app/managed_components/
 firmware/app/sdkconfig
 firmware/app/sdkconfig.old
+firmware/app/sdkconfig.c6
+firmware/app/sdkconfig.c6.old
 web-programmer/firmware/**/*.bin
 web-programmer/firmware/**/metadata.json
 web-programmer/manifest-*.json

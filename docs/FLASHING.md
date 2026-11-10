@@ -45,13 +45,16 @@ Needs ESP-IDF 5.5.x (CI uses `espressif/idf:v5.5.2`; 5.5.4 also builds) and
 just test                     # host tests, no hardware
 just build c3                 # -> firmware/app/build/
 just flash c3 /dev/ttyACM0
+just build c6                 # the XIAO ESP32-C6 -> firmware/app/build-c6/
 just monitor /dev/ttyACM0
 ```
 
-The C3 is a plain ESP-IDF project, so `idf.py` works in `firmware/app` too. Its
+`firmware/app` is a plain ESP-IDF project for the C3 and C6, so `idf.py` works there too
+(for the C6, use the flags in the `justfile`'s `c6flags`, or just `just build c6`). Its
 first build fetches `espressif/esp_audio_codec` and
 `espressif/esp_websocket_client` from the component registry, pinned in
-`firmware/app/dependencies.lock`. Set a default hub with `idf.py menuconfig` →
+`firmware/app/dependencies.lock` (the C6 build has its own,
+`dependencies.lock.esp32c6`, so the two builds don't rewrite each other's). Set a default hub with `idf.py menuconfig` →
 *Coglet*, or at runtime with `!server`.
 
 The S3 Sense profile still builds from the xiaozhi fork:

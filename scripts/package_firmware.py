@@ -37,6 +37,9 @@ DIST = ROOT / "dist"
 BOARDS = {
     "c3": {"source": "app", "board": "coglet-c3", "id": "coglet-c3",
            "name": "Coglet C3 (XIAO ESP32-C3)", "manifest": "manifest-coglet-c3.json"},
+    "c6": {"source": "app", "board": "coglet-c6", "id": "coglet-c6", "build_dir": "build-c6",
+           "sdkconfig": "sdkconfig.c6", "idf_args": ["-DIDF_TARGET=esp32c6"],
+           "name": "Coglet C6 (XIAO ESP32-C6)", "manifest": "manifest-coglet-c6.json"},
     "s3": {"source": "xiaozhi", "board": "coglet", "id": "coglet",
            "name": "Coglet S3 (XIAO ESP32-S3 Sense)", "manifest": "manifest-coglet.json"},
     "s3-phrase": {"source": "xiaozhi", "board": "coglet/phrase", "id": "coglet-phrase",
@@ -44,7 +47,7 @@ BOARDS = {
                   "manifest": "manifest-coglet-phrase.json"},
 }
 
-CHIP_FAMILIES = {"esp32c3": "ESP32-C3", "esp32s3": "ESP32-S3"}
+CHIP_FAMILIES = {"esp32c3": "ESP32-C3", "esp32c6": "ESP32-C6", "esp32s3": "ESP32-S3"}
 IMAGES = ("bootloader/bootloader.bin", "partition_table/partition-table.bin",
           "ota_data_initial.bin", "xiaozhi.bin", "coglet.bin", "generated_assets.bin")
 
@@ -91,10 +94,11 @@ def embedded_token(sdkconfig: Path) -> bool:
 def package(key: str, build: bool, env: dict[str, str], allow_token: bool) -> None:
     entry = BOARDS[key]
     if entry["source"] == "app":
-        project, build_dir, app_bin = APP, APP / "build", "coglet.bin"
-        sdkconfig = APP / "sdkconfig"
+        project, build_dir, app_bin = APP, APP / entry.get("build_dir", "build"), "coglet.bin"
+        sdkconfig = APP / entry.get("sdkconfig", "sdkconfig")
         if build:
-            subprocess.run(["idf.py", "build"], cwd=APP, check=True, env=env)
+            extra = [] if "build_dir" not in entry else ["-B", str(build_dir), f"-DSDKCONFIG={sdkconfig}", *entry["idf_args"]]
+            subprocess.run(["idf.py", *extra, "build"], cwd=APP, check=True, env=env)
     else:
         if not (XIAOZHI / "switch-board.sh").exists():
             raise SystemExit(f"xiaozhi-esp32 not found at {XIAOZHI}; run: just setup (or set XIAOZHI_DIR)")
