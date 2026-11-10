@@ -1,0 +1,18 @@
+/* Shared by every page: the stage bar at the top and the Back/Next links at the bottom. */
+.site-nav { max-width: 800px; margin: 0 auto 1rem; display: flex; flex-wrap: wrap; gap: .35rem; align-items: center; font-size: .82rem; }
+.site-nav a {
+  color: var(--muted, #94a3b8); text-decoration: none; border: 1px solid var(--line, #2d3748);
+  background: var(--card, #1a1f2e); border-radius: 999px; padding: .25rem .7rem;
+}
+.site-nav a:hover { color: var(--head, #fff); border-color: var(--accent, #60a5fa); }
+.site-nav a[aria-current="page"] { color: var(--head, #fff); border-color: var(--accent, #60a5fa); background: rgba(96,165,250,.15); }
+.site-nav .n { opacity: .6; margin-right: .25rem; }
+.site-pager { max-width: 800px; margin: 1.5rem auto 0; display: flex; justify-content: space-between; gap: .75rem; }
+.site-pager a {
+  flex: 1; text-decoration: none; border: 1px solid var(--line, #2d3748); background: var(--card, #1a1f2e);
+  border-radius: 10px; padding: .75rem 1rem; color: var(--text, #e2e8f0); font-size: .9rem;
+}
+.site-pager a small { display: block; color: var(--muted, #94a3b8); font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; }
+.site-pager a:hover { border-color: var(--accent, #60a5fa); }
+.site-pager a.next { text-align: right; }
+.site-pager .spacer { flex: 1; }

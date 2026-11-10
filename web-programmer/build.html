@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Build the mechanism · Coglet</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="site.css">
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<header>
+  <h1>Build the mechanism</h1>
+  <p>Fit the servos one at a time, from the base upward.</p>
+</header>
+
+<div class="section warning">
+  <p><strong>The mechanical steps aren't written yet.</strong> Printed parts, servo mounting, horns, linkages and
+  clearances are still to do, so there is no mechanical guide here. This page gives the order to work in; the
+  electronics and calibration steps are complete.</p>
+</div>
+
+<div class="section">
+  <div class="section-title">Fit order</div>
+  <p class="lead">Work through the servos in this order. Each plugs into its standard PCA9685 channel. For every
+  servo: servo switch <strong>off</strong>, mount it, plug it in, then calibrate it on the
+  <a href="calibrate.html">Calibrate</a> page before you fit the next.</p>
+  <div class="table-wrap"><table>
+    <tr><th>Order</th><th>Servo</th><th>Channel</th><th>Mechanical steps</th></tr>
+    <tr><td>1</td><td><code>base</code></td><td>0</td><td>To do</td></tr>
+    <tr><td>2</td><td><code>neck_tilt</code></td><td>1</td><td>To do</td></tr>
+    <tr><td>3</td><td><code>neck_roll</code></td><td>2</td><td>To do</td></tr>
+    <tr><td>4</td><td><code>eye_pan</code></td><td>3</td><td>To do</td></tr>
+    <tr><td>5</td><td><code>eye_tilt</code></td><td>4</td><td>To do</td></tr>
+    <tr><td>6</td><td><code>lids</code> (one servo, both top lids)</td><td>5</td><td>To do</td></tr>
+    <tr><td>7</td><td><code>jaw</code></td><td>6</td><td>To do</td></tr>
+    <tr><td>8</td><td><code>ear_left</code></td><td>7</td><td>To do</td></tr>
+    <tr><td>9</td><td><code>ear_right</code></td><td>8</td><td>To do</td></tr>
+  </table></div>
+  <p class="note">If you can, leave each linkage disconnected for its first calibration, so the servo runs
+  unloaded; connect it afterwards and check the endpoints again. The full text is in
+  <a href="https://github.com/ricklon/coglet/blob/main/docs/ASSEMBLY.md#7-fit-the-servos-base-upward">ASSEMBLY.md, section 7</a>.</p>
+</div>
+
+<script src="site.js"></script>
+</body>
+</html>

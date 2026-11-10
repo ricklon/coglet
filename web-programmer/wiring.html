@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Wire a Coglet, step by step</title>
+  <title>Wire a Coglet, step by step · Coglet</title>
+  <link rel="stylesheet" href="nav.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -66,6 +67,7 @@
     .legend i { display: inline-block; width: 1.4rem; height: 4px; border-radius: 2px; vertical-align: middle; margin-right: .3rem; }
     footer { max-width: 860px; margin: 1.25rem auto 0; color: var(--muted); font-size: .85rem; }
     svg text { font-family: inherit; }
+    .site-nav, .site-pager { max-width: 860px; }
   </style>
 </head>
 <body>
@@ -73,7 +75,7 @@
   <h1>Wire a Coglet, step by step</h1>
   <p>One wire per step, in eight stages. Each stage ends with a check, so a mistake shows up where you
   made it. Every wire has an ID that matches <a href="https://github.com/ricklon/coglet/blob/main/hardware/wires.csv">hardware/wires.csv</a>. Every board uses the same pads, so the S3 (the main board),
-  the C3 and the C6 take the same harness. <a href="index.html">Back to the Web Programmer</a>.</p>
+  the C3 and the C6 take the same harness. Keep the <a href="console.html" target="_blank" rel="noopener">Check</a> page open in a second tab: the stage checks use its serial console.</p>
 </header>
 
 <main>
@@ -172,8 +174,8 @@ const STEPS = [
   { title: 'Flash the XIAO on its own',
     intro: 'Put the firmware on the bare XIAO first, so every later check has something to talk to. No wires are needed.',
     todo: [
-      'Plug the XIAO into USB and flash it with the <a href="index.html">Web Programmer</a>. The S3 uses the <code>coglet</code> build, the C3 uses <code>coglet-c3</code>.',
-      'Open the serial console at 115200 baud.',
+      'If you haven\'t yet, flash it on the <a href="flash.html">Flash</a> page: the S3 uses the <code>coglet</code> build, the C3 <code>coglet-c3</code> and the C6 <code>coglet-c6</code>.',
+      'Open the <a href="console.html">Check</a> page and connect to the board\'s serial port.',
     ],
     check: ['<code>!status</code> prints the firmware version and board name.'],
     mistake: 'A board that doesn\'t show up as a serial port: try another USB cable (some are charge-only) or hold BOOT while plugging in.' },
@@ -349,6 +351,7 @@ document.getElementById('next').addEventListener('click', () => show(current + 1
 const m = /^#step-(\d+)$/.exec(location.hash);
 show(m ? Number(m[1]) - 1 : 0, false);
 </script>
+<script src="site.js"></script>
 <noscript><p style="max-width:860px;margin:1rem auto">This page draws its diagrams with JavaScript. The same
 steps are in <a href="https://github.com/ricklon/coglet/blob/main/docs/ASSEMBLY.md">ASSEMBLY.md</a>.</p></noscript>
 </body>

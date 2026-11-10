@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parts and tools · Coglet</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="site.css">
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<header>
+  <h1>Parts and tools</h1>
+  <p>Everything you need, and the pad and channel maps the rest of the guide refers to.</p>
+</header>
+
+<div class="section">
+  <div class="section-title">Parts, pads and servo channels</div>
+  <p class="lead">Coglet is a Seeed XIAO ESP32, an I²S microphone and amp, and a PCA9685 driving nine
+  hobby servos. Gather these before you start. The next pages put the firmware on the board, then wire it
+  one wire at a time. Pin and power details are in
+  <a href="https://github.com/ricklon/coglet/blob/main/hardware/WIRING.md">WIRING.md</a>, which also has the Fritzing drawings.</p>
+
+  <h4>Parts</h4>
+  <ul>
+    <li><strong>Seeed XIAO ESP32-S3 Sense</strong>, the main board (camera and wake word). A <strong>XIAO ESP32-C3</strong> or <strong>ESP32-C6</strong> also works, without the camera or wake word.</li>
+    <li><strong>INMP441</strong> I²S microphone (3.3 V) and <strong>MAX98357A</strong> I²S amp (5 V) with a 4–8 Ω speaker</li>
+    <li><strong>PCA9685</strong> 16-channel servo board at I²C address 0x40</li>
+    <li>Up to <strong>nine hobby servos</strong>, fitted one at a time from the base up</li>
+    <li>A <strong>separate switched 4.8–6 V servo supply</strong>. Its switch is the emergency stop</li>
+  </ul>
+
+  <h4>Tools</h4>
+  <ul>
+    <li>Soldering iron and solder, for the headers and the wires</li>
+    <li>A multimeter with a continuity setting; the wiring guide has you check each stage</li>
+    <li>Wire strippers, hook-up wire, and a <strong>data-capable</strong> USB-C cable (some are charge-only)</li>
+  </ul>
+
+  <h4>Pads (the same on every board)</h4>
+  <div class="table-wrap"><table>
+    <tr><th>Connect</th><th>XIAO pad</th><th>C3 GPIO</th><th>S3 GPIO</th></tr>
+    <tr><td>Amp DIN</td><td>D0</td><td>2</td><td>1</td></tr>
+    <tr><td>I²S BCLK: amp BCLK and mic SCK</td><td>D1</td><td>3</td><td>2</td></tr>
+    <tr><td>I²S WS: amp LRC and mic WS</td><td><strong>D2</strong></td><td>4</td><td>3</td></tr>
+    <tr><td>Mic SD (data out of the mic)</td><td><strong>D3</strong></td><td>5</td><td>4</td></tr>
+    <tr><td>PCA9685 <strong>SDA</strong></td><td><strong>D4</strong></td><td>6</td><td>5</td></tr>
+    <tr><td>PCA9685 <strong>SCL</strong></td><td><strong>D5</strong></td><td>7</td><td>6</td></tr>
+    <tr><td>PCA9685 /OE (with a pull-up to 3.3 V)</td><td>D10</td><td>10</td><td>9</td></tr>
+  </table></div>
+  <p class="note">Wire by the <strong>pad</strong> column. A C3 and an S3 use the same harness; the firmware
+  handles the GPIO numbers. SDA and SCL are on the XIAO's default I²C pads. The bold pairs are the easy
+  ones to swap: with D2/D3 swapped the amp hisses and the mic reads zero; with SDA/SCL swapped nothing
+  answers on the I²C bus.</p>
+
+  <h4>Power</h4>
+  <ul>
+    <li>Mic and PCA9685 logic VCC from the XIAO's 3.3 V. Amp Vin from 5 V.</li>
+    <li>Servo V+ goes to the PCA9685's V+ terminal from its own switched supply. Never power
+      servos from the XIAO.</li>
+    <li>All grounds common: XIAO, mic, amp, PCA9685 and the servo supply.</li>
+  </ul>
+
+  <h4>Servo channels</h4>
+  <p class="lead">Every Coglet uses the same channel per servo. Plug each one in as you fit it.</p>
+  <div class="table-wrap"><table>
+    <tr><th>PCA9685 channel</th><th>Servo</th><th>MCP motion</th></tr>
+    <tr><td>0</td><td><code>base</code></td><td>head (pan)</td></tr>
+    <tr><td>1</td><td><code>neck_tilt</code></td><td>head (tilt)</td></tr>
+    <tr><td>2</td><td><code>neck_roll</code></td><td>head (roll)</td></tr>
+    <tr><td>3</td><td><code>eye_pan</code></td><td>gaze</td></tr>
+    <tr><td>4</td><td><code>eye_tilt</code></td><td>gaze</td></tr>
+    <tr><td>5</td><td><code>lids</code> (one servo, both top lids)</td><td>lids, blink</td></tr>
+    <tr><td>6</td><td><code>jaw</code></td><td>jaw</td></tr>
+    <tr><td>7</td><td><code>ear_left</code></td><td>ears</td></tr>
+    <tr><td>8</td><td><code>ear_right</code></td><td>ears</td></tr>
+  </table></div>
+  <p class="note">A partly built robot is normal. The board doesn't drive a channel until you
+  assign that servo on the <a href="calibrate.html">Calibrate</a> page.</p>
+</div>
+
+<script src="site.js"></script>
+</body>
+</html>

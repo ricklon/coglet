@@ -48,7 +48,7 @@ emergency stop**.
 
 ## Quick start
 
-1. **Build it.** Follow [docs/ASSEMBLY.md](docs/ASSEMBLY.md); pins are in
+1. **Build it.** The [guided build](https://ricklon.github.io/coglet/) walks through parts, flashing, wiring one wire at a time, checks, agent-hub and calibration. The same steps are in [docs/ASSEMBLY.md](docs/ASSEMBLY.md); pins are in
    [hardware/WIRING.md](hardware/WIRING.md). The Fritzing
    schematic is [hardware/esp32c3-voice-agent.fzz](hardware/esp32c3-voice-agent.fzz)
    (older than the pad map in WIRING.md; the pad map wins).
@@ -108,7 +108,7 @@ firmware/
   tests/               host tests: the real controller against a fake ESP-IDF
   xiaozhi-esp32/       submodule: the xiaozhi fork, still used for the S3
 hardware/              Fritzing schematic, wiring and parts
-web-programmer/           browser programmer (esp-web-tools) and serial console
+web-programmer/           the guided build site: overview, parts, flashing (esp-web-tools), wiring guide, serial console
 scripts/               firmware packaging for the Web Programmer and releases
 tools/                 calibration restore-command generator
 docs/                  agent-hub, operation, calibration, flashing, qualification

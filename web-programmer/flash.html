@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flash the firmware · Coglet</title>
+  <link rel="icon" href="data:,">
+  <script type="module" src="vendor/esp-web-tools.js"></script>
+  <link rel="stylesheet" href="site.css">
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<header>
+  <h1>Flash the firmware</h1>
+  <p>Put Coglet firmware on the XIAO from your browser. No tools to install.</p>
+</header>
+
+<div class="section warning">
+  <p><strong>Switch the servo supply off before you plug in USB.</strong> Opening the port can
+  reset the board, and the servo rail switch is the only real emergency stop.</p>
+  <p>Every boot starts released, and a fresh board has no servo roles assigned, so flashing
+  moves nothing. Calibration lives on the board: "erase" wipes it, so on a robot that's
+  already calibrated, export it first (<code>!coglet export</code>).</p>
+</div>
+<div class="section">
+  <div class="section-title">Flash the firmware</div>
+  <div class="steps">
+    <div class="step"><span class="step-num">1</span><div>Servo supply <strong>off</strong>. Plug the XIAO into this computer by USB-C.</div></div>
+    <div class="step"><span class="step-num">2</span><div>Use Chrome or Edge on a desktop. Pick the card for <strong>your</strong> board. Click the button for your board and pick its port
+      (on Linux usually <code>/dev/ttyACM0</code>).</div></div>
+    <div class="step"><span class="step-num">3</span><div>A <strong>new board</strong>: let it erase. A <strong>calibrated robot</strong>:
+      export calibration first and install without erasing.</div></div>
+    <div class="step"><span class="step-num">4</span><div>If the port doesn't appear, hold the XIAO's BOOT button while plugging it in, then try again.</div></div>
+    <div class="step"><span class="step-num">5</span><div>Done flashing? Open the <a href="console.html">Check</a> page and run <code>!status</code>. It should name the board you flashed.
+      You can flash the bare XIAO now, before any wiring; the <a href="wiring.html">wiring guide</a> comes next.</div></div>
+  </div>
+  <div class="boards" style="margin-top: .9rem">
+    <div class="board-card">
+      <h3>Coglet S3 · "Computer"</h3>
+      <div class="specs">XIAO ESP32-S3 Sense · 8MB · Camera (detected at boot)<br>INMP441 mic · MAX98357A amp · PCA9685<br>
+        Wake word <strong>"Computer"</strong>: a trained model, the most reliable.</div>
+      <esp-web-install-button manifest="manifest-coglet.json">
+        <button slot="activate" class="flash-btn">Flash Coglet S3</button>
+        <span slot="unsupported" class="unsupported">This browser has no Web Serial. Use Chrome or Edge.</span>
+      </esp-web-install-button>
+    </div>
+    <div class="board-card">
+      <h3>Coglet S3 · your own phrase</h3>
+      <div class="specs">XIAO ESP32-S3 Sense · 8MB · Camera (detected at boot)<br>INMP441 mic · MAX98357A amp · PCA9685<br>
+        Wake phrase <strong>"Hey Coglet"</strong> to start; change it any time with
+        <code>!wake PHRASE</code> in the console on the <a href="console.html">Check</a> page. Typed, not trained, so expect more misses and false
+        wakes than "Computer".</div>
+      <esp-web-install-button manifest="manifest-coglet-phrase.json">
+        <button slot="activate" class="flash-btn">Flash Coglet S3 (phrase)</button>
+        <span slot="unsupported" class="unsupported">This browser has no Web Serial. Use Chrome or Edge.</span>
+      </esp-web-install-button>
+    </div>
+    <div class="board-card">
+      <h3>Coglet C3</h3>
+      <div class="specs">XIAO ESP32-C3 · 4MB · No camera<br>INMP441 mic · MAX98357A amp · PCA9685</div>
+      <esp-web-install-button manifest="manifest-coglet-c3.json">
+        <button slot="activate" class="flash-btn">Flash Coglet C3</button>
+        <span slot="unsupported" class="unsupported">This browser has no Web Serial. Use Chrome or Edge.</span>
+      </esp-web-install-button>
+    </div>
+    <div class="board-card">
+      <h3>Coglet C6</h3>
+      <div class="specs">XIAO ESP32-C6 · 4MB · No camera · No wake word<br>INMP441 mic · MAX98357A amp · PCA9685<br>
+        <strong>Not yet run on a robot:</strong> the pin map is unchecked on hardware.</div>
+      <esp-web-install-button manifest="manifest-coglet-c6.json">
+        <button slot="activate" class="flash-btn">Flash Coglet C6</button>
+        <span slot="unsupported" class="unsupported">This browser has no Web Serial. Use Chrome or Edge.</span>
+      </esp-web-install-button>
+    </div>
+  </div>
+  <p class="note">Both S3 builds use the same flash layout, so you can switch between them without erasing:
+  Wi-Fi, hub and calibration stay. The first install of either onto an S3 flashed before 2026-10-27 moves the
+  wake word storage to a larger partition. Settings live elsewhere and should survive it, but export
+  calibration first, as for any install.</p>
+</div>
+
+<script src="site.js"></script>
+</body>
+</html>

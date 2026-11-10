@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Check the board · Coglet</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="site.css">
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<header>
+  <h1>Check the board</h1>
+  <p>A serial console in your browser, and the bench checks that prove each part works before servos go on.</p>
+</header>
+
+<div class="section warning">
+  <p><strong>Servo supply off.</strong> Opening the serial port can reset the board.</p>
+</div>
+<div class="section">
+  <div class="section-title">Serial console and bench checks</div>
+  <p class="lead">Click <strong>Connect</strong> and choose the board's serial port. Servo supply still off. Run these
+  checks as you wire: the <a href="wiring.html">wiring guide</a> says which one belongs to which stage. Keep this page open in a second tab.</p>
+  <div class="table-wrap"><table>
+    <tr><th>Command</th><th>Expect</th><th>If not</th></tr>
+    <tr><td><code>!status</code></td><td>Firmware version and your board: <code>coglet-c3</code>, <code>coglet-c6</code> or the S3's</td><td>Wrong board flashed</td></tr>
+    <tr><td><code>!coglet scan</code></td><td><code>0x40</code> answers</td><td>Nothing: SDA/SCL swapped, or no PCA9685 logic power</td></tr>
+    <tr><td><code>!coglet state</code></td><td><code>"released": true</code>, <code>"pca_initialized": true</code></td><td>Check the scan first</td></tr>
+    <tr><td><code>!speaker</code></td><td>A short tone</td><td>Hiss: D2/D3 swapped. Silence: amp DIN, 5 V, or the speaker</td></tr>
+    <tr><td><code>!mic status</code> while you talk</td><td>A peak well above zero</td><td>Zero: mic SD on the wrong pad, or no 3.3 V</td></tr>
+  </table></div>
+
+  <div class="console-toolbar">
+    <div class="status-box">
+      <span id="status-dot" class="status-indicator"></span>
+      <span id="status-text" class="status-text">Disconnected</span>
+    </div>
+    <button id="btn-connect" class="btn-primary">Connect</button>
+    <button id="btn-disconnect" class="btn-danger" disabled>Disconnect</button>
+    <button id="btn-clear" class="btn-secondary" disabled>Clear</button>
+  </div>
+
+  <div class="quick-btns">
+    <button class="quick-btn" data-cmd="!status" disabled>!status</button>
+    <button class="quick-btn" data-cmd="!coglet scan" disabled>!coglet scan</button>
+    <button class="quick-btn" data-cmd="!coglet state" disabled>!coglet state</button>
+    <button class="quick-btn" data-cmd="!speaker" disabled>!speaker</button>
+    <button class="quick-btn" data-cmd="!mic status" disabled>!mic status</button>
+    <button class="quick-btn" data-cmd="!wifi list" disabled>!wifi list</button>
+    <button class="quick-btn" data-cmd="!quiet status" disabled>!quiet status</button>
+    <button class="quick-btn" data-cmd="!coglet export" disabled>!coglet export</button>
+    <button class="quick-btn" data-cmd="!coglet release" disabled>!coglet release</button>
+    <button class="quick-btn" data-cmd="!help" disabled>!help</button>
+    <button class="quick-btn" data-cmd="!reboot" disabled>!reboot</button>
+  </div>
+
+  <div class="input-row">
+    <input id="serial-input" type="text" placeholder="Type a command and press Enter" disabled>
+    <button id="btn-send" class="btn-primary" disabled>Send</button>
+  </div>
+
+  <pre id="serial-output"><span class="placeholder">Click Connect to open the serial port...</span></pre>
+
+  <div class="help-text">
+    Full command list in <a href="https://github.com/ricklon/coglet/blob/main/docs/OPERATION.md">OPERATION.md</a>.
+  </div>
+</div>
+
+<script src="serial-console.js"></script>
+<script src="site.js"></script>
+</body>
+</html>

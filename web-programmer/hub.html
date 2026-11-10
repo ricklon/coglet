@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connect to agent-hub · Coglet</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="site.css">
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<header>
+  <h1>Connect to agent-hub</h1>
+  <p>Give the robot Wi-Fi and a hub to talk to, then try its tools. Still no servos needed.</p>
+</header>
+
+<div class="section">
+  <div class="section-title">Connect it to agent-hub</div>
+  <p class="lead">You need an <a href="https://github.com/ricklon/agent-hub">agent-hub</a> running and
+  reachable from the robot's Wi-Fi. Its check-in endpoint is on port 8003 by default.</p>
+  <div class="steps">
+    <div class="step"><span class="step-num">1</span><div>Add Wi-Fi (2.4 GHz): <code>!wifi YourSSID YourPassword</code></div></div>
+    <div class="step"><span class="step-num">2</span><div>Point it at the hub: <code>!server http://HUB_HOST:8003/xiaozhi/ota/</code>.
+      Use the hub's real address, not <code>localhost</code>. It reboots.</div></div>
+    <div class="step"><span class="step-num">3</span><div>Reconnect the console and run <code>!status</code>. Expect an IP address, a
+      <strong>Hub</strong> WebSocket URL and <strong>Session: listening</strong>.</div></div>
+    <div class="step"><span class="step-num">4</span><div>Open the hub dashboard. The robot appears under its MAC address
+      (<code>!status</code> shows it as <em>Device id</em>), labelled with its board (<code>coglet-c3</code>, <code>coglet-c6</code> or <code>coglet</code>).</div></div>
+    <div class="step"><span class="step-num">5</span><div><strong>Talk to it.</strong> The hub greets it once, then say something.
+      The console logs <code>&gt;&gt; what it heard</code> and <code>&lt;&lt; what it says</code>, and the reply plays
+      through the speaker. Press the BOOT button to stop a reply.</div></div>
+  </div>
+  <p class="note">A hub with an enrollment token: use its HTTPS check-in URL with
+  <code>?enrollment_token=...</code>, typed here, never baked into a public build.</p>
+
+  <details>
+    <summary>Troubleshooting</summary>
+    <div class="table-wrap"><table>
+      <tr><th>Symptom</th><th>Check</th></tr>
+      <tr><td>No IP in <code>!status</code></td><td><code>!wifi list</code>; 2.4 GHz network; password. Re-add with <code>!wifi</code></td></tr>
+      <tr><td>"Check-in ... failed: HTTP -1"</td><td>Hub address or port wrong, or a firewall. From a computer on the same Wi-Fi: <code>curl http://HUB_HOST:8003/xiaozhi/ota/</code></td></tr>
+      <tr><td>HTTP 401 at check-in</td><td>The hub wants an enrollment token in the URL</td></tr>
+      <tr><td>Session stuck on <em>connecting</em></td><td>The hub's WebSocket URL (shown by <code>!status</code>) must be reachable from the robot</td></tr>
+      <tr><td>It hears nothing</td><td><code>!mic status</code> while talking; <code>!quiet status</code> must be off</td></tr>
+      <tr><td>No sound from replies</td><td><code>!speaker</code>, then <code>!speaker vol 70</code></td></tr>
+    </table></div>
+  </details>
+</div>
+<div class="section">
+  <div class="section-title">Test its MCP tools</div>
+  <p class="lead">MCP is Coglet's one interface: every command is a tool, listed on the hub dashboard once the
+  session is up. They fall into groups:</p>
+  <ul>
+    <li><strong>Motion</strong> (once engaged): <code>self.coglet.gaze</code>, <code>head</code>, <code>jaw</code>,
+      <code>ears</code>, <code>lids</code>, <code>blink</code>, <code>animate</code>.</li>
+    <li><strong>Stopping:</strong> <code>self.coglet.stop</code> and <code>release</code>.</li>
+    <li><strong>Modes and calibration:</strong> <code>engage</code>, <code>calibrate</code>, <code>fit</code>,
+      <code>explore</code>, <code>nudge</code>, <code>mark</code>, <code>confirm</code>, <code>save</code>,
+      <code>test</code> and more.</li>
+    <li><strong>Voice and device:</strong> <code>self.voice.quiet</code>, volume, mic, Wi-Fi, hub URL, reboot,
+      status.</li>
+  </ul>
+  <ul>
+    <li><strong>By voice:</strong> "What's your volume?" or "Turn your volume down a bit."</li>
+    <li><strong>Motion tools return errors until the robot is engaged</strong>, which needs every fitted servo
+      calibrated. Anyone with hub access can engage it, so keep the servo supply switch in reach.</li>
+    <li><strong>From Claude Code,</strong> through agent-hub's device proxy:</li>
+  </ul>
+  <pre class="cmds">claude mcp add coglet -- python3 /path/to/agent-hub/scripts/device_mcp_proxy.py \
+    --device YOUR_ROBOT_MAC --all-tools</pre>
+  <p class="note">The proxy is on agent-hub's <code>main</code>. Without <code>--all-tools</code> it exposes only tools that can't start motion. The full command list is in
+  <a href="https://github.com/ricklon/coglet/blob/main/docs/OPERATION.md#robot-commands">OPERATION.md</a>.</p>
+</div>
+
+<script src="site.js"></script>
+</body>
+</html>
