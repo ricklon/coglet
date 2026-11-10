@@ -6,6 +6,11 @@ next. This guide covers the electronics and the bring-up order. **The
 mechanical steps (printed parts, horns, linkages) aren't written yet**; they're
 marked *TODO* where they belong.
 
+The [step-by-step wiring guide](https://ricklon.github.io/coglet/wiring.html)
+(`web-programmer/wiring.html`) walks sections 2–4 below one connection group at a
+time, with a diagram and a check for each. If you change a pad there, change it
+here and in WIRING.md.
+
 Pin and power details live in [WIRING.md](../hardware/WIRING.md), calibration
 in [CALIBRATION.md](CALIBRATION.md), and what to record at each stage in
 [QUALIFICATION.md](QUALIFICATION.md). The

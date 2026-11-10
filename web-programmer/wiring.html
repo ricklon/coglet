@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wire a Coglet, step by step</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0f1117; --card: #1a1f2e; --line: #2d3748; --text: #e2e8f0;
+      --muted: #94a3b8; --head: #fff; --accent: #60a5fa; --warn: #fbbf24; --ok: #4ade80;
+      --part: #232a3d; --part-stroke: #475569;
+    }
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) {
+        --bg: #f8fafc; --card: #fff; --line: #cbd5e1; --text: #1e293b;
+        --muted: #475569; --head: #0f172a; --accent: #1d4ed8; --warn: #92400e; --ok: #166534;
+        --part: #f1f5f9; --part-stroke: #64748b;
+      }
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--text); padding: 1.5rem 1rem; line-height: 1.5;
+    }
+    header, main { max-width: 860px; margin: 0 auto; }
+    header { margin-bottom: 1.25rem; }
+    h1 { font-size: 1.6rem; color: var(--head); }
+    header p { color: var(--muted); margin-top: .35rem; font-size: .95rem; }
+    a { color: var(--accent); }
+    code { background: rgba(127,127,127,.18); padding: .05rem .3rem; border-radius: 4px; font-size: .9em; }
+    .rules {
+      background: var(--card); border: 1px solid var(--warn); border-radius: 10px;
+      padding: .9rem 1.1rem; margin-bottom: 1.25rem; font-size: .92rem;
+    }
+    .rules strong { color: var(--warn); }
+    .rules ul { margin: .4rem 0 0 1.2rem; }
+
+    nav.steps { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1rem; }
+    nav.steps button {
+      background: var(--card); color: var(--muted); border: 1px solid var(--line);
+      border-radius: 999px; padding: .3rem .8rem; font-size: .85rem; cursor: pointer;
+    }
+    nav.steps button[aria-current="step"] { color: var(--head); border-color: var(--accent); background: rgba(96,165,250,.15); }
+
+    .step { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 1.25rem; }
+    .step h2 { font-size: 1.25rem; color: var(--head); margin-bottom: .5rem; }
+    .step h3 { font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin: 1rem 0 .35rem; }
+    .step p, .step li { font-size: .95rem; }
+    .step ul, .step ol { margin-left: 1.3rem; }
+    svg.diagram { width: 100%; height: auto; display: block; margin: .75rem 0; background: var(--bg); border-radius: 8px; border: 1px solid var(--line); }
+    table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+    th, td { text-align: left; padding: .3rem .6rem; border-bottom: 1px solid var(--line); }
+    th { color: var(--muted); font-weight: 600; }
+    .check { border-left: 3px solid var(--ok); padding-left: .8rem; }
+    .mistake { border-left: 3px solid var(--warn); padding-left: .8rem; }
+    .pager { display: flex; justify-content: space-between; margin-top: 1.25rem; gap: .5rem; }
+    .pager button {
+      background: var(--accent); color: #fff; border: 0; border-radius: 8px;
+      padding: .5rem 1.1rem; font-size: .95rem; cursor: pointer;
+    }
+    .pager button:disabled { opacity: .35; cursor: default; }
+    .pager button.ghost { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+    .legend { display: flex; flex-wrap: wrap; gap: .3rem 1rem; font-size: .8rem; color: var(--muted); }
+    .legend i { display: inline-block; width: 1.4rem; height: 4px; border-radius: 2px; vertical-align: middle; margin-right: .3rem; }
+    footer { max-width: 860px; margin: 1.25rem auto 0; color: var(--muted); font-size: .85rem; }
+    svg text { font-family: inherit; }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Wire a Coglet, step by step</h1>
+  <p>Eight short stages. Each one adds a few wires, then has you check them before moving on, so a
+  mistake shows up where you made it. Every board uses the same pads, so the S3 (the main board),
+  the C3 and the C6 take the same harness. <a href="index.html">Back to the Web Programmer</a>.</p>
+</header>
+
+<main>
+  <div class="rules">
+    <strong>Before you start</strong>
+    <ul>
+      <li>The <strong>servo supply stays off and unplugged</strong> until the last wiring step, and no servo is plugged in.</li>
+      <li>Keep the servo-rail switch within reach whenever servo power is on. It is the emergency stop.</li>
+      <li>Unplug USB while you change wires. Check each stage before the next.</li>
+    </ul>
+  </div>
+  <nav class="steps" id="nav" aria-label="Steps"></nav>
+  <div id="steps"></div>
+  <div class="pager">
+    <button class="ghost" id="prev">Back</button>
+    <button id="next">Next step</button>
+  </div>
+</main>
+
+<footer>
+  <p>Pin and power reference: <a href="https://github.com/ricklon/coglet/blob/main/hardware/WIRING.md">WIRING.md</a>.
+  After the last step, continue with servos in
+  <a href="https://github.com/ricklon/coglet/blob/main/docs/ASSEMBLY.md#6-connect-to-agent-hub-still-no-servos">ASSEMBLY.md</a>.
+  These are build instructions, not a record of any robot having been built; what you saw at each check
+  belongs in <a href="https://github.com/ricklon/coglet/blob/main/docs/QUALIFICATION.md">QUALIFICATION.md</a>.</p>
+</footer>
+
+<script>
+// ---- One source of truth: the parts, the wires, and which step adds each wire. ----
+// Pads are XIAO pads (D0..D10); the firmware maps them to each board's GPIOs.
+// If this changes, change hardware/WIRING.md and docs/ASSEMBLY.md to match.
+const PARTS = {
+  X: { name: 'XIAO ESP32', sub: 'S3 / C3 / C6', x: 30,  y: 30,  w: 120, h: 565,
+       pins: { '3V3': [150, 92], '5V': [150, 144], 'GND': [150, 196], 'D0': [150, 248], 'D1': [150, 300],
+               'D2': [150, 352], 'D3': [150, 404], 'D4': [150, 456], 'D5': [150, 508], 'D10': [150, 560] } },
+  M: { name: 'INMP441', sub: 'microphone', x: 380, y: 30,  w: 140, h: 215,
+       pins: { 'VDD': [380, 60], 'GND': [380, 90], 'L/R': [380, 120], 'SCK': [380, 150], 'WS': [380, 180], 'SD': [380, 210] } },
+  A: { name: 'MAX98357A', sub: 'amplifier', x: 380, y: 270, w: 140, h: 170,
+       pins: { 'Vin': [380, 300], 'GND': [380, 330], 'DIN': [380, 360], 'BCLK': [380, 390], 'LRC': [380, 420],
+               '+': [520, 340], '−': [520, 370] } },
+  P: { name: 'PCA9685', sub: 'servo board', x: 380, y: 470, w: 140, h: 190,
+       pins: { 'VCC': [380, 500], 'GND': [380, 530], 'SDA': [380, 560], 'SCL': [380, 590], '/OE': [380, 620],
+               'V+': [520, 520], 'GND2': [520, 560] } },
+  K: { name: 'Speaker', sub: '4–8 Ω', x: 640, y: 320, w: 100, h: 70,
+       pins: { '+': [640, 340], '−': [640, 370] } },
+  S: { name: 'Servo supply', sub: '4.8–6 V', x: 640, y: 490, w: 100, h: 90,
+       pins: { 'V+': [640, 520], 'GND': [640, 560] } },
+};
+const WIRE_STYLE = {
+  p33: ['#fb923c', '3.3 V'], p5: ['#f87171', '5 V'], gnd: ['#94a3b8', 'ground'],
+  i2s: ['#60a5fa', 'I²S audio'], mic: ['#4ade80', 'mic data'], i2c: ['#c084fc', 'I²C'],
+  oe: ['#facc15', '/OE'], spk: ['#f472b6', 'speaker'], pwr: ['#ef4444', 'servo power'],
+};
+// [step, from, to, style, options]
+const WIRES = [
+  [1, 'M.L/R', 'M.GND', 'gnd', { loop: true }],
+  [3, 'X.3V3', 'M.VDD', 'p33'], [3, 'X.3V3', 'P.VCC', 'p33'], [3, 'X.5V', 'A.Vin', 'p5'],
+  [3, 'X.GND', 'M.GND', 'gnd'], [3, 'X.GND', 'A.GND', 'gnd'], [3, 'X.GND', 'P.GND', 'gnd'],
+  [4, 'X.D0', 'A.DIN', 'i2s'], [4, 'X.D1', 'A.BCLK', 'i2s'], [4, 'X.D2', 'A.LRC', 'i2s'],
+  [4, 'A.+', 'K.+', 'spk'], [4, 'A.−', 'K.−', 'spk'],
+  [5, 'X.D1', 'M.SCK', 'i2s'], [5, 'X.D2', 'M.WS', 'i2s'], [5, 'X.D3', 'M.SD', 'mic'],
+  [6, 'X.D4', 'P.SDA', 'i2c'], [6, 'X.D5', 'P.SCL', 'i2c'],
+  [7, 'X.D10', 'P./OE', 'oe'],
+  [8, 'P.V+', 'S.V+', 'pwr', { sw: true }], [8, 'P.GND2', 'S.GND', 'gnd'],
+];
+const WIRE_NAMES = { 'P.GND2': 'PCA9685 GND (terminal block)', 'P.V+': 'PCA9685 V+ (terminal block)',
+  'M.L/R': 'INMP441 L/R', 'S.V+': 'Servo supply +', 'S.GND': 'Servo supply −', 'K.+': 'Speaker +', 'K.−': 'Speaker −' };
+const PART_NAMES = { X: 'XIAO', M: 'INMP441', A: 'MAX98357A', P: 'PCA9685', K: 'Speaker', S: 'Servo supply' };
+const nameOf = (ref) => WIRE_NAMES[ref] || (PART_NAMES[ref[0]] + ' ' + ref.slice(2).replace('GND2', 'GND'));
+
+const STEPS = [
+  { title: 'Prepare the boards',
+    intro: 'Do these on the bench before any wire goes in. They are one-off fixes that are hard to see later.',
+    todo: [
+      'Solder headers to the XIAO, the INMP441, the MAX98357A and the PCA9685.',
+      '<b>INMP441:</b> tie <b>L/R to GND</b> (the highlighted loop). The firmware reads the left slot, and the mic only drives it with L/R low.',
+      '<b>MAX98357A:</b> leave SD and GAIN unconnected unless you know you need them.',
+      '<b>PCA9685:</b> leave every address jumper open (address 0x40).',
+      '<b>PCA9685 /OE:</b> many breakouts pull /OE <em>down</em>, which keeps the outputs on across a reset. Replace that pull-down with a pull-up (for example 10 kΩ) to the PCA9685 3.3 V logic rail. Look at your breakout before cutting or desoldering anything.',
+    ],
+    check: ['Meter between L/R and GND on the INMP441: continuity.', 'Nothing else is connected yet.'],
+    mistake: 'Leaving L/R floating: the mic can come up on the wrong slot and read zero.' },
+  { title: 'Flash the XIAO on its own',
+    intro: 'Put the firmware on the bare XIAO first, so every later check has something to talk to. No wires are needed.',
+    todo: [
+      'Plug the XIAO into USB and flash it with the <a href="index.html">Web Programmer</a>. The S3 uses the <code>coglet</code> build, the C3 uses <code>coglet-c3</code>.',
+      'Open the serial console at 115200 baud.',
+    ],
+    check: ['<code>!status</code> prints the firmware version and board name.'],
+    mistake: 'A board that doesn\'t show up as a serial port: try another USB cable (some are charge-only) or hold BOOT while plugging in.' },
+  { title: 'Logic power and grounds',
+    intro: 'Three supply rails and a shared ground. This is the part that must be right before anything else is plugged in.',
+    todo: [
+      'XIAO <b>3V3</b> → INMP441 VDD and PCA9685 VCC (the logic supply).',
+      'XIAO <b>5V</b> → MAX98357A Vin.',
+      'XIAO <b>GND</b> → INMP441 GND, MAX98357A GND and PCA9685 GND.',
+    ],
+    check: [
+      'USB unplugged: meter between XIAO 3V3 and GND, and between 5V and GND. Neither should beep (no short).',
+      'USB plugged in: about 3.3 V at INMP441 VDD and PCA9685 VCC, about 5 V at the amp Vin.',
+    ],
+    mistake: 'Powering the PCA9685 logic from 5 V. VCC is the 3.3 V logic supply; servo power comes later, from its own supply, on the V+ terminal.' },
+  { title: 'Amp and speaker',
+    intro: 'Audio out first, because it is the easiest to hear. The amp shares two lines with the mic, so you add the mic after this.',
+    todo: [
+      'XIAO <b>D0</b> → amp DIN.',
+      'XIAO <b>D1</b> → amp BCLK.',
+      'XIAO <b>D2</b> → amp LRC.',
+      'Amp + and − → the speaker.',
+    ],
+    check: ['<code>!speaker</code> plays a short tone through the speaker.'],
+    mistake: 'A steady hiss and no tone usually means the amp has no LRC: D2 is not reaching LRC, or it landed on D3.' },
+  { title: 'Microphone',
+    intro: 'The mic joins the same two clock lines the amp uses, and adds its own data line.',
+    todo: [
+      'XIAO <b>D1</b> → INMP441 SCK (the same pad as amp BCLK).',
+      'XIAO <b>D2</b> → INMP441 WS (the same pad as amp LRC).',
+      'XIAO <b>D3</b> → INMP441 SD.',
+    ],
+    check: ['Talk or tap near the mic and run <code>!mic status</code>: the peak should be well above zero. The tone from the last step should still play.'],
+    mistake: 'D2 and D3 swapped: the amp hisses and the mic reads flat zero. Swap those two wires back.' },
+  { title: 'Servo board on I²C',
+    intro: 'Only the two data wires. The servos and their supply are still not connected.',
+    todo: [
+      'XIAO <b>D4</b> → PCA9685 <b>SDA</b>.',
+      'XIAO <b>D5</b> → PCA9685 <b>SCL</b>.',
+    ],
+    check: ['<code>!coglet scan</code> reports <code>0x40</code>.', '<code>!coglet state</code> shows <code>"released": true</code> and <code>"pca_initialized": true</code>.'],
+    mistake: 'SDA and SCL swapped: nothing answers on the bus at all. <code>!coglet scan &lt;sda&gt; &lt;scl&gt;</code> with the two GPIOs swapped tries them the other way round, and a reboot afterwards restores the normal bus.' },
+  { title: 'Output-enable (/OE)',
+    intro: 'This is what keeps the servo outputs off while the board resets. It only works if /OE is really wired and pulled up.',
+    todo: [
+      'XIAO <b>D10</b> → PCA9685 <b>/OE</b>.',
+      'Confirm the pull-up from step 1 is in place: /OE to the PCA9685 3.3 V logic rail through about 10 kΩ.',
+    ],
+    check: [
+      'Hold the XIAO in reset and measure /OE to GND: it should sit near 3.3 V. Near 0 V means the breakout\'s own pull-down is still there.',
+      'The firmware also drives /OE high at boot, but that alone does not hold outputs off through a reset.',
+    ],
+    mistake: 'Skipping this on a breakout with a pull-down: the board then relies on I²C alone and nothing can stop the outputs if that bus fails.' },
+  { title: 'Servo power, switched and off',
+    intro: 'The last wiring step. You are connecting the supply, not turning it on.',
+    todo: [
+      'Servo supply + → <b>a switch</b> → the PCA9685 <b>V+</b> terminal.',
+      'Servo supply − → the PCA9685 <b>GND</b> terminal, so the XIAO, PCA9685 and supply share one ground.',
+      '<b>Never</b> power servos from the XIAO or from USB.',
+      'Leave the switch <b>off</b> and leave every servo unplugged.',
+    ],
+    check: ['Switch off: no voltage at the PCA9685 V+ terminal.', 'Continuity between the supply − and the XIAO GND.'],
+    mistake: 'Putting the switch in the ground leg instead of the supply leg, or leaving the grounds separate. Servo signals then float and the servos twitch.',
+    after: 'The wiring is done. Next, connect to agent-hub with no servos, then fit them one at a time from the base up: <a href="https://github.com/ricklon/coglet/blob/main/docs/ASSEMBLY.md#6-connect-to-agent-hub-still-no-servos">ASSEMBLY.md, sections 6 and 7</a>.' },
+];
+
+// ---- SVG ----
+const NS = 'http://www.w3.org/2000/svg';
+const el = (tag, attrs = {}, text) => {
+  const n = document.createElementNS(NS, tag);
+  for (const k in attrs) n.setAttribute(k, attrs[k]);
+  if (text != null) n.textContent = text;
+  return n;
+};
+function pin(ref) { const [p, n] = ref.split('.'); return PARTS[p].pins[n]; }
+function drawParts(svg, step) {
+  const used = new Set();
+  WIRES.filter(w => w[0] <= step).forEach(w => { used.add(w[1]); used.add(w[2]); });
+  for (const key in PARTS) {
+    const p = PARTS[key];
+    svg.appendChild(el('rect', { x: p.x, y: p.y, width: p.w, height: p.h, rx: 8, fill: 'var(--part)', stroke: 'var(--part-stroke)' }));
+    svg.appendChild(el('text', { x: p.x + p.w / 2, y: p.y + 20, 'text-anchor': 'middle', 'font-size': 13, 'font-weight': 600, fill: 'var(--head)' }, p.name));
+    svg.appendChild(el('text', { x: p.x + p.w / 2, y: p.y + 35, 'text-anchor': 'middle', 'font-size': 10, fill: 'var(--muted)' }, p.sub));
+    for (const n in p.pins) {
+      const [px, py] = p.pins[n];
+      const onRight = px === p.x + p.w, label = n === 'GND2' ? 'GND' : n;
+      const live = used.has(key + '.' + n);
+      svg.appendChild(el('circle', { cx: px, cy: py, r: 4, fill: live ? 'var(--head)' : 'var(--part-stroke)' }));
+      svg.appendChild(el('text', { x: onRight ? px - 9 : px + 9, y: py + 4, 'text-anchor': onRight ? 'end' : 'start',
+        'font-size': 12, fill: 'var(--text)' }, label));
+    }
+  }
+}
+function drawWire(svg, w, current) {
+  const [, a, b, style, o = {}] = w;
+  const [x1, y1] = pin(a), [x2, y2] = pin(b);
+  const col = WIRE_STYLE[style][0];
+  let d;
+  if (o.loop) { d = `M${x1},${y1} C${x1 - 46},${y1} ${x2 - 46},${y2} ${x2},${y2}`; }
+  else { const dx = Math.max(70, Math.abs(x2 - x1) * 0.4); d = `M${x1},${y1} C${x1 + dx},${y1} ${x2 - dx},${y2} ${x2},${y2}`; }
+  svg.appendChild(el('path', { d, fill: 'none', stroke: col, 'stroke-width': current ? 3.2 : 1.6,
+    opacity: current ? 1 : 0.3, 'stroke-linecap': 'round' }));
+  if (o.sw) {
+    const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
+    svg.appendChild(el('rect', { x: mx - 22, y: my - 11, width: 44, height: 22, rx: 4, fill: 'var(--part)', stroke: col, 'stroke-width': 1.5 }));
+    svg.appendChild(el('text', { x: mx, y: my + 4, 'text-anchor': 'middle', 'font-size': 11, fill: 'var(--text)' }, 'switch'));
+  }
+}
+function diagram(step) {
+  const svg = el('svg', { viewBox: '0 0 760 680', class: 'diagram', role: 'img',
+    'aria-label': 'Wiring diagram for step ' + step + '. The connections it adds are listed below it.' });
+  drawParts(svg, step);
+  WIRES.filter(w => w[0] < step).forEach(w => drawWire(svg, w, false));
+  WIRES.filter(w => w[0] === step).forEach(w => drawWire(svg, w, true));
+  return svg;
+}
+
+// ---- Page ----
+const stepsEl = document.getElementById('steps'), navEl = document.getElementById('nav');
+let current = 0;
+function li(html) { const n = document.createElement('li'); n.innerHTML = html; return n; }
+function build(i) {
+  const s = STEPS[i], n = i + 1, sec = document.createElement('section');
+  sec.className = 'step'; sec.id = 'step-' + n;
+  sec.innerHTML = `<h2>Step ${n} of ${STEPS.length}: ${s.title}</h2><p>${s.intro}</p>`;
+  sec.appendChild(diagram(n));
+  const styles = [...new Set(WIRES.filter(w => w[0] === n).map(w => w[3]))];
+  if (styles.length) {
+    const lg = document.createElement('div'); lg.className = 'legend';
+    lg.innerHTML = styles.map(k => `<span><i style="background:${WIRE_STYLE[k][0]}"></i>${WIRE_STYLE[k][1]}</span>`).join('') +
+      '<span>Faded wires are from earlier steps.</span>';
+    sec.appendChild(lg);
+  }
+  const ws = WIRES.filter(w => w[0] === n);
+  if (ws.length) {
+    const t = document.createElement('table');
+    t.innerHTML = '<tr><th>From</th><th>To</th></tr>' +
+      ws.map(w => `<tr><td>${nameOf(w[1])}</td><td>${nameOf(w[2])}${w[4] && w[4].sw ? ' (through the switch)' : ''}</td></tr>`).join('');
+    sec.appendChild(Object.assign(document.createElement('h3'), { textContent: 'Connections' }));
+    sec.appendChild(t);
+  }
+  sec.appendChild(Object.assign(document.createElement('h3'), { textContent: 'Do' }));
+  const ol = document.createElement('ol'); s.todo.forEach(t => ol.appendChild(li(t))); sec.appendChild(ol);
+  sec.appendChild(Object.assign(document.createElement('h3'), { textContent: 'Check before you go on' }));
+  const ck = document.createElement('ul'); ck.className = 'check'; s.check.forEach(t => ck.appendChild(li(t))); sec.appendChild(ck);
+  sec.appendChild(Object.assign(document.createElement('h3'), { textContent: 'Common mistake' }));
+  const mk = document.createElement('p'); mk.className = 'mistake'; mk.innerHTML = s.mistake; sec.appendChild(mk);
+  if (s.after) { const a = document.createElement('p'); a.style.marginTop = '1rem'; a.innerHTML = s.after; sec.appendChild(a); }
+  return sec;
+}
+const sections = STEPS.map((_, i) => build(i));
+sections.forEach(s => stepsEl.appendChild(s));
+const buttons = STEPS.map((s, i) => {
+  const b = document.createElement('button'); b.textContent = (i + 1) + '. ' + s.title;
+  b.addEventListener('click', () => show(i)); navEl.appendChild(b); return b;
+});
+function show(i, push = true) {
+  current = Math.max(0, Math.min(STEPS.length - 1, i));
+  sections.forEach((s, k) => { s.hidden = k !== current; });
+  buttons.forEach((b, k) => k === current ? b.setAttribute('aria-current', 'step') : b.removeAttribute('aria-current'));
+  document.getElementById('prev').disabled = current === 0;
+  const nx = document.getElementById('next'); nx.disabled = current === STEPS.length - 1;
+  if (push) history.replaceState(null, '', '#step-' + (current + 1));
+  window.scrollTo({ top: 0 });
+}
+document.getElementById('prev').addEventListener('click', () => show(current - 1));
+document.getElementById('next').addEventListener('click', () => show(current + 1));
+const m = /^#step-(\d+)$/.exec(location.hash);
+show(m ? Number(m[1]) - 1 : 0, false);
+</script>
+<noscript><p style="max-width:860px;margin:1rem auto">This page draws its diagrams with JavaScript. The same
+steps are in <a href="https://github.com/ricklon/coglet/blob/main/docs/ASSEMBLY.md">ASSEMBLY.md</a>.</p></noscript>
+</body>
+</html>
