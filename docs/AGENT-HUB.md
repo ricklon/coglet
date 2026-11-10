@@ -159,6 +159,24 @@ claude mcp add coglet-c3 -- python3 /path/to/agent-hub/scripts/device_mcp_proxy.
 
 The proxy has been on agent-hub's `main` since 2026-10-27 (`5f973f6`).
 
+## Device pairing (planned in agent-hub, not live)
+
+agent-hub's [pairing plan](https://github.com/ricklon/agent-hub/blob/main/docs/device-and-agent-pairing-plan.md)
+(`d36d266`, status: proposed) would replace the shared enrollment token with a
+code the device speaks, confirmed by a person on the dashboard. Nothing in the
+hub does this yet, and Coglet needs no change today.
+
+- **S3:** the fork carries upstream xiaozhi's activation flow
+  (`main/ota.cc`: the check-in `activation` block, then `POST …/activate`). The
+  plan notes it hasn't been seen on hardware, so this is untested with Coglet.
+- **C3 and C6:** `firmware/app` ignores an `activation` block. Against a hub with
+  pairing required, a C3 would check in but never start a session. This waits
+  on the plan's hardware check (whether the token comes with the `activation`
+  block, and how a board handles a 410) before it's worth writing.
+
+Separately, agent-hub now stores agent tokens as SHA-256 hashes (`1f52877`).
+That's hub-side only; a device keeps sending the same bearer token.
+
 ## Optional hub-side extras
 
 None of these are needed. Ideas, not existing features:
