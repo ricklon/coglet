@@ -30,6 +30,8 @@ setup:
 # Host tests: the real controller against a fake ESP-IDF; opens no device
 test:
     python3 firmware/tests/run_host_tests.py
+    python3 tools/carrier/carrier.py --check
+    python3 scripts/check_wiring.py
 
 # Build firmware for c3 (firmware/app/build), c6 (firmware/app/build-c6), s3 or s3-phrase (the fork's build-coglet, build-coglet-phrase)
 build board:

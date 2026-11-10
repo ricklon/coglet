@@ -126,6 +126,7 @@ both.
 |---|---|
 | [docs/AGENT-HUB.md](docs/AGENT-HUB.md) | **Start here.** Check-in, MCP discovery, the tools, listen mode, driving Coglet from Claude Code |
 | [docs/ASSEMBLY.md](docs/ASSEMBLY.md) | Putting it together: boards, harness, power, first power-up, servos base upward |
+| [docs/CARRIER-STEPS.md](docs/CARRIER-STEPS.md) | The perfboard carrier, one link per step, with its [hole map](docs/CARRIER.md). Design, not yet built |
 | [hardware/WIRING.md](hardware/WIRING.md) | Parts, pin maps for C3 and S3, power, `/OE`, bench checks |
 | [docs/FLASHING.md](docs/FLASHING.md) | Web Programmer, CLI builds, packaging, releases, backups before reflashing |
 | [docs/OPERATION.md](docs/OPERATION.md) | Every command (MCP tool and serial form), release/engage/calibrate, quiet mode |

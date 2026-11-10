@@ -22,6 +22,7 @@ agent-hub's xiaozhi wire protocol, plus the servo controller
 | S3: MCP tool names, descriptions and arguments | fork: `main/boards/common/coglet_mcp_tools.cc` |
 | S3 pins | fork: `main/boards/coglet/config.h` (then update `hardware/WIRING.md`) |
 | S3 board startup, audio, camera, auto-reconnect, quiet logic | fork: `main/boards/coglet/*.cc` |
+| Carrier board (perfboard layout, hole map, step pictures) | `tools/carrier/carrier.py` is the source; it generates `docs/CARRIER*.md`, `web-programmer/carrier.html` and `web-programmer/carrier/`. Run it after any change; `just test` fails if they're stale |
 | Web Programmer, packaging, releases | `web-programmer/`, `scripts/package_firmware.py`, `.github/workflows/` |
 
 A tool change on one board should be mirrored on the other. Changes inside
