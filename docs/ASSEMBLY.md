@@ -47,7 +47,8 @@ See the [parts list](../hardware/WIRING.md#parts):
 1. Solder headers to the XIAO, the INMP441, the MAX98357A and the PCA9685.
 2. **INMP441:** tie **L/R to GND**. The firmware reads the left I²S slot, and
    the mic only drives the left slot with L/R low.
-3. **MAX98357A:** leave SD and GAIN unconnected unless you know you need them.
+3. **MAX98357A:** tie **GAIN to Vin** for 6 dB (wire J2). Leave SD
+   unconnected.
 4. **PCA9685:** check the address jumpers are all open (address 0x40).
 5. **PCA9685 /OE:** many breakouts pull /OE *down*, which keeps the outputs on
    across a reset no matter what the firmware does. For outputs that stay off

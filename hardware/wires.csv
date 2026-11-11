@@ -1,5 +1,6 @@
 id,stage,from,to,suggested_colour,note
 J1,1,INMP441 L/R,INMP441 GND,black,
+J2,1,MAX98357A GAIN,MAX98357A Vin,red,6 dB gain
 W1,3,XIAO 3V3,INMP441 VDD,orange,
 W2,3,XIAO 3V3,PCA9685 VCC,orange,
 W3,3,XIAO 5V,MAX98357A Vin,red,
