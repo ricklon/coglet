@@ -1,0 +1,519 @@
+{
+  "commands": [
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "board_width",
+        "expression": "38.1 mm",
+        "unit": "mm",
+        "comment": "Nominal dimension from tools/carrier/carrier.py; verify actual board"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "board_length",
+        "expression": "50.8 mm",
+        "unit": "mm",
+        "comment": "Nominal dimension from tools/carrier/carrier.py; verify actual board"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "board_thickness",
+        "expression": "1.6 mm",
+        "unit": "mm",
+        "comment": "Nominal dimension from tools/carrier/carrier.py; verify actual board"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "length": "board_width",
+        "width": "board_length",
+        "height": "board_thickness",
+        "corner": [
+          "-board_width / 2",
+          "-board_length / 2",
+          0
+        ],
+        "body_name": "CarrierBoardEnvelope",
+        "name": "Nominal board envelope"
+      }
+    },
+    {
+      "command": "appearance.assign",
+      "params": {
+        "bodies": [
+          "CarrierBoardEnvelope"
+        ],
+        "color": "#3f8b65"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": 1,
+        "height": 0.2,
+        "base": [
+          -6.35,
+          20.32,
+          "board_thickness"
+        ],
+        "operation": "new",
+        "body_name": "D1 XIAO.D0 DATUM",
+        "name": "Pad location D1"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": 1,
+        "height": 0.2,
+        "base": [
+          -6.35,
+          17.78,
+          "board_thickness"
+        ],
+        "operation": "new",
+        "body_name": "D2 XIAO.D1 DATUM",
+        "name": "Pad location D2"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": 1,
+        "height": 0.2,
+        "base": [
+          -6.35,
+          15.24,
+          "board_thickness"
+        ],
+        "operation": "new",
+        "body_name": "D3 XIAO.D2 DATUM",
+        "name": "Pad location D3"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": 1,
+        "height": 0.2,
+        "base": [
+          -6.35,
+          12.7,
+          "board_thickness"
+        ],
+        "operation": "new",
+        "body_name": "D4 XIAO.D3 DATUM",
+        "name": "Pad location D4"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": 1,
+        "height": 0.2,
+        "base": [
+          -6.35,
+          10.16,
+          "board_thickness"
+        ],
+        "operation": "new",
+        "body_name": "D5 XIAO.D4 DATUM",
+        "name": "Pad location D5"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": 1,
+        "height": 0.2,
+        "base": [
+          -6.35,
+          7.62,
+          "board_thickness"
+        ],
+        "operation": "new",
+        "body_name": "D6 XIAO.D5 DATUM",
+        "name": "Pad location D6"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": 1,
+        "height": 0.2,
+        "base": [
+          8.89,
+          20.32,
+          "board_thickness"
+        ],
+        "operation": "new",
+        "body_name": "H1 XIAO.5V DATUM",
+        "name": "Pad location H1"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": 1,
+        "height": 0.2,
+        "base": [
+          8.89,
+          17.78,
+          "board_thickness"
+        ],
+        "operation": "new",
+        "body_name": "H2 XIAO.GND DATUM",
+        "name": "Pad location H2"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": 1,
+        "height": 0.2,
+        "base": [
+          8.89,
+          15.24,
+          "board_thickness"
+        ],
+        "operation": "new",
+        "body_name": "H3 XIAO.3V3 DATUM",
+        "name": "Pad location H3"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": 1,
+        "height": 0.2,
+        "base": [
+          8.89,
+          12.7,
+          "board_thickness"
+        ],
+        "operation": "new",
+        "body_name": "H4 XIAO.D10 DATUM",
+        "name": "Pad location H4"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": 1,
+        "height": 0.2,
+        "base": [
+          -6.35,
+          -20.32,
+          "board_thickness"
+        ],
+        "operation": "new",
+        "body_name": "D17 MAX98357A.Vin DATUM",
+        "name": "Pad location D17"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": 1,
+        "height": 0.2,
+        "base": [
+          -6.35,
+          -17.78,
+          "board_thickness"
+        ],
+        "operation": "new",
+        "body_name": "D16 MAX98357A.GND DATUM",
+        "name": "Pad location D16"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": 1,
+        "height": 0.2,
+        "base": [
+          -6.35,
+          -15.24,
+          "board_thickness"
+        ],
+        "operation": "new",
+        "body_name": "D15 MAX98357A.SD DATUM",
+        "name": "Pad location D15"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": 1,
+        "height": 0.2,
+        "base": [
+          -6.35,
+          -12.7,
+          "board_thickness"
+        ],
+        "operation": "new",
+        "body_name": "D14 MAX98357A.GAIN DATUM",
+        "name": "Pad location D14"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": 1,
+        "height": 0.2,
+        "base": [
+          -6.35,
+          -10.16,
+          "board_thickness"
+        ],
+        "operation": "new",
+        "body_name": "D13 MAX98357A.DIN DATUM",
+        "name": "Pad location D13"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": 1,
+        "height": 0.2,
+        "base": [
+          -6.35,
+          -7.62,
+          "board_thickness"
+        ],
+        "operation": "new",
+        "body_name": "D12 MAX98357A.BCLK DATUM",
+        "name": "Pad location D12"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": 1,
+        "height": 0.2,
+        "base": [
+          -6.35,
+          -5.08,
+          "board_thickness"
+        ],
+        "operation": "new",
+        "body_name": "D11 MAX98357A.LRC DATUM",
+        "name": "Pad location D11"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": 1,
+        "height": 0.2,
+        "base": [
+          -8.89,
+          17.78,
+          "board_thickness"
+        ],
+        "operation": "new",
+        "body_name": "C2 INMP441.SCK DATUM",
+        "name": "Pad location C2"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": 1,
+        "height": 0.2,
+        "base": [
+          -8.89,
+          15.24,
+          "board_thickness"
+        ],
+        "operation": "new",
+        "body_name": "C3 INMP441.WS DATUM",
+        "name": "Pad location C3"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": 1,
+        "height": 0.2,
+        "base": [
+          -8.89,
+          12.7,
+          "board_thickness"
+        ],
+        "operation": "new",
+        "body_name": "C4 INMP441.SD DATUM",
+        "name": "Pad location C4"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": 1,
+        "height": 0.2,
+        "base": [
+          11.43,
+          17.78,
+          "board_thickness"
+        ],
+        "operation": "new",
+        "body_name": "I2 INMP441.GND DATUM",
+        "name": "Pad location I2"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": 1,
+        "height": 0.2,
+        "base": [
+          11.43,
+          15.24,
+          "board_thickness"
+        ],
+        "operation": "new",
+        "body_name": "I3 INMP441.VDD DATUM",
+        "name": "Pad location I3"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": 1,
+        "height": 0.2,
+        "base": [
+          -8.89,
+          10.16,
+          "board_thickness"
+        ],
+        "operation": "new",
+        "body_name": "C5 PCA9685.SDA DATUM",
+        "name": "Pad location C5"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": 1,
+        "height": 0.2,
+        "base": [
+          -11.43,
+          7.62,
+          "board_thickness"
+        ],
+        "operation": "new",
+        "body_name": "B6 PCA9685.SCL DATUM",
+        "name": "Pad location B6"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": 1,
+        "height": 0.2,
+        "base": [
+          13.97,
+          17.78,
+          "board_thickness"
+        ],
+        "operation": "new",
+        "body_name": "J2 PCA9685.GND DATUM",
+        "name": "Pad location J2"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": 1,
+        "height": 0.2,
+        "base": [
+          13.97,
+          15.24,
+          "board_thickness"
+        ],
+        "operation": "new",
+        "body_name": "J3 PCA9685.VCC DATUM",
+        "name": "Pad location J3"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": 1,
+        "height": 0.2,
+        "base": [
+          13.97,
+          12.7,
+          "board_thickness"
+        ],
+        "operation": "new",
+        "body_name": "J4 PCA9685./OE DATUM",
+        "name": "Pad location J4"
+      }
+    },
+    {
+      "command": "appearance.assign",
+      "params": {
+        "bodies": [
+          "D1 XIAO.D0 DATUM",
+          "D2 XIAO.D1 DATUM",
+          "D3 XIAO.D2 DATUM",
+          "D4 XIAO.D3 DATUM",
+          "D5 XIAO.D4 DATUM",
+          "D6 XIAO.D5 DATUM",
+          "H1 XIAO.5V DATUM",
+          "H2 XIAO.GND DATUM",
+          "H3 XIAO.3V3 DATUM",
+          "H4 XIAO.D10 DATUM"
+        ],
+        "color": "#3478cc"
+      }
+    },
+    {
+      "command": "appearance.assign",
+      "params": {
+        "bodies": [
+          "D17 MAX98357A.Vin DATUM",
+          "D16 MAX98357A.GND DATUM",
+          "D15 MAX98357A.SD DATUM",
+          "D14 MAX98357A.GAIN DATUM",
+          "D13 MAX98357A.DIN DATUM",
+          "D12 MAX98357A.BCLK DATUM",
+          "D11 MAX98357A.LRC DATUM"
+        ],
+        "color": "#ec9d36"
+      }
+    },
+    {
+      "command": "appearance.assign",
+      "params": {
+        "bodies": [
+          "C2 INMP441.SCK DATUM",
+          "C3 INMP441.WS DATUM",
+          "C4 INMP441.SD DATUM",
+          "I2 INMP441.GND DATUM",
+          "I3 INMP441.VDD DATUM"
+        ],
+        "color": "#ad60ce"
+      }
+    },
+    {
+      "command": "appearance.assign",
+      "params": {
+        "bodies": [
+          "C5 PCA9685.SDA DATUM",
+          "B6 PCA9685.SCL DATUM",
+          "J2 PCA9685.GND DATUM",
+          "J3 PCA9685.VCC DATUM",
+          "J4 PCA9685./OE DATUM"
+        ],
+        "color": "#d64f4f"
+      }
+    }
+  ]
+}

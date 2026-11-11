@@ -1,0 +1,1740 @@
+{
+  "source": "CogletC0_6_8.3mf",
+  "source_sha256": "dc40f68e8c185e0d4a1922c320f6b4e1dceb64782c841394d6cfe3f18ad88178",
+  "units": "mm",
+  "coordinate_note": "Mesh-local bounds; component transforms and build placements are not applied.",
+  "plates": [
+    {
+      "plate": 1,
+      "name": "Unnamed upstream plate",
+      "objects": [
+        "20"
+      ],
+      "preview": "plate-1.png"
+    },
+    {
+      "plate": 2,
+      "name": "Normal Skin",
+      "objects": [
+        "13"
+      ],
+      "preview": "plate-2.png"
+    },
+    {
+      "plate": 3,
+      "name": "Unnamed upstream plate",
+      "objects": [
+        "2",
+        "3"
+      ],
+      "preview": "plate-3.png"
+    },
+    {
+      "plate": 4,
+      "name": "Unnamed upstream plate",
+      "objects": [
+        "22",
+        "24",
+        "26",
+        "28",
+        "30",
+        "32",
+        "34",
+        "36",
+        "38",
+        "40",
+        "42",
+        "44",
+        "46",
+        "48",
+        "50",
+        "52",
+        "54",
+        "56",
+        "58",
+        "60",
+        "62",
+        "64",
+        "66",
+        "68",
+        "70",
+        "72",
+        "74",
+        "76",
+        "78",
+        "80",
+        "82",
+        "84",
+        "86",
+        "88",
+        "90",
+        "92",
+        "94",
+        "96",
+        "98",
+        "100",
+        "102",
+        "104"
+      ],
+      "preview": "plate-4.png"
+    },
+    {
+      "plate": 5,
+      "name": "Grumpy Skin (Replaces face and mouth)",
+      "objects": [
+        "106",
+        "108"
+      ],
+      "preview": "plate-5.png"
+    }
+  ],
+  "parts": [
+    {
+      "id": "C068-O20-P14",
+      "plate": 1,
+      "name": "Full - BottomPlug.stl",
+      "model_path": "3D/Objects/object_322.model",
+      "object_id": "14",
+      "vertices": 1996,
+      "triangles": 3996,
+      "local_min_mm": [
+        -19.1406174,
+        -14.6746597,
+        -8.14999771
+      ],
+      "local_max_mm": [
+        19.1406174,
+        14.6746597,
+        8.14999771
+      ],
+      "local_size_mm": [
+        38.281,
+        29.349,
+        16.3
+      ],
+      "component_transform": "0.785214975 0.619223258 0 -0.619223258 0.785214975 0 0 0 1 98.5744158 13.3877553 -42.691288",
+      "source_file_hint": "Full - BottomPlug.stl",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O20-P15",
+      "plate": 1,
+      "name": "Full.stl_7",
+      "model_path": "3D/Objects/object_322.model",
+      "object_id": "15",
+      "vertices": 40192,
+      "triangles": 80412,
+      "local_min_mm": [
+        -49.7663536,
+        -48.6184235,
+        -37.8965225
+      ],
+      "local_max_mm": [
+        49.7663536,
+        48.6184235,
+        37.8965225
+      ],
+      "local_size_mm": [
+        99.533,
+        97.237,
+        75.793
+      ],
+      "component_transform": "-4.93038066e-32 2.22044605e-16 -1 -1 -2.22044605e-16 0 -2.22044605e-16 1 2.22044605e-16 55.1622058 73.1503853 -1.0749321",
+      "source_file_hint": "CogletC0_3_V4.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O20-P16",
+      "plate": 1,
+      "name": "Full - Part 24.stl",
+      "model_path": "3D/Objects/object_322.model",
+      "object_id": "16",
+      "vertices": 24841,
+      "triangles": 49706,
+      "local_min_mm": [
+        -50.8412857,
+        -42.3608932,
+        -23.2221031
+      ],
+      "local_max_mm": [
+        50.8412857,
+        42.3608932,
+        23.2221031
+      ],
+      "local_size_mm": [
+        101.683,
+        84.722,
+        46.444
+      ],
+      "component_transform": "-7.59437276e-17 2.08653677e-16 1 0.939692621 0.342020143 -2.46519033e-32 -0.342020143 0.939692621 -2.22044605e-16 6.39013676 6.46201029 0",
+      "source_file_hint": "Full - Part 24.stl",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O20-P17",
+      "plate": 1,
+      "name": "Full - Foot (1).stl",
+      "model_path": "3D/Objects/object_322.model",
+      "object_id": "17",
+      "vertices": 50105,
+      "triangles": 100214,
+      "local_min_mm": [
+        -46.0,
+        -46.0,
+        -13.875
+      ],
+      "local_max_mm": [
+        46.0,
+        46.0,
+        13.875
+      ],
+      "local_size_mm": [
+        92.0,
+        92.0,
+        27.75
+      ],
+      "component_transform": "1 0 0 0 1 0 0 0 1 -62.7293522 -65.019465 -36.9662857",
+      "source_file_hint": "Full - Foot (1).stl",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O20-P18",
+      "plate": 1,
+      "name": "Full (9).stl_3",
+      "model_path": "3D/Objects/object_322.model",
+      "object_id": "18",
+      "vertices": 13895,
+      "triangles": 27830,
+      "local_min_mm": [
+        -52.9110298,
+        -48.0,
+        -16.9249973
+      ],
+      "local_max_mm": [
+        52.9110298,
+        48.0,
+        16.9249973
+      ],
+      "local_size_mm": [
+        105.822,
+        96.0,
+        33.85
+      ],
+      "component_transform": "1 0 0 0 1 0 0 0 1 62.4669321 -65.4038269 -33.9162884",
+      "source_file_hint": "CogletC0_6_5.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O20-P19",
+      "plate": 1,
+      "name": "Full (9).stl_2",
+      "model_path": "3D/Objects/object_322.model",
+      "object_id": "19",
+      "vertices": 10463,
+      "triangles": 20962,
+      "local_min_mm": [
+        -55.4818459,
+        -40.4039536,
+        -22.9995422
+      ],
+      "local_max_mm": [
+        55.4818459,
+        40.4039536,
+        22.9995422
+      ],
+      "local_size_mm": [
+        110.964,
+        80.808,
+        45.999
+      ],
+      "component_transform": "1 0 0 0 1 0 0 0 1 -59.8961161 72.9998733 -27.8417435",
+      "source_file_hint": "CogletC0_6_5.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O13-P10",
+      "plate": 2,
+      "name": "Full (6).stl_2",
+      "model_path": "3D/Objects/object_316.model",
+      "object_id": "10",
+      "vertices": 28371,
+      "triangles": 56750,
+      "local_min_mm": [
+        -65.1268005,
+        -29.4544945,
+        -39.8734131
+      ],
+      "local_max_mm": [
+        65.1268005,
+        29.4544945,
+        39.8734131
+      ],
+      "local_size_mm": [
+        130.254,
+        58.909,
+        79.747
+      ],
+      "component_transform": "-1 1.2246468e-16 0 -1.2246468e-16 -1 0 0 0 1 -48.4545931 -87.2803421 -3.16589942",
+      "source_file_hint": "CogletC0_6_4.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O13-P11",
+      "plate": 2,
+      "name": "NewPlainEars.stl_1",
+      "model_path": "3D/Objects/object_316.model",
+      "object_id": "11",
+      "vertices": 22750,
+      "triangles": 45504,
+      "local_min_mm": [
+        -21.9466972,
+        -19.554493,
+        -28.3079071
+      ],
+      "local_max_mm": [
+        21.9466972,
+        19.554493,
+        28.3079071
+      ],
+      "local_size_mm": [
+        43.893,
+        39.109,
+        56.616
+      ],
+      "component_transform": "1 0 0 0 1 0 0 0 1 -50.2373782 93.4898608 -14.7314054",
+      "source_file_hint": "CogletC0_6_5.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O13-P12",
+      "plate": 2,
+      "name": "NewPlainEars.stl_2",
+      "model_path": "3D/Objects/object_316.model",
+      "object_id": "12",
+      "vertices": 22753,
+      "triangles": 45510,
+      "local_min_mm": [
+        -21.9561005,
+        -19.554493,
+        -28.308054
+      ],
+      "local_max_mm": [
+        21.9561005,
+        19.554493,
+        28.308054
+      ],
+      "local_size_mm": [
+        43.912,
+        39.109,
+        56.616
+      ],
+      "component_transform": "1 0 0 0 1 0 0 0 1 47.2930443 53.0583137 -14.7312585",
+      "source_file_hint": "CogletC0_6_5.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O13-P4",
+      "plate": 2,
+      "name": "Full.stl_48",
+      "model_path": "3D/Objects/object_316.model",
+      "object_id": "4",
+      "vertices": 50850,
+      "triangles": 101788,
+      "local_min_mm": [
+        -64.572998,
+        -30.7670002,
+        -40.7720032
+      ],
+      "local_max_mm": [
+        64.572998,
+        30.7670002,
+        40.7720032
+      ],
+      "local_size_mm": [
+        129.146,
+        61.534,
+        81.544
+      ],
+      "component_transform": "1 0 0 0 0.989289278 -0.145968228 0 0.145968228 0.989289278 -48.8224173 -15.5079352 -4.1156678",
+      "source_file_hint": "CogletC0_3_V2.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O13-P5",
+      "plate": 2,
+      "name": "Full.stl_20",
+      "model_path": "3D/Objects/object_316.model",
+      "object_id": "5",
+      "vertices": 21296,
+      "triangles": 42612,
+      "local_min_mm": [
+        -64.7954483,
+        -40.5144081,
+        -45.2891579
+      ],
+      "local_max_mm": [
+        64.7954483,
+        40.5144081,
+        45.2891579
+      ],
+      "local_size_mm": [
+        129.591,
+        81.029,
+        90.578
+      ],
+      "component_transform": "-2.19608735e-16 -1 3.27995473e-17 0.989029815 -2.22044605e-16 -0.147716029 0.147716029 0 0.989029815 76.8672799 -50.1804294 -3.66909084",
+      "source_file_hint": "CogletC0_3_V2.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O13-P6",
+      "plate": 2,
+      "name": "Full.stl_30",
+      "model_path": "3D/Objects/object_316.model",
+      "object_id": "6",
+      "vertices": 12638,
+      "triangles": 25276,
+      "local_min_mm": [
+        -21.0044613,
+        -13.404953,
+        -11.9460907
+      ],
+      "local_max_mm": [
+        21.0044613,
+        13.404953,
+        11.9460907
+      ],
+      "local_size_mm": [
+        42.009,
+        26.81,
+        23.892
+      ],
+      "component_transform": "2.22044605e-16 0 1 0 1 0 -1 0 2.22044605e-16 41.5186559 103.329884 -22.0348512",
+      "source_file_hint": "CogletC0_3_V2.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O13-P7",
+      "plate": 2,
+      "name": "Full.stl_38",
+      "model_path": "3D/Objects/object_316.model",
+      "object_id": "7",
+      "vertices": 4917,
+      "triangles": 9830,
+      "local_min_mm": [
+        -11.0843992,
+        -9.9982357,
+        -17.6335373
+      ],
+      "local_max_mm": [
+        11.0843992,
+        9.9982357,
+        17.6335373
+      ],
+      "local_size_mm": [
+        22.169,
+        19.996,
+        35.267
+      ],
+      "component_transform": "1 0 0 0 1 0 0 0 1 95.5070029 96.1268885 -25.4057752",
+      "source_file_hint": "CogletC0_3_V2.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O13-P8",
+      "plate": 2,
+      "name": "Full.stl_65",
+      "model_path": "3D/Objects/object_316.model",
+      "object_id": "8",
+      "vertices": 12638,
+      "triangles": 25276,
+      "local_min_mm": [
+        -21.0044613,
+        -13.404953,
+        -11.9460907
+      ],
+      "local_max_mm": [
+        21.0044613,
+        13.404953,
+        11.9460907
+      ],
+      "local_size_mm": [
+        42.009,
+        26.81,
+        23.892
+      ],
+      "component_transform": "2.22044605e-16 0 -1 0 1 0 1 0 2.22044605e-16 95.7577779 37.7234265 -22.0348512",
+      "source_file_hint": "CogletC0_3_V2.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O13-P9",
+      "plate": 2,
+      "name": "Full (6).stl_1",
+      "model_path": "3D/Objects/object_316.model",
+      "object_id": "9",
+      "vertices": 43520,
+      "triangles": 87192,
+      "local_min_mm": [
+        -65.8437653,
+        -36.6457062,
+        -40.0973854
+      ],
+      "local_max_mm": [
+        65.8437653,
+        36.6457062,
+        40.0973854
+      ],
+      "local_size_mm": [
+        131.688,
+        73.291,
+        80.195
+      ],
+      "component_transform": "1 0 0 0 1 0 0 0 1 -49.3277201 57.6978585 -2.9419271",
+      "source_file_hint": "CogletC0_6_4.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O2-P1",
+      "plate": 3,
+      "name": "Full.stl_32",
+      "model_path": "3D/Objects/object_33.model",
+      "object_id": "1",
+      "vertices": 10886,
+      "triangles": 21772,
+      "local_min_mm": [
+        -15.9976959,
+        -9.32017136,
+        -15.9978695
+      ],
+      "local_max_mm": [
+        15.9976959,
+        9.32017136,
+        15.9978695
+      ],
+      "local_size_mm": [
+        31.995,
+        18.64,
+        31.996
+      ],
+      "component_transform": "1 0 0 0 1 0 0 0 1 0 0 0",
+      "source_file_hint": "CogletC0_3.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O3-P1",
+      "plate": 3,
+      "name": "Full.stl_32",
+      "model_path": "3D/Objects/object_33.model",
+      "object_id": "1",
+      "vertices": 10886,
+      "triangles": 21772,
+      "local_min_mm": [
+        -15.9976959,
+        -9.32017136,
+        -15.9978695
+      ],
+      "local_max_mm": [
+        15.9976959,
+        9.32017136,
+        15.9978695
+      ],
+      "local_size_mm": [
+        31.995,
+        18.64,
+        31.996
+      ],
+      "component_transform": "1 0 0 0 1 0 0 0 1 0 0 0",
+      "source_file_hint": "CogletC0_3.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O100-P99",
+      "plate": 4,
+      "name": "Full (9).stl_1",
+      "model_path": "3D/Objects/object_412.model",
+      "object_id": "99",
+      "vertices": 17472,
+      "triangles": 34952,
+      "local_min_mm": [
+        -12.4722061,
+        -13.206049,
+        -21.5160484
+      ],
+      "local_max_mm": [
+        12.4722061,
+        13.206049,
+        21.5160484
+      ],
+      "local_size_mm": [
+        24.944,
+        26.412,
+        43.032
+      ],
+      "component_transform": "0.418989201 0.211470672 -0.883022199 0.211470672 0.923030957 0.321393851 0.883022199 -0.321393851 0.342020158 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O102-P101",
+      "plate": 4,
+      "name": "Full (10).stl_1",
+      "model_path": "3D/Objects/object_414.model",
+      "object_id": "101",
+      "vertices": 5625,
+      "triangles": 11246,
+      "local_min_mm": [
+        -15.8298244,
+        -14.9999924,
+        -7.50000048
+      ],
+      "local_max_mm": [
+        15.8298244,
+        14.9999924,
+        7.50000048
+      ],
+      "local_size_mm": [
+        31.66,
+        30.0,
+        15.0
+      ],
+      "component_transform": "1 0 0 0 1 0 0 0 1 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O104-P103",
+      "plate": 4,
+      "name": "Full (10).stl_2",
+      "model_path": "3D/Objects/object_415.model",
+      "object_id": "103",
+      "vertices": 5941,
+      "triangles": 11878,
+      "local_min_mm": [
+        -15.8298244,
+        -14.4999924,
+        -7.50000048
+      ],
+      "local_max_mm": [
+        15.8298244,
+        14.4999924,
+        7.50000048
+      ],
+      "local_size_mm": [
+        31.66,
+        29.0,
+        15.0
+      ],
+      "component_transform": "1 0 0 0 1 0 0 0 1 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O22-P21",
+      "plate": 4,
+      "name": "Full (5).stl_1",
+      "model_path": "3D/Objects/object_370.model",
+      "object_id": "21",
+      "vertices": 8635,
+      "triangles": 17286,
+      "local_min_mm": [
+        -15.9085569,
+        -19.6826935,
+        -28.4996605
+      ],
+      "local_max_mm": [
+        15.9085569,
+        19.6826935,
+        28.4996605
+      ],
+      "local_size_mm": [
+        31.817,
+        39.365,
+        56.999
+      ],
+      "component_transform": "2.22044605e-16 0 -1 0 1 0 1 0 2.22044605e-16 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O24-P23",
+      "plate": 4,
+      "name": "Full (5).stl_2",
+      "model_path": "3D/Objects/object_371.model",
+      "object_id": "23",
+      "vertices": 2000,
+      "triangles": 4004,
+      "local_min_mm": [
+        -16.9579754,
+        -17.8764381,
+        -14.4999733
+      ],
+      "local_max_mm": [
+        16.9579754,
+        17.8764381,
+        14.4999733
+      ],
+      "local_size_mm": [
+        33.916,
+        35.753,
+        29.0
+      ],
+      "component_transform": "2.22044605e-16 0 -1 0 1 0 1 0 2.22044605e-16 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O26-P25",
+      "plate": 4,
+      "name": "Full.stl_35",
+      "model_path": "3D/Objects/object_372.model",
+      "object_id": "25",
+      "vertices": 13041,
+      "triangles": 26082,
+      "local_min_mm": [
+        -41.2018585,
+        -41.2018471,
+        -4.50971222
+      ],
+      "local_max_mm": [
+        41.2018585,
+        41.2018471,
+        4.50971222
+      ],
+      "local_size_mm": [
+        82.404,
+        82.404,
+        9.019
+      ],
+      "component_transform": "1 0 0 0 -1 0 0 0 -1 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O28-P27",
+      "plate": 4,
+      "name": "Full.stl_58",
+      "model_path": "3D/Objects/object_373.model",
+      "object_id": "27",
+      "vertices": 4066,
+      "triangles": 8136,
+      "local_min_mm": [
+        -5.0,
+        -42.6256294,
+        -28.059021
+      ],
+      "local_max_mm": [
+        5.0,
+        42.6256294,
+        28.059021
+      ],
+      "local_size_mm": [
+        10.0,
+        85.251,
+        56.118
+      ],
+      "component_transform": "2.22044605e-16 0 1 0 1 0 -1 0 2.22044605e-16 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O30-P29",
+      "plate": 4,
+      "name": "Full.stl_8",
+      "model_path": "3D/Objects/object_374.model",
+      "object_id": "29",
+      "vertices": 7344,
+      "triangles": 14688,
+      "local_min_mm": [
+        -29.6738167,
+        -10.0,
+        -19.7072277
+      ],
+      "local_max_mm": [
+        29.6738167,
+        10.0,
+        19.7072277
+      ],
+      "local_size_mm": [
+        59.348,
+        20.0,
+        39.414
+      ],
+      "component_transform": "1 0 0 0 2.22044605e-16 1 0 -1 2.22044605e-16 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O32-P31",
+      "plate": 4,
+      "name": "Exterior - Eyelid.stl",
+      "model_path": "3D/Objects/object_375.model",
+      "object_id": "31",
+      "vertices": 30630,
+      "triangles": 61260,
+      "local_min_mm": [
+        -10.482132,
+        -16.798748,
+        -16.7998981
+      ],
+      "local_max_mm": [
+        10.482132,
+        16.798748,
+        16.7998981
+      ],
+      "local_size_mm": [
+        20.964,
+        33.597,
+        33.6
+      ],
+      "component_transform": "2.22044605e-16 0 -1 0 1 0 1 0 2.22044605e-16 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O34-P33",
+      "plate": 4,
+      "name": "Full.stl_16",
+      "model_path": "3D/Objects/object_376.model",
+      "object_id": "33",
+      "vertices": 25829,
+      "triangles": 51658,
+      "local_min_mm": [
+        -6.57499981,
+        -15.9136982,
+        -15.9137001
+      ],
+      "local_max_mm": [
+        6.57499981,
+        15.9136982,
+        15.9137001
+      ],
+      "local_size_mm": [
+        13.15,
+        31.827,
+        31.827
+      ],
+      "component_transform": "2.22044605e-16 0 1 0 1 0 -1 0 2.22044605e-16 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O36-P35",
+      "plate": 4,
+      "name": "Full.stl_18",
+      "model_path": "3D/Objects/object_380.model",
+      "object_id": "35",
+      "vertices": 22171,
+      "triangles": 44342,
+      "local_min_mm": [
+        -13.7086792,
+        -13.7084703,
+        -4.375
+      ],
+      "local_max_mm": [
+        13.7086792,
+        13.7084703,
+        4.375
+      ],
+      "local_size_mm": [
+        27.417,
+        27.417,
+        8.75
+      ],
+      "component_transform": "1 0 0 0 1 0 0 0 1 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O38-P37",
+      "plate": 4,
+      "name": "Full.stl_22",
+      "model_path": "3D/Objects/object_381.model",
+      "object_id": "37",
+      "vertices": 21731,
+      "triangles": 43462,
+      "local_min_mm": [
+        -13.7086792,
+        -13.7084703,
+        -4.375
+      ],
+      "local_max_mm": [
+        13.7086792,
+        13.7084703,
+        4.375
+      ],
+      "local_size_mm": [
+        27.417,
+        27.417,
+        8.75
+      ],
+      "component_transform": "1 0 0 0 1 0 0 0 1 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O40-P39",
+      "plate": 4,
+      "name": "Full.stl_9",
+      "model_path": "3D/Objects/object_382.model",
+      "object_id": "39",
+      "vertices": 36066,
+      "triangles": 72132,
+      "local_min_mm": [
+        -11.9999514,
+        -9.375,
+        -11.9990635
+      ],
+      "local_max_mm": [
+        11.9999514,
+        9.375,
+        11.9990635
+      ],
+      "local_size_mm": [
+        24.0,
+        18.75,
+        23.998
+      ],
+      "component_transform": "1 0 0 0 2.22044605e-16 -1 0 1 2.22044605e-16 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O42-P41",
+      "plate": 4,
+      "name": "Full (4).stl_1",
+      "model_path": "3D/Objects/object_383.model",
+      "object_id": "41",
+      "vertices": 1556,
+      "triangles": 3116,
+      "local_min_mm": [
+        -23.3619041,
+        -25.886034,
+        -2.55000305
+      ],
+      "local_max_mm": [
+        23.3619041,
+        25.886034,
+        2.55000305
+      ],
+      "local_size_mm": [
+        46.724,
+        51.772,
+        5.1
+      ],
+      "component_transform": "1 0 0 0 1 0 0 0 1 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O44-P43",
+      "plate": 4,
+      "name": "Full.stl_53",
+      "model_path": "3D/Objects/object_384.model",
+      "object_id": "43",
+      "vertices": 19100,
+      "triangles": 38200,
+      "local_min_mm": [
+        -4.375,
+        -11.9988098,
+        -11.9996223
+      ],
+      "local_max_mm": [
+        4.375,
+        11.9988098,
+        11.9996223
+      ],
+      "local_size_mm": [
+        8.75,
+        23.998,
+        23.999
+      ],
+      "component_transform": "2.22044605e-16 0 1 0 1 0 -1 0 2.22044605e-16 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O46-P45",
+      "plate": 4,
+      "name": "Full.stl_57",
+      "model_path": "3D/Objects/object_385.model",
+      "object_id": "45",
+      "vertices": 20054,
+      "triangles": 40108,
+      "local_min_mm": [
+        -4.375,
+        -11.9988098,
+        -11.9996223
+      ],
+      "local_max_mm": [
+        4.375,
+        11.9988098,
+        11.9996223
+      ],
+      "local_size_mm": [
+        8.75,
+        23.998,
+        23.999
+      ],
+      "component_transform": "2.22044605e-16 0 -1 0 1 0 1 0 2.22044605e-16 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O48-P47",
+      "plate": 4,
+      "name": "Full (3).stl_2",
+      "model_path": "3D/Objects/object_386.model",
+      "object_id": "47",
+      "vertices": 19202,
+      "triangles": 38404,
+      "local_min_mm": [
+        -7.48784161,
+        -9.11501884,
+        -9.18376732
+      ],
+      "local_max_mm": [
+        7.48784161,
+        9.11501884,
+        9.18376732
+      ],
+      "local_size_mm": [
+        14.976,
+        18.23,
+        18.368
+      ],
+      "component_transform": "0.418985594 0.211471267 -0.883023768 0.211471267 0.923031002 0.32139333 0.883023768 -0.32139333 0.342016596 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O50-P49",
+      "plate": 4,
+      "name": "Full (3).stl_1",
+      "model_path": "3D/Objects/object_387.model",
+      "object_id": "49",
+      "vertices": 19650,
+      "triangles": 39300,
+      "local_min_mm": [
+        -7.48784161,
+        -9.11501884,
+        -9.18376732
+      ],
+      "local_max_mm": [
+        7.48784161,
+        9.11501884,
+        9.18376732
+      ],
+      "local_size_mm": [
+        14.976,
+        18.23,
+        18.368
+      ],
+      "component_transform": "0.418989185 -0.211470297 0.883022297 -0.211470297 0.923031232 0.321393307 -0.883022297 -0.321393307 0.342020418 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O52-P51",
+      "plate": 4,
+      "name": "Full.stl_2",
+      "model_path": "3D/Objects/object_388.model",
+      "object_id": "51",
+      "vertices": 25420,
+      "triangles": 50840,
+      "local_min_mm": [
+        -6.17500019,
+        -7.9996953,
+        -7.99969673
+      ],
+      "local_max_mm": [
+        6.17500019,
+        7.9996953,
+        7.99969673
+      ],
+      "local_size_mm": [
+        12.35,
+        15.999,
+        15.999
+      ],
+      "component_transform": "2.22044605e-16 0 1 0 1 0 -1 0 2.22044605e-16 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O54-P53",
+      "plate": 4,
+      "name": "Full.stl_24",
+      "model_path": "3D/Objects/object_389.model",
+      "object_id": "53",
+      "vertices": 14097,
+      "triangles": 28190,
+      "local_min_mm": [
+        -8.59646034,
+        -4.49994755,
+        -3.09852791
+      ],
+      "local_max_mm": [
+        8.59646034,
+        4.49994755,
+        3.09852791
+      ],
+      "local_size_mm": [
+        17.193,
+        9.0,
+        6.197
+      ],
+      "component_transform": "1 0 0 0 -1 0 0 0 -1 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O56-P55",
+      "plate": 4,
+      "name": "HeadMech - EarLock.stl",
+      "model_path": "3D/Objects/object_390.model",
+      "object_id": "55",
+      "vertices": 1440,
+      "triangles": 2880,
+      "local_min_mm": [
+        -5.01341438,
+        -6.19731236,
+        -6.2032032
+      ],
+      "local_max_mm": [
+        5.01341438,
+        6.19731236,
+        6.2032032
+      ],
+      "local_size_mm": [
+        10.027,
+        12.395,
+        12.406
+      ],
+      "component_transform": "-0.185046507 -0.431312333 -0.883021779 -0.431312333 0.843018542 -0.321386697 0.883021779 0.321386697 -0.342027965 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O58-P57",
+      "plate": 4,
+      "name": "HeadMech - EarLock.stl",
+      "model_path": "3D/Objects/object_391.model",
+      "object_id": "57",
+      "vertices": 1440,
+      "triangles": 2880,
+      "local_min_mm": [
+        -5.01341438,
+        -6.19731236,
+        -6.2032032
+      ],
+      "local_max_mm": [
+        5.01341438,
+        6.19731236,
+        6.2032032
+      ],
+      "local_size_mm": [
+        10.027,
+        12.395,
+        12.406
+      ],
+      "component_transform": "-0.185046507 -0.431312333 -0.883021779 -0.431312333 0.843018542 -0.321386697 0.883021779 0.321386697 -0.342027965 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O60-P59",
+      "plate": 4,
+      "name": "Full.stl_10",
+      "model_path": "3D/Objects/object_392.model",
+      "object_id": "59",
+      "vertices": 1010,
+      "triangles": 2016,
+      "local_min_mm": [
+        -6.50538254,
+        -6.50538254,
+        -5.00000381
+      ],
+      "local_max_mm": [
+        6.50538254,
+        6.50538254,
+        5.00000381
+      ],
+      "local_size_mm": [
+        13.011,
+        13.011,
+        10.0
+      ],
+      "component_transform": "0.499978048 0.50000543 -0.707118464 0.50000543 0.500011091 0.707095099 0.707118464 -0.707095099 -1.08605329e-05 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O62-P61",
+      "plate": 4,
+      "name": "Full.stl_10",
+      "model_path": "3D/Objects/object_393.model",
+      "object_id": "61",
+      "vertices": 1010,
+      "triangles": 2016,
+      "local_min_mm": [
+        -6.50538254,
+        -6.50538254,
+        -5.00000381
+      ],
+      "local_max_mm": [
+        6.50538254,
+        6.50538254,
+        5.00000381
+      ],
+      "local_size_mm": [
+        13.011,
+        13.011,
+        10.0
+      ],
+      "component_transform": "0.499978048 0.50000543 -0.707118464 0.50000543 0.500011091 0.707095099 0.707118464 -0.707095099 -1.08605329e-05 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O64-P63",
+      "plate": 4,
+      "name": "Full.stl_10",
+      "model_path": "3D/Objects/object_394.model",
+      "object_id": "63",
+      "vertices": 1010,
+      "triangles": 2016,
+      "local_min_mm": [
+        -6.50538254,
+        -6.50538254,
+        -5.00000381
+      ],
+      "local_max_mm": [
+        6.50538254,
+        6.50538254,
+        5.00000381
+      ],
+      "local_size_mm": [
+        13.011,
+        13.011,
+        10.0
+      ],
+      "component_transform": "0.499978048 0.50000543 -0.707118464 0.50000543 0.500011091 0.707095099 0.707118464 -0.707095099 -1.08605329e-05 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O66-P65",
+      "plate": 4,
+      "name": "Full.stl_10",
+      "model_path": "3D/Objects/object_395.model",
+      "object_id": "65",
+      "vertices": 1010,
+      "triangles": 2016,
+      "local_min_mm": [
+        -6.50538254,
+        -6.50538254,
+        -5.00000381
+      ],
+      "local_max_mm": [
+        6.50538254,
+        6.50538254,
+        5.00000381
+      ],
+      "local_size_mm": [
+        13.011,
+        13.011,
+        10.0
+      ],
+      "component_transform": "0.499978048 0.50000543 -0.707118464 0.50000543 0.500011091 0.707095099 0.707118464 -0.707095099 -1.08605329e-05 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O68-P67",
+      "plate": 4,
+      "name": "Full.stl_10",
+      "model_path": "3D/Objects/object_396.model",
+      "object_id": "67",
+      "vertices": 1010,
+      "triangles": 2016,
+      "local_min_mm": [
+        -6.50538254,
+        -6.50538254,
+        -5.00000381
+      ],
+      "local_max_mm": [
+        6.50538254,
+        6.50538254,
+        5.00000381
+      ],
+      "local_size_mm": [
+        13.011,
+        13.011,
+        10.0
+      ],
+      "component_transform": "0.499978048 0.50000543 -0.707118464 0.50000543 0.500011091 0.707095099 0.707118464 -0.707095099 -1.08605329e-05 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O70-P69",
+      "plate": 4,
+      "name": "Full.stl_10",
+      "model_path": "3D/Objects/object_397.model",
+      "object_id": "69",
+      "vertices": 1010,
+      "triangles": 2016,
+      "local_min_mm": [
+        -6.50538254,
+        -6.50538254,
+        -5.00000381
+      ],
+      "local_max_mm": [
+        6.50538254,
+        6.50538254,
+        5.00000381
+      ],
+      "local_size_mm": [
+        13.011,
+        13.011,
+        10.0
+      ],
+      "component_transform": "0.499978048 0.50000543 -0.707118464 0.50000543 0.500011091 0.707095099 0.707118464 -0.707095099 -1.08605329e-05 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O72-P71",
+      "plate": 4,
+      "name": "Full.stl_10",
+      "model_path": "3D/Objects/object_398.model",
+      "object_id": "71",
+      "vertices": 1010,
+      "triangles": 2016,
+      "local_min_mm": [
+        -6.50538254,
+        -6.50538254,
+        -5.00000381
+      ],
+      "local_max_mm": [
+        6.50538254,
+        6.50538254,
+        5.00000381
+      ],
+      "local_size_mm": [
+        13.011,
+        13.011,
+        10.0
+      ],
+      "component_transform": "0.499978048 0.50000543 -0.707118464 0.50000543 0.500011091 0.707095099 0.707118464 -0.707095099 -1.08605329e-05 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O74-P73",
+      "plate": 4,
+      "name": "Full.stl_10",
+      "model_path": "3D/Objects/object_399.model",
+      "object_id": "73",
+      "vertices": 1010,
+      "triangles": 2016,
+      "local_min_mm": [
+        -6.50538254,
+        -6.50538254,
+        -5.00000381
+      ],
+      "local_max_mm": [
+        6.50538254,
+        6.50538254,
+        5.00000381
+      ],
+      "local_size_mm": [
+        13.011,
+        13.011,
+        10.0
+      ],
+      "component_transform": "0.499978048 0.50000543 -0.707118464 0.50000543 0.500011091 0.707095099 0.707118464 -0.707095099 -1.08605329e-05 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O76-P75",
+      "plate": 4,
+      "name": "Full.stl_10",
+      "model_path": "3D/Objects/object_400.model",
+      "object_id": "75",
+      "vertices": 1010,
+      "triangles": 2016,
+      "local_min_mm": [
+        -6.50538254,
+        -6.50538254,
+        -5.00000381
+      ],
+      "local_max_mm": [
+        6.50538254,
+        6.50538254,
+        5.00000381
+      ],
+      "local_size_mm": [
+        13.011,
+        13.011,
+        10.0
+      ],
+      "component_transform": "0.499978048 0.50000543 -0.707118464 0.50000543 0.500011091 0.707095099 0.707118464 -0.707095099 -1.08605329e-05 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O78-P77",
+      "plate": 4,
+      "name": "Full.stl_10",
+      "model_path": "3D/Objects/object_401.model",
+      "object_id": "77",
+      "vertices": 1010,
+      "triangles": 2016,
+      "local_min_mm": [
+        -6.50538254,
+        -6.50538254,
+        -5.00000381
+      ],
+      "local_max_mm": [
+        6.50538254,
+        6.50538254,
+        5.00000381
+      ],
+      "local_size_mm": [
+        13.011,
+        13.011,
+        10.0
+      ],
+      "component_transform": "0.499978048 0.50000543 -0.707118464 0.50000543 0.500011091 0.707095099 0.707118464 -0.707095099 -1.08605329e-05 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O80-P79",
+      "plate": 4,
+      "name": "Full.stl_10",
+      "model_path": "3D/Objects/object_402.model",
+      "object_id": "79",
+      "vertices": 1010,
+      "triangles": 2016,
+      "local_min_mm": [
+        -6.50538254,
+        -6.50538254,
+        -5.00000381
+      ],
+      "local_max_mm": [
+        6.50538254,
+        6.50538254,
+        5.00000381
+      ],
+      "local_size_mm": [
+        13.011,
+        13.011,
+        10.0
+      ],
+      "component_transform": "0.499978048 0.50000543 -0.707118464 0.50000543 0.500011091 0.707095099 0.707118464 -0.707095099 -1.08605329e-05 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O82-P81",
+      "plate": 4,
+      "name": "Full.stl_10",
+      "model_path": "3D/Objects/object_403.model",
+      "object_id": "81",
+      "vertices": 1010,
+      "triangles": 2016,
+      "local_min_mm": [
+        -6.50538254,
+        -6.50538254,
+        -5.00000381
+      ],
+      "local_max_mm": [
+        6.50538254,
+        6.50538254,
+        5.00000381
+      ],
+      "local_size_mm": [
+        13.011,
+        13.011,
+        10.0
+      ],
+      "component_transform": "0.499978048 0.50000543 -0.707118464 0.50000543 0.500011091 0.707095099 0.707118464 -0.707095099 -1.08605329e-05 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O84-P83",
+      "plate": 4,
+      "name": "Full.stl_10",
+      "model_path": "3D/Objects/object_404.model",
+      "object_id": "83",
+      "vertices": 1010,
+      "triangles": 2016,
+      "local_min_mm": [
+        -6.50538254,
+        -6.50538254,
+        -5.00000381
+      ],
+      "local_max_mm": [
+        6.50538254,
+        6.50538254,
+        5.00000381
+      ],
+      "local_size_mm": [
+        13.011,
+        13.011,
+        10.0
+      ],
+      "component_transform": "0.499978048 0.50000543 -0.707118464 0.50000543 0.500011091 0.707095099 0.707118464 -0.707095099 -1.08605329e-05 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O86-P85",
+      "plate": 4,
+      "name": "Full.stl_10",
+      "model_path": "3D/Objects/object_405.model",
+      "object_id": "85",
+      "vertices": 1010,
+      "triangles": 2016,
+      "local_min_mm": [
+        -6.50538254,
+        -6.50538254,
+        -5.00000381
+      ],
+      "local_max_mm": [
+        6.50538254,
+        6.50538254,
+        5.00000381
+      ],
+      "local_size_mm": [
+        13.011,
+        13.011,
+        10.0
+      ],
+      "component_transform": "0.499978048 0.50000543 -0.707118464 0.50000543 0.500011091 0.707095099 0.707118464 -0.707095099 -1.08605329e-05 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O88-P87",
+      "plate": 4,
+      "name": "Full.stl_10",
+      "model_path": "3D/Objects/object_406.model",
+      "object_id": "87",
+      "vertices": 1010,
+      "triangles": 2016,
+      "local_min_mm": [
+        -6.50538254,
+        -6.50538254,
+        -5.00000381
+      ],
+      "local_max_mm": [
+        6.50538254,
+        6.50538254,
+        5.00000381
+      ],
+      "local_size_mm": [
+        13.011,
+        13.011,
+        10.0
+      ],
+      "component_transform": "0.499978048 0.50000543 -0.707118464 0.50000543 0.500011091 0.707095099 0.707118464 -0.707095099 -1.08605329e-05 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O90-P89",
+      "plate": 4,
+      "name": "Full.stl_10",
+      "model_path": "3D/Objects/object_407.model",
+      "object_id": "89",
+      "vertices": 1010,
+      "triangles": 2016,
+      "local_min_mm": [
+        -6.50538254,
+        -6.50538254,
+        -5.00000381
+      ],
+      "local_max_mm": [
+        6.50538254,
+        6.50538254,
+        5.00000381
+      ],
+      "local_size_mm": [
+        13.011,
+        13.011,
+        10.0
+      ],
+      "component_transform": "0.499978048 0.50000543 -0.707118464 0.50000543 0.500011091 0.707095099 0.707118464 -0.707095099 -1.08605329e-05 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O92-P91",
+      "plate": 4,
+      "name": "Full.stl_10",
+      "model_path": "3D/Objects/object_408.model",
+      "object_id": "91",
+      "vertices": 1010,
+      "triangles": 2016,
+      "local_min_mm": [
+        -6.50538254,
+        -6.50538254,
+        -5.00000381
+      ],
+      "local_max_mm": [
+        6.50538254,
+        6.50538254,
+        5.00000381
+      ],
+      "local_size_mm": [
+        13.011,
+        13.011,
+        10.0
+      ],
+      "component_transform": "0.499978048 0.50000543 -0.707118464 0.50000543 0.500011091 0.707095099 0.707118464 -0.707095099 -1.08605329e-05 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O94-P93",
+      "plate": 4,
+      "name": "Full - EyeAdaptorR.stl",
+      "model_path": "3D/Objects/object_409.model",
+      "object_id": "93",
+      "vertices": 1646,
+      "triangles": 3288,
+      "local_min_mm": [
+        -12.0,
+        -7.02440071,
+        -2.3499999
+      ],
+      "local_max_mm": [
+        12.0,
+        7.02440071,
+        2.3499999
+      ],
+      "local_size_mm": [
+        24.0,
+        14.049,
+        4.7
+      ],
+      "component_transform": "1 0 0 0 1 0 0 0 1 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O96-P95",
+      "plate": 4,
+      "name": "Full - EyeAdaptorR.stl",
+      "model_path": "3D/Objects/object_410.model",
+      "object_id": "95",
+      "vertices": 1646,
+      "triangles": 3288,
+      "local_min_mm": [
+        -12.0,
+        -7.02440071,
+        -2.3499999
+      ],
+      "local_max_mm": [
+        12.0,
+        7.02440071,
+        2.3499999
+      ],
+      "local_size_mm": [
+        24.0,
+        14.049,
+        4.7
+      ],
+      "component_transform": "1 0 0 0 1 0 0 0 1 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O98-P97",
+      "plate": 4,
+      "name": "Full (9).stl_4",
+      "model_path": "3D/Objects/object_411.model",
+      "object_id": "97",
+      "vertices": 17473,
+      "triangles": 34954,
+      "local_min_mm": [
+        -12.4722042,
+        -13.206049,
+        -21.5160484
+      ],
+      "local_max_mm": [
+        12.4722042,
+        13.206049,
+        21.5160484
+      ],
+      "local_size_mm": [
+        24.944,
+        26.412,
+        43.032
+      ],
+      "component_transform": "0.418989333 -0.211470854 0.883022093 -0.211470854 0.923030807 0.321394162 -0.883022093 -0.321394162 0.34202014 0 0 0",
+      "source_file_hint": "CogletC0_6_7.3mf",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O106-P105",
+      "plate": 5,
+      "name": "Grumpy - Face.stl",
+      "model_path": "3D/Objects/object_417.model",
+      "object_id": "105",
+      "vertices": 59401,
+      "triangles": 118822,
+      "local_min_mm": [
+        -64.5732956,
+        -30.767519,
+        -40.8105507
+      ],
+      "local_max_mm": [
+        64.5732956,
+        30.7675209,
+        40.8105507
+      ],
+      "local_size_mm": [
+        129.147,
+        61.535,
+        81.621
+      ],
+      "component_transform": "1 0 0 0 1 0 0 0 1 0 -9.53674316e-07 0",
+      "source_file_hint": "Grumpy - Face.stl",
+      "role": "Unverified"
+    },
+    {
+      "id": "C068-O108-P107",
+      "plate": 5,
+      "name": "GrumpyMouth.stl",
+      "model_path": "3D/Objects/object_418.model",
+      "object_id": "107",
+      "vertices": 4923,
+      "triangles": 9842,
+      "local_min_mm": [
+        -8.72129631,
+        -9.49902344,
+        -15.9542971
+      ],
+      "local_max_mm": [
+        8.72129631,
+        9.49902344,
+        15.9542971
+      ],
+      "local_size_mm": [
+        17.443,
+        18.998,
+        31.909
+      ],
+      "component_transform": "1 0 0 0 1 0 0 0 1 0 0 0",
+      "source_file_hint": "GrumpyMouth.stl",
+      "role": "Unverified"
+    }
+  ]
+}

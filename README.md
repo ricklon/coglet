@@ -122,6 +122,14 @@ both.
 
 ## Documentation
 
+**Follow current work:** [Build progress](docs/BUILD-PROGRESS.md) lists completed
+milestones, the next action, pending input and the latest CAD preview.
+
+Builder readiness, missing mechanical assets and the installation plan are
+tracked in [docs/BUILD-REVIEW.md](docs/BUILD-REVIEW.md). CAD source conventions
+live in [hardware/mechanical](hardware/mechanical/README.md), with
+[SolidCraft CLI and MCP setup](docs/SOLIDCRAFT.md).
+
 | Doc | What it covers |
 |---|---|
 | [docs/AGENT-HUB.md](docs/AGENT-HUB.md) | **Start here.** Check-in, MCP discovery, the tools, listen mode, driving Coglet from Claude Code |
@@ -138,6 +146,11 @@ both.
 
 ## Related projects
 
+- [will-cogley/Coglet](https://github.com/will-cogley/Coglet): Will Cogley's
+  original mechanical design and print files. This build uses the version
+  without TorqueStars, with our own electronics and agent-hub backend.
+  C0_6_8 is the selected CAD baseline; non-TorqueStar adaptation is pending. See the
+  [mechanical source inventory](hardware/mechanical/UPSTREAM.md).
 - [agent-hub](https://github.com/ricklon/agent-hub): the server Coglet is built for.
 - [ricklon/xiaozhi-esp32](https://github.com/ricklon/xiaozhi-esp32): the
   firmware fork, carried here as a submodule for the S3. The C3 firmware
@@ -149,7 +162,13 @@ both.
 
 ## License
 
-TBD for this repo's code. The xiaozhi-esp32 submodule is MIT licensed, and
-`firmware/app` follows its wire protocol and storage layout. Espressif's
-`esp_audio_codec` is under the Espressif Modified MIT license, for use on
-Espressif chips only.
+Unless otherwise marked, this project's original material is licensed under
+**[CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)**
+(Creative Commons Attribution-NonCommercial 4.0 International).
+See [LICENSE](LICENSE) for the full terms and [NOTICE.md](NOTICE.md) for scope,
+upstream attribution and third-party exceptions.
+
+Original Coglet mechanical designs are by Will Cogley / NMRobotics LTD and
+retain their upstream CC BY-NC 4.0 notices. Third-party dependencies retain
+their own licenses, including the MIT-licensed xiaozhi-esp32 submodule and
+Espressif's `esp_audio_codec` under the Espressif Modified MIT license.

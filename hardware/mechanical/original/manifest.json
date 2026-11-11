@@ -1,0 +1,29 @@
+{
+  "upstream": "https://github.com/will-cogley/Coglet",
+  "revision": "993a556a25753eb1f4379d18750e8a9cf1e92c7d",
+  "selected_on": "2026-11-10",
+  "baseline": "C0_6_8",
+  "author": "Will Cogley / NMRobotics LTD",
+  "license": "CC-BY-NC-4.0; see LICENSE.upstream",
+  "status": "Unmodified reference assets; non-TorqueStar adaptation and physical fit unverified",
+  "files": [
+    {
+      "file": "CogletC0_6_8.3mf",
+      "bytes": 21217780,
+      "sha256": "dc40f68e8c185e0d4a1922c320f6b4e1dceb64782c841394d6cfe3f18ad88178",
+      "git_blob": "501291f170e875fd46759ff13c393024964d7419"
+    },
+    {
+      "file": "CogletC0_6_8_Generic.stl",
+      "bytes": 80795684,
+      "sha256": "20c9837786bb13995d3a209ef82e0d39375cf7cf8449e6309b332ec5e9d0b619",
+      "git_blob": "71530a6657de6438e68638ac0e0c3b7096f63aec"
+    },
+    {
+      "file": "LICENSE.upstream",
+      "bytes": 2770,
+      "sha256": "85aebd8b944736c49ea766b0fec112a4f1a288d698235401eed41943fedb3a66",
+      "git_blob": "319bac1074dad07129027fa11e714898d70298ab"
+    }
+  ]
+}

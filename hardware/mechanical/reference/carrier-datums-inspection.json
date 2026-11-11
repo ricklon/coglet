@@ -1,0 +1,1066 @@
+{
+  "bodies": [
+    {
+      "area_mm2": 4155.4400000000005,
+      "bbox": {
+        "max": [
+          19.05,
+          25.4,
+          1.6
+        ],
+        "min": [
+          -19.05,
+          -25.4,
+          0.0
+        ]
+      },
+      "center_of_mass": [
+        0.0,
+        5.873831696613554e-16,
+        0.8
+      ],
+      "closed": true,
+      "density_g_cm3": 1.29,
+      "edges": 12,
+      "face_types": {
+        "plane": 6
+      },
+      "faces": 6,
+      "kernel": {
+        "edges": 12,
+        "faces": 6,
+        "shells": 1,
+        "vertices": 8
+      },
+      "mass_g": 3.99483072,
+      "material": "Default",
+      "name": "CarrierBoardEnvelope",
+      "vertices": 8,
+      "volume_mm3": 3096.768
+    },
+    {
+      "area_mm2": 2.1989053348896883,
+      "bbox": {
+        "max": [
+          -5.85000772189338,
+          10.659986566870321,
+          1.8000000000000014
+        ],
+        "min": [
+          -6.849992278106618,
+          9.660013433129677,
+          1.5999999999999992
+        ]
+      },
+      "center_of_mass": [
+        -6.35,
+        10.159999999999998,
+        1.7000000000000002
+      ],
+      "closed": true,
+      "density_g_cm3": 1.29,
+      "edges": 2,
+      "face_types": {
+        "cylinder": 1,
+        "plane": 2
+      },
+      "faces": 3,
+      "kernel": {
+        "edges": 6,
+        "faces": 4,
+        "shells": 1,
+        "vertices": 4
+      },
+      "mass_g": 0.00020260815253859247,
+      "material": "Default",
+      "name": "D5 XIAO.D0 DATUM",
+      "vertices": 2,
+      "volume_mm3": 0.15706058336324996
+    },
+    {
+      "area_mm2": 2.198905334889691,
+      "bbox": {
+        "max": [
+          -5.85000772189338,
+          8.119986566870322,
+          1.8000000000000012
+        ],
+        "min": [
+          -6.849992278106619,
+          7.120013433129676,
+          1.5999999999999992
+        ]
+      },
+      "center_of_mass": [
+        -6.35,
+        7.619999999999998,
+        1.7000000000000002
+      ],
+      "closed": true,
+      "density_g_cm3": 1.29,
+      "edges": 2,
+      "face_types": {
+        "cylinder": 1,
+        "plane": 2
+      },
+      "faces": 3,
+      "kernel": {
+        "edges": 6,
+        "faces": 4,
+        "shells": 1,
+        "vertices": 4
+      },
+      "mass_g": 0.00020260815253859258,
+      "material": "Default",
+      "name": "D6 XIAO.D1 DATUM",
+      "vertices": 2,
+      "volume_mm3": 0.15706058336325004
+    },
+    {
+      "area_mm2": 2.1989053348896905,
+      "bbox": {
+        "max": [
+          -5.85000772189338,
+          5.579986566870322,
+          1.8000000000000012
+        ],
+        "min": [
+          -6.849992278106619,
+          4.580013433129677,
+          1.5999999999999994
+        ]
+      },
+      "center_of_mass": [
+        -6.35,
+        5.08,
+        1.7000000000000002
+      ],
+      "closed": true,
+      "density_g_cm3": 1.29,
+      "edges": 2,
+      "face_types": {
+        "cylinder": 1,
+        "plane": 2
+      },
+      "faces": 3,
+      "kernel": {
+        "edges": 6,
+        "faces": 4,
+        "shells": 1,
+        "vertices": 4
+      },
+      "mass_g": 0.0002026081525385925,
+      "material": "Default",
+      "name": "D7 XIAO.D2 DATUM",
+      "vertices": 2,
+      "volume_mm3": 0.15706058336325
+    },
+    {
+      "area_mm2": 2.198905334889694,
+      "bbox": {
+        "max": [
+          -5.8500077218933795,
+          3.039986566870322,
+          1.8000000000000014
+        ],
+        "min": [
+          -6.849992278106621,
+          2.040013433129678,
+          1.5999999999999992
+        ]
+      },
+      "center_of_mass": [
+        -6.35,
+        2.54,
+        1.7
+      ],
+      "closed": true,
+      "density_g_cm3": 1.29,
+      "edges": 2,
+      "face_types": {
+        "cylinder": 1,
+        "plane": 2
+      },
+      "faces": 3,
+      "kernel": {
+        "edges": 6,
+        "faces": 4,
+        "shells": 1,
+        "vertices": 4
+      },
+      "mass_g": 0.00020260815253859263,
+      "material": "Default",
+      "name": "D8 XIAO.D3 DATUM",
+      "vertices": 2,
+      "volume_mm3": 0.1570605833632501
+    },
+    {
+      "area_mm2": 2.1989053348896928,
+      "bbox": {
+        "max": [
+          -5.850007721893379,
+          0.49998656687032134,
+          1.800000000000001
+        ],
+        "min": [
+          -6.84999227810662,
+          -0.4999865668703214,
+          1.599999999999999
+        ]
+      },
+      "center_of_mass": [
+        -6.35,
+        -2.5361068855704914e-17,
+        1.7
+      ],
+      "closed": true,
+      "density_g_cm3": 1.29,
+      "edges": 2,
+      "face_types": {
+        "cylinder": 1,
+        "plane": 2
+      },
+      "faces": 3,
+      "kernel": {
+        "edges": 6,
+        "faces": 4,
+        "shells": 1,
+        "vertices": 4
+      },
+      "mass_g": 0.00020260815253859263,
+      "material": "Default",
+      "name": "D9 XIAO.D4 DATUM",
+      "vertices": 2,
+      "volume_mm3": 0.1570605833632501
+    },
+    {
+      "area_mm2": 2.1989053348896936,
+      "bbox": {
+        "max": [
+          -5.8500077218933795,
+          -2.0400134331296784,
+          1.8000000000000014
+        ],
+        "min": [
+          -6.84999227810662,
+          -3.039986566870322,
+          1.5999999999999988
+        ]
+      },
+      "center_of_mass": [
+        -6.35,
+        -2.54,
+        1.7
+      ],
+      "closed": true,
+      "density_g_cm3": 1.29,
+      "edges": 2,
+      "face_types": {
+        "cylinder": 1,
+        "plane": 2
+      },
+      "faces": 3,
+      "kernel": {
+        "edges": 6,
+        "faces": 4,
+        "shells": 1,
+        "vertices": 4
+      },
+      "mass_g": 0.00020260815253859263,
+      "material": "Default",
+      "name": "D10 XIAO.D5 DATUM",
+      "vertices": 2,
+      "volume_mm3": 0.1570605833632501
+    },
+    {
+      "area_mm2": 2.1989053348896888,
+      "bbox": {
+        "max": [
+          9.38999227810662,
+          10.659986566870321,
+          1.800000000000001
+        ],
+        "min": [
+          8.390007721893381,
+          9.660013433129677,
+          1.5999999999999994
+        ]
+      },
+      "center_of_mass": [
+        8.89,
+        10.159999999999998,
+        1.7
+      ],
+      "closed": true,
+      "density_g_cm3": 1.29,
+      "edges": 2,
+      "face_types": {
+        "cylinder": 1,
+        "plane": 2
+      },
+      "faces": 3,
+      "kernel": {
+        "edges": 6,
+        "faces": 4,
+        "shells": 1,
+        "vertices": 4
+      },
+      "mass_g": 0.0002026081525385922,
+      "material": "Default",
+      "name": "H5 XIAO.5V DATUM",
+      "vertices": 2,
+      "volume_mm3": 0.15706058336324977
+    },
+    {
+      "area_mm2": 2.198905334889684,
+      "bbox": {
+        "max": [
+          9.38999227810662,
+          8.11998656687032,
+          1.8000000000000012
+        ],
+        "min": [
+          8.390007721893385,
+          7.120013433129678,
+          1.5999999999999992
+        ]
+      },
+      "center_of_mass": [
+        8.890000000000002,
+        7.619999999999998,
+        1.7000000000000002
+      ],
+      "closed": true,
+      "density_g_cm3": 1.29,
+      "edges": 2,
+      "face_types": {
+        "cylinder": 1,
+        "plane": 2
+      },
+      "faces": 3,
+      "kernel": {
+        "edges": 6,
+        "faces": 4,
+        "shells": 1,
+        "vertices": 4
+      },
+      "mass_g": 0.00020260815253859174,
+      "material": "Default",
+      "name": "H6 XIAO.GND DATUM",
+      "vertices": 2,
+      "volume_mm3": 0.1570605833632494
+    },
+    {
+      "area_mm2": 2.19890533488969,
+      "bbox": {
+        "max": [
+          9.38999227810662,
+          5.579986566870322,
+          1.8000000000000012
+        ],
+        "min": [
+          8.390007721893381,
+          4.580013433129679,
+          1.5999999999999992
+        ]
+      },
+      "center_of_mass": [
+        8.89,
+        5.079999999999999,
+        1.7000000000000002
+      ],
+      "closed": true,
+      "density_g_cm3": 1.29,
+      "edges": 2,
+      "face_types": {
+        "cylinder": 1,
+        "plane": 2
+      },
+      "faces": 3,
+      "kernel": {
+        "edges": 6,
+        "faces": 4,
+        "shells": 1,
+        "vertices": 4
+      },
+      "mass_g": 0.00020260815253859247,
+      "material": "Default",
+      "name": "H7 XIAO.3V3 DATUM",
+      "vertices": 2,
+      "volume_mm3": 0.15706058336324996
+    },
+    {
+      "area_mm2": 2.1989053348896928,
+      "bbox": {
+        "max": [
+          9.38999227810662,
+          3.0399865668703216,
+          1.8000000000000014
+        ],
+        "min": [
+          8.39000772189338,
+          2.0400134331296784,
+          1.5999999999999992
+        ]
+      },
+      "center_of_mass": [
+        8.89,
+        2.5400000000000005,
+        1.7000000000000002
+      ],
+      "closed": true,
+      "density_g_cm3": 1.29,
+      "edges": 2,
+      "face_types": {
+        "cylinder": 1,
+        "plane": 2
+      },
+      "faces": 3,
+      "kernel": {
+        "edges": 6,
+        "faces": 4,
+        "shells": 1,
+        "vertices": 4
+      },
+      "mass_g": 0.00020260815253859258,
+      "material": "Default",
+      "name": "H8 XIAO.D10 DATUM",
+      "vertices": 2,
+      "volume_mm3": 0.15706058336325004
+    },
+    {
+      "area_mm2": 2.1989053348897016,
+      "bbox": {
+        "max": [
+          -13.470007721893378,
+          20.819986566870327,
+          1.8000000000000012
+        ],
+        "min": [
+          -14.469992278106623,
+          19.820013433129674,
+          1.5999999999999992
+        ]
+      },
+      "center_of_mass": [
+        -13.97,
+        20.32,
+        1.7000000000000002
+      ],
+      "closed": true,
+      "density_g_cm3": 1.29,
+      "edges": 2,
+      "face_types": {
+        "cylinder": 1,
+        "plane": 2
+      },
+      "faces": 3,
+      "kernel": {
+        "edges": 6,
+        "faces": 4,
+        "shells": 1,
+        "vertices": 4
+      },
+      "mass_g": 0.00020260815253859358,
+      "material": "Default",
+      "name": "A1 MAX98357A.Vin DATUM",
+      "vertices": 2,
+      "volume_mm3": 0.15706058336325082
+    },
+    {
+      "area_mm2": 2.1989053348897016,
+      "bbox": {
+        "max": [
+          -13.470007721893378,
+          18.279986566870328,
+          1.8000000000000012
+        ],
+        "min": [
+          -14.469992278106623,
+          17.280013433129675,
+          1.5999999999999992
+        ]
+      },
+      "center_of_mass": [
+        -13.97,
+        17.78,
+        1.7
+      ],
+      "closed": true,
+      "density_g_cm3": 1.29,
+      "edges": 2,
+      "face_types": {
+        "cylinder": 1,
+        "plane": 2
+      },
+      "faces": 3,
+      "kernel": {
+        "edges": 6,
+        "faces": 4,
+        "shells": 1,
+        "vertices": 4
+      },
+      "mass_g": 0.0002026081525385935,
+      "material": "Default",
+      "name": "A2 MAX98357A.GND DATUM",
+      "vertices": 2,
+      "volume_mm3": 0.15706058336325077
+    },
+    {
+      "area_mm2": 2.1989053348896888,
+      "bbox": {
+        "max": [
+          -13.470007721893378,
+          10.659986566870321,
+          1.800000000000001
+        ],
+        "min": [
+          -14.469992278106622,
+          9.660013433129679,
+          1.5999999999999992
+        ]
+      },
+      "center_of_mass": [
+        -13.97,
+        10.16,
+        1.7000000000000002
+      ],
+      "closed": true,
+      "density_g_cm3": 1.29,
+      "edges": 2,
+      "face_types": {
+        "cylinder": 1,
+        "plane": 2
+      },
+      "faces": 3,
+      "kernel": {
+        "edges": 6,
+        "faces": 4,
+        "shells": 1,
+        "vertices": 4
+      },
+      "mass_g": 0.00020260815253859228,
+      "material": "Default",
+      "name": "A5 MAX98357A.DIN DATUM",
+      "vertices": 2,
+      "volume_mm3": 0.15706058336324982
+    },
+    {
+      "area_mm2": 2.198905334889683,
+      "bbox": {
+        "max": [
+          -13.470007721893378,
+          8.11998656687032,
+          1.8000000000000012
+        ],
+        "min": [
+          -14.469992278106618,
+          7.120013433129678,
+          1.5999999999999992
+        ]
+      },
+      "center_of_mass": [
+        -13.969999999999999,
+        7.619999999999997,
+        1.7000000000000002
+      ],
+      "closed": true,
+      "density_g_cm3": 1.29,
+      "edges": 2,
+      "face_types": {
+        "cylinder": 1,
+        "plane": 2
+      },
+      "faces": 3,
+      "kernel": {
+        "edges": 6,
+        "faces": 4,
+        "shells": 1,
+        "vertices": 4
+      },
+      "mass_g": 0.00020260815253859163,
+      "material": "Default",
+      "name": "A6 MAX98357A.BCLK DATUM",
+      "vertices": 2,
+      "volume_mm3": 0.15706058336324932
+    },
+    {
+      "area_mm2": 2.1989053348896896,
+      "bbox": {
+        "max": [
+          -13.470007721893381,
+          5.579986566870322,
+          1.8000000000000012
+        ],
+        "min": [
+          -14.469992278106623,
+          4.580013433129679,
+          1.5999999999999992
+        ]
+      },
+      "center_of_mass": [
+        -13.97,
+        5.08,
+        1.7000000000000002
+      ],
+      "closed": true,
+      "density_g_cm3": 1.29,
+      "edges": 2,
+      "face_types": {
+        "cylinder": 1,
+        "plane": 2
+      },
+      "faces": 3,
+      "kernel": {
+        "edges": 6,
+        "faces": 4,
+        "shells": 1,
+        "vertices": 4
+      },
+      "mass_g": 0.00020260815253859233,
+      "material": "Default",
+      "name": "A7 MAX98357A.LRC DATUM",
+      "vertices": 2,
+      "volume_mm3": 0.15706058336324985
+    },
+    {
+      "area_mm2": 2.198905334889684,
+      "bbox": {
+        "max": [
+          14.469992278106618,
+          -7.120013433129678,
+          1.8000000000000012
+        ],
+        "min": [
+          13.470007721893378,
+          -8.11998656687032,
+          1.5999999999997128
+        ]
+      },
+      "center_of_mass": [
+        13.969999999999999,
+        -7.619999999999998,
+        1.6999999999999247
+      ],
+      "closed": true,
+      "density_g_cm3": 1.29,
+      "edges": 2,
+      "face_types": {
+        "cylinder": 1,
+        "plane": 2
+      },
+      "faces": 3,
+      "kernel": {
+        "edges": 6,
+        "faces": 4,
+        "shells": 1,
+        "vertices": 4
+      },
+      "mass_g": 0.00020260815253859158,
+      "material": "Default",
+      "name": "J12 INMP441.SCK DATUM",
+      "vertices": 2,
+      "volume_mm3": 0.15706058336324927
+    },
+    {
+      "area_mm2": 2.1989053348896888,
+      "bbox": {
+        "max": [
+          14.469992278106622,
+          -9.660013433129679,
+          1.800000000000001
+        ],
+        "min": [
+          13.470007721893378,
+          -10.659986566870321,
+          1.5999999999999992
+        ]
+      },
+      "center_of_mass": [
+        13.97,
+        -10.16,
+        1.7000000000000004
+      ],
+      "closed": true,
+      "density_g_cm3": 1.29,
+      "edges": 2,
+      "face_types": {
+        "cylinder": 1,
+        "plane": 2
+      },
+      "faces": 3,
+      "kernel": {
+        "edges": 6,
+        "faces": 4,
+        "shells": 1,
+        "vertices": 4
+      },
+      "mass_g": 0.00020260815253859228,
+      "material": "Default",
+      "name": "J13 INMP441.WS DATUM",
+      "vertices": 2,
+      "volume_mm3": 0.15706058336324982
+    },
+    {
+      "area_mm2": 2.198905334889691,
+      "bbox": {
+        "max": [
+          14.46999227810662,
+          -12.200013433129676,
+          1.8000000000000012
+        ],
+        "min": [
+          13.470007721893383,
+          -13.19998656687032,
+          1.5999999999999992
+        ]
+      },
+      "center_of_mass": [
+        13.97,
+        -12.7,
+        1.7000000000000002
+      ],
+      "closed": true,
+      "density_g_cm3": 1.29,
+      "edges": 2,
+      "face_types": {
+        "cylinder": 1,
+        "plane": 2
+      },
+      "faces": 3,
+      "kernel": {
+        "edges": 6,
+        "faces": 4,
+        "shells": 1,
+        "vertices": 4
+      },
+      "mass_g": 0.00020260815253859242,
+      "material": "Default",
+      "name": "J14 INMP441.SD DATUM",
+      "vertices": 2,
+      "volume_mm3": 0.15706058336324993
+    },
+    {
+      "area_mm2": 2.1989053348896936,
+      "bbox": {
+        "max": [
+          14.46999227810662,
+          -14.740013433129675,
+          1.800000000000001
+        ],
+        "min": [
+          13.47000772189338,
+          -15.739986566870328,
+          1.5999999999999994
+        ]
+      },
+      "center_of_mass": [
+        13.97,
+        -15.24,
+        1.7000000000000002
+      ],
+      "closed": true,
+      "density_g_cm3": 1.29,
+      "edges": 2,
+      "face_types": {
+        "cylinder": 1,
+        "plane": 2
+      },
+      "faces": 3,
+      "kernel": {
+        "edges": 6,
+        "faces": 4,
+        "shells": 1,
+        "vertices": 4
+      },
+      "mass_g": 0.00020260815253859271,
+      "material": "Default",
+      "name": "J15 INMP441.L/R DATUM",
+      "vertices": 2,
+      "volume_mm3": 0.15706058336325016
+    },
+    {
+      "area_mm2": 2.1989053348897016,
+      "bbox": {
+        "max": [
+          14.469992278106623,
+          -17.280013433129675,
+          1.8000000000000012
+        ],
+        "min": [
+          13.470007721893378,
+          -18.279986566870328,
+          1.5999999999999992
+        ]
+      },
+      "center_of_mass": [
+        13.97,
+        -17.78,
+        1.7000000000000002
+      ],
+      "closed": true,
+      "density_g_cm3": 1.29,
+      "edges": 2,
+      "face_types": {
+        "cylinder": 1,
+        "plane": 2
+      },
+      "faces": 3,
+      "kernel": {
+        "edges": 6,
+        "faces": 4,
+        "shells": 1,
+        "vertices": 4
+      },
+      "mass_g": 0.00020260815253859358,
+      "material": "Default",
+      "name": "J16 INMP441.VDD DATUM",
+      "vertices": 2,
+      "volume_mm3": 0.15706058336325082
+    },
+    {
+      "area_mm2": 2.198905334889701,
+      "bbox": {
+        "max": [
+          14.469992278106623,
+          -19.820013433129674,
+          1.8000000000000012
+        ],
+        "min": [
+          13.470007721893378,
+          -20.819986566870327,
+          1.5999999999999992
+        ]
+      },
+      "center_of_mass": [
+        13.97,
+        -20.32,
+        1.7
+      ],
+      "closed": true,
+      "density_g_cm3": 1.29,
+      "edges": 2,
+      "face_types": {
+        "cylinder": 1,
+        "plane": 2
+      },
+      "faces": 3,
+      "kernel": {
+        "edges": 6,
+        "faces": 4,
+        "shells": 1,
+        "vertices": 4
+      },
+      "mass_g": 0.00020260815253859353,
+      "material": "Default",
+      "name": "J17 INMP441.GND DATUM",
+      "vertices": 2,
+      "volume_mm3": 0.1570605833632508
+    },
+    {
+      "area_mm2": 2.1989053348896843,
+      "bbox": {
+        "max": [
+          14.46999227810662,
+          8.11998656687032,
+          1.8000000000000014
+        ],
+        "min": [
+          13.470007721893385,
+          7.120013433129678,
+          1.5999999999999992
+        ]
+      },
+      "center_of_mass": [
+        13.970000000000002,
+        7.619999999999999,
+        1.7000000000000002
+      ],
+      "closed": true,
+      "density_g_cm3": 1.29,
+      "edges": 2,
+      "face_types": {
+        "cylinder": 1,
+        "plane": 2
+      },
+      "faces": 3,
+      "kernel": {
+        "edges": 6,
+        "faces": 4,
+        "shells": 1,
+        "vertices": 4
+      },
+      "mass_g": 0.00020260815253859163,
+      "material": "Default",
+      "name": "J6 PCA9685.GND DATUM",
+      "vertices": 2,
+      "volume_mm3": 0.15706058336324932
+    },
+    {
+      "area_mm2": 2.1989053348896905,
+      "bbox": {
+        "max": [
+          14.469992278106622,
+          5.579986566870322,
+          1.800000000000001
+        ],
+        "min": [
+          13.47000772189338,
+          4.580013433129678,
+          1.5999999999999994
+        ]
+      },
+      "center_of_mass": [
+        13.97,
+        5.08,
+        1.7
+      ],
+      "closed": true,
+      "density_g_cm3": 1.29,
+      "edges": 2,
+      "face_types": {
+        "cylinder": 1,
+        "plane": 2
+      },
+      "faces": 3,
+      "kernel": {
+        "edges": 6,
+        "faces": 4,
+        "shells": 1,
+        "vertices": 4
+      },
+      "mass_g": 0.0002026081525385926,
+      "material": "Default",
+      "name": "J7 PCA9685.VCC DATUM",
+      "vertices": 2,
+      "volume_mm3": 0.15706058336325007
+    },
+    {
+      "area_mm2": 2.19890533488969,
+      "bbox": {
+        "max": [
+          14.46999227810662,
+          3.039986566870322,
+          1.800000000000001
+        ],
+        "min": [
+          13.470007721893381,
+          2.0400134331296784,
+          1.599999999999999
+        ]
+      },
+      "center_of_mass": [
+        13.97,
+        2.54,
+        1.7
+      ],
+      "closed": true,
+      "density_g_cm3": 1.29,
+      "edges": 2,
+      "face_types": {
+        "cylinder": 1,
+        "plane": 2
+      },
+      "faces": 3,
+      "kernel": {
+        "edges": 6,
+        "faces": 4,
+        "shells": 1,
+        "vertices": 4
+      },
+      "mass_g": 0.00020260815253859228,
+      "material": "Default",
+      "name": "J8 PCA9685./OE DATUM",
+      "vertices": 2,
+      "volume_mm3": 0.15706058336324982
+    },
+    {
+      "area_mm2": 2.19890533488969,
+      "bbox": {
+        "max": [
+          14.469992278106625,
+          0.4999865668703212,
+          1.800000000000001
+        ],
+        "min": [
+          13.47000772189338,
+          -0.4999865668703214,
+          1.599999999999999
+        ]
+      },
+      "center_of_mass": [
+        13.97,
+        2.7360939724210074e-16,
+        1.6999999999999997
+      ],
+      "closed": true,
+      "density_g_cm3": 1.29,
+      "edges": 2,
+      "face_types": {
+        "cylinder": 1,
+        "plane": 2
+      },
+      "faces": 3,
+      "kernel": {
+        "edges": 6,
+        "faces": 4,
+        "shells": 1,
+        "vertices": 4
+      },
+      "mass_g": 0.00020260815253859223,
+      "material": "Default",
+      "name": "J9 PCA9685.SDA DATUM",
+      "vertices": 2,
+      "volume_mm3": 0.1570605833632498
+    },
+    {
+      "area_mm2": 2.19890533488969,
+      "bbox": {
+        "max": [
+          14.469992278106622,
+          -2.0400134331296784,
+          1.8000000000000012
+        ],
+        "min": [
+          13.470007721893381,
+          -3.039986566870322,
+          1.599999999999999
+        ]
+      },
+      "center_of_mass": [
+        13.97,
+        -2.540000000000001,
+        1.7000000000000002
+      ],
+      "closed": true,
+      "density_g_cm3": 1.29,
+      "edges": 2,
+      "face_types": {
+        "cylinder": 1,
+        "plane": 2
+      },
+      "faces": 3,
+      "kernel": {
+        "edges": 6,
+        "faces": 4,
+        "shells": 1,
+        "vertices": 4
+      },
+      "mass_g": 0.0002026081525385924,
+      "material": "Default",
+      "name": "J10 PCA9685.SCL DATUM",
+      "vertices": 2,
+      "volume_mm3": 0.1570605833632499
+    }
+  ],
+  "body_count": 27,
+  "total": {
+    "area_mm2": 4212.611538707135,
+    "edges": 64,
+    "faces": 84,
+    "mass_g": 4.0000985319660085,
+    "open_bodies_skipped": 0,
+    "vertices": 60,
+    "volume_mm3": 3100.8515751674404
+  }
+}

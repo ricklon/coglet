@@ -1,0 +1,260 @@
+{
+  "purpose": "Unpowered diameter screening; smooth bores, no spline geometry",
+  "plate_mm": [
+    100,
+    72,
+    2
+  ],
+  "label_depth_mm": 0.4,
+  "range_is_design_choice_not_servo_specification": true,
+  "holes": [
+    {
+      "diameter_mm": 3.0,
+      "center_mm": [
+        8,
+        12
+      ],
+      "parameter": "diameter_00"
+    },
+    {
+      "diameter_mm": 3.1,
+      "center_mm": [
+        20,
+        12
+      ],
+      "parameter": "diameter_01"
+    },
+    {
+      "diameter_mm": 3.2,
+      "center_mm": [
+        32,
+        12
+      ],
+      "parameter": "diameter_02"
+    },
+    {
+      "diameter_mm": 3.3,
+      "center_mm": [
+        44,
+        12
+      ],
+      "parameter": "diameter_03"
+    },
+    {
+      "diameter_mm": 3.4,
+      "center_mm": [
+        56,
+        12
+      ],
+      "parameter": "diameter_04"
+    },
+    {
+      "diameter_mm": 3.5,
+      "center_mm": [
+        68,
+        12
+      ],
+      "parameter": "diameter_05"
+    },
+    {
+      "diameter_mm": 3.6,
+      "center_mm": [
+        80,
+        12
+      ],
+      "parameter": "diameter_06"
+    },
+    {
+      "diameter_mm": 3.7,
+      "center_mm": [
+        92,
+        12
+      ],
+      "parameter": "diameter_07"
+    },
+    {
+      "diameter_mm": 3.8,
+      "center_mm": [
+        8,
+        28
+      ],
+      "parameter": "diameter_08"
+    },
+    {
+      "diameter_mm": 3.9,
+      "center_mm": [
+        20,
+        28
+      ],
+      "parameter": "diameter_09"
+    },
+    {
+      "diameter_mm": 4.0,
+      "center_mm": [
+        32,
+        28
+      ],
+      "parameter": "diameter_10"
+    },
+    {
+      "diameter_mm": 4.1,
+      "center_mm": [
+        44,
+        28
+      ],
+      "parameter": "diameter_11"
+    },
+    {
+      "diameter_mm": 4.2,
+      "center_mm": [
+        56,
+        28
+      ],
+      "parameter": "diameter_12"
+    },
+    {
+      "diameter_mm": 4.3,
+      "center_mm": [
+        68,
+        28
+      ],
+      "parameter": "diameter_13"
+    },
+    {
+      "diameter_mm": 4.4,
+      "center_mm": [
+        80,
+        28
+      ],
+      "parameter": "diameter_14"
+    },
+    {
+      "diameter_mm": 4.5,
+      "center_mm": [
+        92,
+        28
+      ],
+      "parameter": "diameter_15"
+    },
+    {
+      "diameter_mm": 4.6,
+      "center_mm": [
+        8,
+        44
+      ],
+      "parameter": "diameter_16"
+    },
+    {
+      "diameter_mm": 4.7,
+      "center_mm": [
+        20,
+        44
+      ],
+      "parameter": "diameter_17"
+    },
+    {
+      "diameter_mm": 4.8,
+      "center_mm": [
+        32,
+        44
+      ],
+      "parameter": "diameter_18"
+    },
+    {
+      "diameter_mm": 4.9,
+      "center_mm": [
+        44,
+        44
+      ],
+      "parameter": "diameter_19"
+    },
+    {
+      "diameter_mm": 5.0,
+      "center_mm": [
+        56,
+        44
+      ],
+      "parameter": "diameter_20"
+    },
+    {
+      "diameter_mm": 5.1,
+      "center_mm": [
+        68,
+        44
+      ],
+      "parameter": "diameter_21"
+    },
+    {
+      "diameter_mm": 5.2,
+      "center_mm": [
+        80,
+        44
+      ],
+      "parameter": "diameter_22"
+    },
+    {
+      "diameter_mm": 5.3,
+      "center_mm": [
+        92,
+        44
+      ],
+      "parameter": "diameter_23"
+    },
+    {
+      "diameter_mm": 5.4,
+      "center_mm": [
+        8,
+        60
+      ],
+      "parameter": "diameter_24"
+    },
+    {
+      "diameter_mm": 5.5,
+      "center_mm": [
+        20,
+        60
+      ],
+      "parameter": "diameter_25"
+    },
+    {
+      "diameter_mm": 5.6,
+      "center_mm": [
+        32,
+        60
+      ],
+      "parameter": "diameter_26"
+    },
+    {
+      "diameter_mm": 5.7,
+      "center_mm": [
+        44,
+        60
+      ],
+      "parameter": "diameter_27"
+    },
+    {
+      "diameter_mm": 5.8,
+      "center_mm": [
+        56,
+        60
+      ],
+      "parameter": "diameter_28"
+    },
+    {
+      "diameter_mm": 5.9,
+      "center_mm": [
+        68,
+        60
+      ],
+      "parameter": "diameter_29"
+    },
+    {
+      "diameter_mm": 6.0,
+      "center_mm": [
+        80,
+        60
+      ],
+      "parameter": "diameter_30"
+    }
+  ]
+}

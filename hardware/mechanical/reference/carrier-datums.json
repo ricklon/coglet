@@ -1,0 +1,244 @@
+{
+  "source": "tools/carrier/carrier.py",
+  "units": "mm",
+  "origin": "Board underside center; +Z toward components; +Y toward row 1 / USB",
+  "board_mm": [
+    38.1,
+    50.8,
+    1.6
+  ],
+  "markers": "1 mm diameter by 0.2 mm tall visualization only; not drilled holes or header dimensions",
+  "pads": [
+    {
+      "pad": "XIAO.D0",
+      "hole": "D1",
+      "x_mm": -6.35,
+      "y_mm": 20.32,
+      "z_mm": 1.6,
+      "marker_only": true
+    },
+    {
+      "pad": "XIAO.D1",
+      "hole": "D2",
+      "x_mm": -6.35,
+      "y_mm": 17.78,
+      "z_mm": 1.6,
+      "marker_only": true
+    },
+    {
+      "pad": "XIAO.D2",
+      "hole": "D3",
+      "x_mm": -6.35,
+      "y_mm": 15.24,
+      "z_mm": 1.6,
+      "marker_only": true
+    },
+    {
+      "pad": "XIAO.D3",
+      "hole": "D4",
+      "x_mm": -6.35,
+      "y_mm": 12.7,
+      "z_mm": 1.6,
+      "marker_only": true
+    },
+    {
+      "pad": "XIAO.D4",
+      "hole": "D5",
+      "x_mm": -6.35,
+      "y_mm": 10.16,
+      "z_mm": 1.6,
+      "marker_only": true
+    },
+    {
+      "pad": "XIAO.D5",
+      "hole": "D6",
+      "x_mm": -6.35,
+      "y_mm": 7.62,
+      "z_mm": 1.6,
+      "marker_only": true
+    },
+    {
+      "pad": "XIAO.5V",
+      "hole": "H1",
+      "x_mm": 8.89,
+      "y_mm": 20.32,
+      "z_mm": 1.6,
+      "marker_only": true
+    },
+    {
+      "pad": "XIAO.GND",
+      "hole": "H2",
+      "x_mm": 8.89,
+      "y_mm": 17.78,
+      "z_mm": 1.6,
+      "marker_only": true
+    },
+    {
+      "pad": "XIAO.3V3",
+      "hole": "H3",
+      "x_mm": 8.89,
+      "y_mm": 15.24,
+      "z_mm": 1.6,
+      "marker_only": true
+    },
+    {
+      "pad": "XIAO.D10",
+      "hole": "H4",
+      "x_mm": 8.89,
+      "y_mm": 12.7,
+      "z_mm": 1.6,
+      "marker_only": true
+    },
+    {
+      "pad": "MAX98357A.Vin",
+      "hole": "D17",
+      "x_mm": -6.35,
+      "y_mm": -20.32,
+      "z_mm": 1.6,
+      "marker_only": true
+    },
+    {
+      "pad": "MAX98357A.GND",
+      "hole": "D16",
+      "x_mm": -6.35,
+      "y_mm": -17.78,
+      "z_mm": 1.6,
+      "marker_only": true
+    },
+    {
+      "pad": "MAX98357A.SD",
+      "hole": "D15",
+      "x_mm": -6.35,
+      "y_mm": -15.24,
+      "z_mm": 1.6,
+      "marker_only": true
+    },
+    {
+      "pad": "MAX98357A.GAIN",
+      "hole": "D14",
+      "x_mm": -6.35,
+      "y_mm": -12.7,
+      "z_mm": 1.6,
+      "marker_only": true
+    },
+    {
+      "pad": "MAX98357A.DIN",
+      "hole": "D13",
+      "x_mm": -6.35,
+      "y_mm": -10.16,
+      "z_mm": 1.6,
+      "marker_only": true
+    },
+    {
+      "pad": "MAX98357A.BCLK",
+      "hole": "D12",
+      "x_mm": -6.35,
+      "y_mm": -7.62,
+      "z_mm": 1.6,
+      "marker_only": true
+    },
+    {
+      "pad": "MAX98357A.LRC",
+      "hole": "D11",
+      "x_mm": -6.35,
+      "y_mm": -5.08,
+      "z_mm": 1.6,
+      "marker_only": true
+    },
+    {
+      "pad": "INMP441.SCK",
+      "hole": "C2",
+      "x_mm": -8.89,
+      "y_mm": 17.78,
+      "z_mm": 1.6,
+      "marker_only": true
+    },
+    {
+      "pad": "INMP441.WS",
+      "hole": "C3",
+      "x_mm": -8.89,
+      "y_mm": 15.24,
+      "z_mm": 1.6,
+      "marker_only": true
+    },
+    {
+      "pad": "INMP441.SD",
+      "hole": "C4",
+      "x_mm": -8.89,
+      "y_mm": 12.7,
+      "z_mm": 1.6,
+      "marker_only": true
+    },
+    {
+      "pad": "INMP441.GND",
+      "hole": "I2",
+      "x_mm": 11.43,
+      "y_mm": 17.78,
+      "z_mm": 1.6,
+      "marker_only": true
+    },
+    {
+      "pad": "INMP441.VDD",
+      "hole": "I3",
+      "x_mm": 11.43,
+      "y_mm": 15.24,
+      "z_mm": 1.6,
+      "marker_only": true
+    },
+    {
+      "pad": "PCA9685.SDA",
+      "hole": "C5",
+      "x_mm": -8.89,
+      "y_mm": 10.16,
+      "z_mm": 1.6,
+      "marker_only": true
+    },
+    {
+      "pad": "PCA9685.SCL",
+      "hole": "B6",
+      "x_mm": -11.43,
+      "y_mm": 7.62,
+      "z_mm": 1.6,
+      "marker_only": true
+    },
+    {
+      "pad": "PCA9685.GND",
+      "hole": "J2",
+      "x_mm": 13.97,
+      "y_mm": 17.78,
+      "z_mm": 1.6,
+      "marker_only": true
+    },
+    {
+      "pad": "PCA9685.VCC",
+      "hole": "J3",
+      "x_mm": 13.97,
+      "y_mm": 15.24,
+      "z_mm": 1.6,
+      "marker_only": true
+    },
+    {
+      "pad": "PCA9685./OE",
+      "hole": "J4",
+      "x_mm": 13.97,
+      "y_mm": 12.7,
+      "z_mm": 1.6,
+      "marker_only": true
+    }
+  ],
+  "colors": {
+    "XIAO": "#3478cc",
+    "MAX98357A": "#ec9d36",
+    "INMP441": "#ad60ce",
+    "PCA9685": "#d64f4f"
+  },
+  "missing": [
+    "module dimensions and heights",
+    "underside solder/link height",
+    "USB plug/cable envelope",
+    "camera stack",
+    "microphone port direction",
+    "mounting geometry",
+    "assembled placement"
+  ]
+}
