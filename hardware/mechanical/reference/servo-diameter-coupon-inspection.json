@@ -1,0 +1,54 @@
+{
+  "bodies": [
+    {
+      "area_mm2": 15327.707022202243,
+      "bbox": {
+        "max": [
+          100.0,
+          72.0,
+          2.000000000000001
+        ],
+        "min": [
+          0.0,
+          0.0,
+          -4.440892098500626e-16
+        ]
+      },
+      "center_of_mass": [
+        49.995237688935354,
+        35.550870958816546,
+        0.9967305718024688
+      ],
+      "closed": true,
+      "density_g_cm3": 1.29,
+      "edges": 4841,
+      "face_types": {
+        "cylinder": 680,
+        "other": 247,
+        "plane": 838
+      },
+      "faces": 1765,
+      "kernel": {
+        "edges": 5214,
+        "faces": 1879,
+        "shells": 1,
+        "vertices": 3476
+      },
+      "mass_g": 17.18369513980022,
+      "material": "Default",
+      "name": "DiameterCoupon",
+      "vertices": 3248,
+      "volume_mm3": 13320.693906821876
+    }
+  ],
+  "body_count": 1,
+  "total": {
+    "area_mm2": 15327.707022202243,
+    "edges": 4841,
+    "faces": 1765,
+    "mass_g": 17.18369513980022,
+    "open_bodies_skipped": 0,
+    "vertices": 3248,
+    "volume_mm3": 13320.693906821876
+  }
+}

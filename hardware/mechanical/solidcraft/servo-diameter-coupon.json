@@ -1,0 +1,1234 @@
+{
+  "commands": [
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "plate_thickness",
+        "expression": "2 mm",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "length": 100,
+        "width": 72,
+        "height": "plate_thickness",
+        "body_name": "DiameterCoupon",
+        "name": "Coupon blank"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_00",
+        "expression": "3.0 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_00",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          8,
+          12,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 3.0 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_01",
+        "expression": "3.1 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_01",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          20,
+          12,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 3.1 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_02",
+        "expression": "3.2 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_02",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          32,
+          12,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 3.2 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_03",
+        "expression": "3.3 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_03",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          44,
+          12,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 3.3 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_04",
+        "expression": "3.4 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_04",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          56,
+          12,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 3.4 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_05",
+        "expression": "3.5 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_05",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          68,
+          12,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 3.5 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_06",
+        "expression": "3.6 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_06",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          80,
+          12,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 3.6 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_07",
+        "expression": "3.7 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_07",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          92,
+          12,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 3.7 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_08",
+        "expression": "3.8 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_08",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          8,
+          28,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 3.8 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_09",
+        "expression": "3.9 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_09",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          20,
+          28,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 3.9 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_10",
+        "expression": "4.0 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_10",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          32,
+          28,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 4.0 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_11",
+        "expression": "4.1 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_11",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          44,
+          28,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 4.1 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_12",
+        "expression": "4.2 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_12",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          56,
+          28,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 4.2 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_13",
+        "expression": "4.3 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_13",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          68,
+          28,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 4.3 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_14",
+        "expression": "4.4 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_14",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          80,
+          28,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 4.4 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_15",
+        "expression": "4.5 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_15",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          92,
+          28,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 4.5 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_16",
+        "expression": "4.6 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_16",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          8,
+          44,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 4.6 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_17",
+        "expression": "4.7 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_17",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          20,
+          44,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 4.7 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_18",
+        "expression": "4.8 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_18",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          32,
+          44,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 4.8 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_19",
+        "expression": "4.9 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_19",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          44,
+          44,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 4.9 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_20",
+        "expression": "5.0 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_20",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          56,
+          44,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 5.0 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_21",
+        "expression": "5.1 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_21",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          68,
+          44,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 5.1 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_22",
+        "expression": "5.2 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_22",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          80,
+          44,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 5.2 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_23",
+        "expression": "5.3 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_23",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          92,
+          44,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 5.3 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_24",
+        "expression": "5.4 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_24",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          8,
+          60,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 5.4 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_25",
+        "expression": "5.5 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_25",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          20,
+          60,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 5.5 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_26",
+        "expression": "5.6 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_26",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          32,
+          60,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 5.6 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_27",
+        "expression": "5.7 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_27",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          44,
+          60,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 5.7 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_28",
+        "expression": "5.8 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_28",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          56,
+          60,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 5.8 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_29",
+        "expression": "5.9 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_29",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          68,
+          60,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 5.9 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "diameter_30",
+        "expression": "6.0 mm",
+        "unit": "mm",
+        "comment": "Exploratory printed bore diameter; not a claimed servo dimension"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "diameter": "diameter_30",
+        "height": "plate_thickness + 2 mm",
+        "base": [
+          80,
+          60,
+          -1
+        ],
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Bore 6.0 mm"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "offset": "plate_thickness - 0.4 mm",
+        "name": "Engraved diameter labels"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_00, 1)",
+        "at": [
+          8,
+          5
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_01, 1)",
+        "at": [
+          20,
+          5
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_02, 1)",
+        "at": [
+          32,
+          5
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_03, 1)",
+        "at": [
+          44,
+          5
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_04, 1)",
+        "at": [
+          56,
+          5
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_05, 1)",
+        "at": [
+          68,
+          5
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_06, 1)",
+        "at": [
+          80,
+          5
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_07, 1)",
+        "at": [
+          92,
+          5
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_08, 1)",
+        "at": [
+          8,
+          21
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_09, 1)",
+        "at": [
+          20,
+          21
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_10, 1)",
+        "at": [
+          32,
+          21
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_11, 1)",
+        "at": [
+          44,
+          21
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_12, 1)",
+        "at": [
+          56,
+          21
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_13, 1)",
+        "at": [
+          68,
+          21
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_14, 1)",
+        "at": [
+          80,
+          21
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_15, 1)",
+        "at": [
+          92,
+          21
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_16, 1)",
+        "at": [
+          8,
+          37
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_17, 1)",
+        "at": [
+          20,
+          37
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_18, 1)",
+        "at": [
+          32,
+          37
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_19, 1)",
+        "at": [
+          44,
+          37
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_20, 1)",
+        "at": [
+          56,
+          37
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_21, 1)",
+        "at": [
+          68,
+          37
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_22, 1)",
+        "at": [
+          80,
+          37
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_23, 1)",
+        "at": [
+          92,
+          37
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_24, 1)",
+        "at": [
+          8,
+          53
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_25, 1)",
+        "at": [
+          20,
+          53
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_26, 1)",
+        "at": [
+          32,
+          53
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_27, 1)",
+        "at": [
+          44,
+          53
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_28, 1)",
+        "at": [
+          56,
+          53
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_29, 1)",
+        "at": [
+          68,
+          53
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text_expression": "number(diameter_30, 1)",
+        "at": [
+          80,
+          53
+        ],
+        "height": 2.5,
+        "align": "center"
+      }
+    },
+    {
+      "command": "sketch.text",
+      "params": {
+        "text": "SHAFT DIA mm - V1",
+        "at": [
+          5,
+          66
+        ],
+        "height": 2.8
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.5,
+        "operation": "cut",
+        "targets": [
+          "DiameterCoupon"
+        ],
+        "name": "Engrave labels"
+      }
+    }
+  ]
+}
