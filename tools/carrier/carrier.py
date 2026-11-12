@@ -94,12 +94,13 @@ PADS = {
     # BCLK, LRC. SD is fitted but connects to nothing (its strip stays empty); GAIN is tied to Vin (6 dB, as built).
     "MAX98357A.Vin": "D17", "MAX98357A.GND": "D16", "MAX98357A.SD": "D15", "MAX98357A.GAIN": "D14",
     "MAX98357A.DIN": "D13", "MAX98357A.BCLK": "D12", "MAX98357A.LRC": "D11",
-    # INMP441 off the board on 75 mm wires (L/R tied to GND at the mic). Each wire lands straight in the strip of the
-    # XIAO pin it needs, so it needs no link. Signal holes as built; the power holes are the design's choice.
-    "INMP441.SCK": "C2", "INMP441.WS": "C3", "INMP441.SD": "C4", "INMP441.GND": "I2", "INMP441.VDD": "I3",
-    # PCA9685 off the board on 90 mm wires, landing the same way. SDA and SCL as built; GND, VCC and /OE are the
-    # design's choice.
-    "PCA9685.SDA": "C5", "PCA9685.SCL": "B6", "PCA9685.GND": "J2", "PCA9685.VCC": "J3", "PCA9685./OE": "J4",
+    # INMP441 off the board on 75 mm wires (L/R tied to GND at the mic). Each wire lands straight in the strip it
+    # needs: the signals in the XIAO's D1-D3 strips (as built), power on the row-8 (GND) and row-9 (3V3) rails.
+    # Its power wires share B8 and B9 with the PCA9685's (two wire ends twisted into one hole, as built).
+    "INMP441.SCK": "C2", "INMP441.WS": "C3", "INMP441.SD": "C4", "INMP441.GND": "B8", "INMP441.VDD": "B9",
+    # PCA9685 off the board on 90 mm wires, landing the same way. SDA, SCL, VCC and GND as built; /OE is the design's
+    # choice (any free hole in D10's strip).
+    "PCA9685.SDA": "C5", "PCA9685.SCL": "B6", "PCA9685.GND": "B8", "PCA9685.VCC": "B9", "PCA9685./OE": "J4",
 }
 PAD_AT = {h: p for p, h in PADS.items()}
 UNCONNECTED = {"MAX98357A.SD"}  # fitted, joined to nothing
@@ -111,7 +112,18 @@ LEAD_WIRES = {
     "PCA9685.SDA": ("green", 90), "PCA9685.SCL": ("yellow", 90), "PCA9685.VCC": ("red", 90),
     "PCA9685.GND": ("black", 90), "PCA9685./OE": ("brown", 90),
 }
-AS_BUILT = {"INMP441.SCK", "INMP441.WS", "INMP441.SD", "PCA9685.SDA", "PCA9685.SCL"}  # holes reported from the board
+AS_BUILT = {"INMP441.SCK", "INMP441.WS", "INMP441.SD", "INMP441.GND", "INMP441.VDD", "PCA9685.SDA", "PCA9685.SCL",
+            "PCA9685.GND", "PCA9685.VCC"}  # holes reported from the board
+
+# Component-side jumpers (as built): they make row 8 a ground rail and row 9 a 3.3 V rail across the whole board,
+# for the off-board parts' power wires. Soldered before the XIAO, since H8 sits under the edge of its body.
+# id, from hole, to hole, colour, what it does
+JUMPERS = [
+    ("T1", "I2", "H8", "colour not recorded", "Ground from the XIAO's GND strip (row 2) to row 8."),
+    ("T2", "I3", "H9", "colour not recorded", "3.3 V from the XIAO's 3V3 strip (row 3) to row 9."),
+    ("T3", "E8", "F8", "orange", "Joins row 8 across the channel: a ground rail on both halves."),
+    ("T4", "E9", "F9", "orange", "Joins row 9 across the channel: a 3.3 V rail on both halves."),
+]
 PART_NAME = {"XIAO": "XIAO", "MAX98357A": "amp", "INMP441": "mic", "PCA9685": "PCA lead"}
 
 # ---------------------------------------------------------------- the links (underside, 30 AWG stranded)
@@ -188,7 +200,7 @@ def nets():
             cols = [c for c in COLS if side(c) == s]
             for c in cols[1:]:
                 union((r, s), (r, s))  # a strip is one node
-    for _, a, b, *_ in LINKS:
+    for _, a, b, *_ in LINKS + JUMPERS:
         union(strip(a), strip(b))
     groups = {}
     for pad, h in PADS.items():
@@ -255,9 +267,16 @@ def check():
         for g in want:
             if g not in got:
                 problems.append("wires.csv net missing on the carrier: " + ", ".join(sorted(g)))
+    # one pin per hole; only off-board wire ends may share a hole (twisted together)
+    by_hole = {}
+    for p, h in PADS.items():
+        by_hole.setdefault(h, []).append(p)
+    for h, ps in sorted(by_hole.items()):
+        if len(ps) > 1 and not all(p in LEAD_WIRES for p in ps):
+            problems.append(f"{h} holds more than one pin: {', '.join(ps)}")
     # every link end is a free hole, and no hole is used twice
     seen = {}
-    for lid, a, b, *_ in LINKS:
+    for lid, a, b, *_ in LINKS + JUMPERS:
         for h in (a, b):
             if h in PAD_AT:
                 problems.append(f"{lid} ends in {h}, which holds the pin {PAD_AT[h]}")
@@ -282,6 +301,8 @@ def check():
     for i, link in enumerate(LINKS):
         lid, pts = link[0], routes[link[0]]
         later = {h: f"pin {p}" for p, h in PADS.items()}
+        for j in JUMPERS:  # soldered after the links
+            later[j[1]] = later[j[2]] = f"{j[0]}'s end"
         for l in LINKS[i + 1:]:
             later[l[1]] = later[l[2]] = f"{l[0]}'s end"
         for h, what in later.items():
@@ -445,11 +466,11 @@ def footprints(view):
 
 def hole_map_svg():
     v = View(False)
-    body = footprints(v) + pad_dots(v)
+    body = footprints(v) + jumper_lines(v) + pad_dots(v)
     for l in LINKS:  # links are on the other side: drawn faint and dashed
         pts = " ".join(f"{v.pt(p)[0]:.1f},{v.pt(p)[1]:.1f}" for p in route_mm(l))
         body.append(f'<polyline points="{pts}" fill="none" stroke="{COLORS[l[3]]}" stroke-width="2" stroke-dasharray="4 3" opacity="0.55"/>')
-    return board_svg(v, "Coglet carrier: hole map", "Component side. Dots: pins. Rings: wire ends. Dashes: underside links.", body)
+    return board_svg(v, "Coglet carrier: hole map", "Dots: pins. Rings: wire ends. Solid: jumpers. Dashed: links below.", body)
 
 
 def step_svg(step):
@@ -470,11 +491,24 @@ def step_svg(step):
         return board_svg(v, title, sub, body)
     v = View(False)
     hot = step.get("pads", [])
-    body = footprints(v) + pad_dots(v, highlight=hot)
-    for p in hot:
-        x, y = v.hole(PADS[p])
+    body = footprints(v) + jumper_lines(v, hot=kind == "jumpers") + pad_dots(v, highlight=hot)
+    rings = [PADS[p] for p in hot] + ([h for j in JUMPERS for h in (j[1], j[2])] if kind == "jumpers" else [])
+    for h in rings:
+        x, y = v.hole(h)
         body.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="8" fill="none" stroke="{RING}" stroke-width="2.4"/>')
     return board_svg(v, f"Step {step['n']}: {step['title']}", step.get("sub", "Component side."), body)
+
+
+def jumper_lines(view, hot=False):
+    """The component-side jumpers, drawn solid (the underside links are dashed)."""
+    o = []
+    for _, a, b, c, _ in JUMPERS:
+        (x1, y1), (x2, y2) = view.hole(a), view.hole(b)
+        col = COLORS.get(c, "#808890")
+        w = 4.5 if hot else 2.6
+        o.append(f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" stroke="#55606a" stroke-width="{w + 1.4}" stroke-linecap="round"/>')
+        o.append(f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" stroke="{col}" stroke-width="{w}" stroke-linecap="round"/>')
+    return o
 
 
 def view_x_is_left(view, h):
@@ -538,6 +572,16 @@ def build_steps():
                    ("What it does", job)],
             check=[f"{a} connects to {b}." + (f" Both strips will join {joins}." if (pa or pb) else ""),
                    "It must not connect to: " + (", ".join(dict.fromkeys(near)) if near else "any other hole.")])
+    add(kind="jumpers", title="Power rails: four jumpers", view="top",
+        sub="Component side. The four jumpers make row 8 ground and row 9 3.3 V.",
+        do=["These go on the **component side**, before the XIAO: H8 sits under the edge of its body.",
+            "**" + "; ".join(f"{j[0]}: {j[1]} → {j[2]}" for j in JUMPERS) + "**.",
+            "T1 and T2 bring ground and 3.3 V down the right half to rows 8 and 9; T3 and T4 carry both rails across the channel. "
+            "The mic's and the PCA9685's power wires land on these rails later.",
+            "Keep the jumpers low and clear of the holes around them."],
+        facts=[(j[0], f"{j[1]} → {j[2]}, {j[3]}: {j[4]}") for j in JUMPERS],
+        check=["Row 8 (any hole, A–J) connects to H2's strip (GND); row 9 connects to H3's strip (3V3).",
+               "Row 9 must **not** connect to row 1 (5V) or to row 8."])
     xiao = [p for p in PADS if p.startswith("XIAO.")]
     add(kind="part", title="Solder the XIAO", sub="Component side. The XIAO's pins go in the circled holes.", pads=xiao, view="top",
         do=["Component side up, **USB-C toward row 1** (the top edge), so the port sits at the board's edge. Left pin row in column D (D0 at D1 … D5 at D6), right row in column H (5V at H1, GND H2, 3V3 H3, D10 at H4).",
@@ -563,7 +607,8 @@ def build_steps():
     add(kind="part", title="Solder the mic's wires", sub="Component side. The mic's five wires land in the circled holes.", pads=mic, view="top",
         do=["The mic sits off the board, on its 75 mm wires, where the head has a sound opening. Each wire lands in the strip of the XIAO pin it needs, so it needs no link.",
             "Push each wire in from the component side and solder it underneath: **" + lead_rows("INMP441.") + "**.",
-            "VDD goes in the **3V3** strip, never the 5 V one."],
+            "Red VDD goes on the row-9 rail (3.3 V) and black GND on the row-8 rail. Never on row 1, which is 5 V.",
+            "B8 and B9 each take two wires, the mic's and the PCA9685's: twist the two tinned ends together, push them in and solder them as one."],
         facts=[("Wires", lead_rows("INMP441."))],
         check=["C2 connects to D2 (D1, bit clock), C3 to D3 (D2, word select), C4 to D4 (D3, mic data).",
                f"{PADS['INMP441.VDD']} connects to H3 (3V3) and {PADS['INMP441.GND']} to H2 (GND)."])
@@ -571,7 +616,8 @@ def build_steps():
     add(kind="part", title="Solder the PCA9685's wires", sub="Component side. The PCA9685's five wires land in the circled holes.", pads=pca, view="top",
         do=["The PCA9685 sits off the board, on its 90 mm wires. Each wire lands in the strip of the XIAO pin it needs, so it needs no link.",
             "Push each wire in from the component side and solder it underneath: **" + lead_rows("PCA9685.") + "**.",
-            "VCC is the logic supply: **3V3**, not 5 V. The servo supply never comes to the carrier."],
+            "Red VCC is the logic supply: the row-9 rail (3.3 V), not 5 V. Black GND goes on the row-8 rail. The servo supply never comes to the carrier.",
+            "The /OE pull-up (about 10 kΩ to VCC) sits on the PCA9685 board itself."],
         facts=[("Wires", lead_rows("PCA9685."))],
         check=["C5 connects to D5 (SDA, D4) and B6 to D6 (SCL, D5).",
                f"{PADS['PCA9685.GND']} connects to H2 (GND), {PADS['PCA9685.VCC']} to H3 (3V3) and {PADS['PCA9685./OE']} to H4 (D10)."])
@@ -604,7 +650,7 @@ def net_table():
     rows = []
     for g in connected_nets():
         name = net_name(g)
-        holes = ", ".join(f"{PADS[p]} ({p.replace('MAX98357A', 'amp').replace('INMP441', 'mic').replace('PCA9685', 'PCA lead')})" for p in sorted(g, key=lambda p: (hcol(PADS[p]), hrow(PADS[p]))))
+        holes = ", ".join(f"{PADS[p]} ({p.replace('MAX98357A', 'amp').replace('INMP441', 'mic').replace('PCA9685', 'PCA lead')})" for p in sorted(g, key=lambda p: (hcol(PADS[p]), hrow(PADS[p]), p)))
         rows.append((name, holes))
     order = ["+3V3", "+5V", "GND", "D0", "D1", "D2", "D3", "D4", "D5", "D10"]
     return sorted(rows, key=lambda r: order.index(r[0]))
@@ -666,7 +712,7 @@ def carrier_markdown():
          "the board the N20 drive in cam-rotation-starter uses. The INMP441 mic (75 mm wires) and the PCA9685 (90 mm wires) sit off it, "
          "where the robot needs them, and their wires land straight in the carrier's holes. The speaker wires to the amp's terminal; the servo "
          "supply goes straight to the PCA9685's terminal block.", "",
-         f"![Hole map of the carrier, component side, row 1 at the top and column A at the left. The XIAO straddles the channel in columns D and H, its pins in rows 1 to 7 and its USB-C port at the row-1 edge. The amp lies flat with its pins in column D rows 11 to 17 and its body toward column J. The mic's wires land in C2, C3, C4, I2 and I3, and the PCA9685's in C5, B6, J2, J3 and J4. The four corner holes are left empty for the mounting screws. Dashed lines are the {len(LINKS)} underside links.](../web-programmer/carrier/hole-map.svg)", "",
+         f"![Hole map of the carrier, component side, row 1 at the top and column A at the left. The XIAO straddles the channel in columns D and H, its pins in rows 1 to 7 and its USB-C port at the row-1 edge. The amp lies flat with its pins in column D rows 11 to 17 and its body toward column J. Jumpers I2 to H8 and I3 to H9, and E8 to F8 and E9 to F9, make row 8 a ground rail and row 9 a 3.3 V rail. The mic's signal wires land in C2, C3 and C4 and the PCA9685's in C5, B6 and J4; both parts' power wires share B8 (ground) and B9 (3.3 V). The four corner holes are left empty for the mounting screws. Dashed lines are the {len(LINKS)} underside links.](../web-programmer/carrier/hole-map.svg)", "",
          "## The board", "",
          "| | |", "|---|---|",
          f"| Size | {BOARD_W} × {BOARD_H} mm (1.5 × 2.0 in), {BOARD_T} mm FR4, plated through-holes |",
@@ -683,7 +729,9 @@ def carrier_markdown():
          "| MAX98357A amp, flat on a straight header, body toward column J | Column D, rows 11–17 | Vin D17, GND D16, SD D15, GAIN D14, DIN D13, BCLK D12, LRC D11. SD connects to nothing; GAIN is tied to Vin (6 dB). |",
          "| INMP441 mic, off the board on 75 mm wires, L/R tied to GND on the mic | Wire ends | " + ", ".join(f"{p.split('.')[1]} {PADS[p]}" for p in PADS if p.startswith("INMP441.")) + " |",
          "| PCA9685, off the board on 90 mm wires | Wire ends | " + ", ".join(f"{p.split('.')[1]} {PADS[p]}" for p in PADS if p.startswith("PCA9685.")) + " |", "",
-         "Every mic and PCA9685 wire lands in the strip of the XIAO pin it needs, so none of them needs a link. "
+         "Every mic and PCA9685 wire lands in a strip that already carries its net, so none of them needs a link: the signals in the XIAO's own strips, "
+         "the power wires on two rails that four component-side jumpers make out of rows 8 and 9.", "",
+         "| Jumper | From | To | Colour | Job |", "|---|---|---|---|---|"] + [f"| {j[0]} | {j[1]} | {j[2]} | {j[3]} | {j[4]} |" for j in JUMPERS] + ["",
          "The amp's pins sit in rows 11–17, away from the XIAO's, so L1–L5 carry its three I2S lines, 5 V and ground through the centre channel, and L6 ties GAIN to Vin. "
          "Holes under the amp's body (roughly columns E–I, rows 10–17) can't take a wire from the top.", "",
          "| Wire | Hole | Lead | Colour |", "|---|---|---|---|"] + [f"| {a} | {h} | {t} | {c} |" for a, h, t, c in LEADS] + ["",
@@ -707,7 +755,7 @@ def carrier_markdown():
           "1. The holes the mic's and PCA9685's red, black and brown wires land in (the design chose " +
           ", ".join(f"{PADS[p]} for {p.replace('INMP441', 'mic').replace('.', ' ')}" for p in PADS if p in LEAD_WIRES and p not in AS_BUILT) + ").",
           "2. The amp's outline: its body is drawn about 17.8 × 18 mm over columns D–I.",
-          "3. Two resistors on the prototype board that aren't in this design.",
+          "3. The colours of jumpers T1 and T2.",
           "4. That your perfboard's underside print is mirrored as described, and its corner holes sit as described.",
           "5. How far the XIAO's USB-C port overhangs its body, and the cut lengths."]
     return "\n".join(o) + "\n"
