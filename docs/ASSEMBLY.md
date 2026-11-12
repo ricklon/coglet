@@ -53,8 +53,9 @@ See the [parts list](../hardware/WIRING.md#parts):
 5. **PCA9685 /OE:** many breakouts pull /OE *down*, which keeps the outputs on
    across a reset no matter what the firmware does. For outputs that stay off
    through a reset, replace that pull-down with a pull-up (for example 10 kΩ)
-   to the PCA9685's 3.3 V logic rail. Inspect your breakout before changing
-   anything. See [Power and safety](../hardware/WIRING.md#oe).
+   to the PCA9685's 3.3 V logic rail. The breakout repeats its header at both
+   ends, so solder the pull-up across /OE and VCC at the end the lead wires
+   don't use. Inspect your breakout before changing anything. See [Power and safety](../hardware/WIRING.md#oe).
 
 ## 3. Wire the logic harness
 

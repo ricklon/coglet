@@ -538,7 +538,7 @@ def build_steps():
         do=["**XIAO:** fit header pins to left row D0–D5 and right row 5V, GND, 3V3, D10 only. Leave **D6, D7, D8 and D9 out**, so their strips stay free. Fit the pins to the module with the perfboard as the jig, so they come out square, and solder them to the module only.",
             "**MAX98357A amp:** a straight 7-pin header, all seven kept: Vin, GND, SD, GAIN, DIN, BCLK, LRC. It lies flat on the carrier.",
             "**INMP441 mic:** solder its five 75 mm wires to the mic (white SCK, blue WS, yellow SD, red VDD, black GND) and tie **L/R to GND** on the mic board. That is wire J1 in the [wiring guide](wiring.html).",
-            "**PCA9685:** solder its five 90 mm wires to the breakout (green SDA, yellow SCL, red VCC, black GND, brown /OE), and swap its /OE pull-down for a pull-up as in the [wiring guide](wiring.html), stage 1.",
+            "**PCA9685:** solder its five 90 mm wires to the breakout (green SDA, yellow SCL, red VCC, black GND, brown /OE) at one end's header. Its other end has the same header; solder the /OE pull-up (about 10 kΩ, /OE to VCC) there, so it keeps clear of the wires. Remove the breakout's /OE pull-down if it has one: [wiring guide](wiring.html), stage 1.",
             "Keep the four corner holes (A1, J1, A17, J17) empty: the mounting screws and their supports cover them."],
         facts=[("Board", "ElectroCookie mini solderable breadboard, 38.1 × 50.8 mm, 17 rows"),
                ("Check", "Hold each header over the hole map: every fitted pin lands on a dotted hole.")],
@@ -617,7 +617,7 @@ def build_steps():
         do=["The PCA9685 sits off the board, on its 90 mm wires. Each wire lands in the strip of the XIAO pin it needs, so it needs no link.",
             "Push each wire in from the component side and solder it underneath: **" + lead_rows("PCA9685.") + "**.",
             "Red VCC is the logic supply: the row-9 rail (3.3 V), not 5 V. Black GND goes on the row-8 rail. The servo supply never comes to the carrier.",
-            "The /OE pull-up (about 10 kΩ to VCC) sits on the PCA9685 board itself."],
+            "The /OE pull-up (about 10 kΩ to VCC) sits on the PCA9685 board, across /OE and VCC on the header at the end away from the wires."],
         facts=[("Wires", lead_rows("PCA9685."))],
         check=["C5 connects to D5 (SDA, D4) and B6 to D6 (SCL, D5).",
                f"{PADS['PCA9685.GND']} connects to H2 (GND), {PADS['PCA9685.VCC']} to H3 (3V3) and {PADS['PCA9685./OE']} to H4 (D10)."])
