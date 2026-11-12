@@ -103,7 +103,7 @@ The [hole map](../web-programmer/carrier/hole-map.svg) and [CARRIER.md](CARRIER.
 - **Side:** underside (link)
 - **What it does:** +5 V from the XIAO's 5V strip to the amp's Vin.
 - **Check:** F1 connects to E17. Both strips will join XIAO.5V, MAX98357A.Vin.
-- **Check:** It must not connect to: INMP441.GND (strip 2R), PCA9685.GND (strip 2R), XIAO.GND (strip 2R), MAX98357A.GND (strip 16L)
+- **Check:** It must not connect to: XIAO.GND (strip 2R), MAX98357A.GND (strip 16L)
 
 ## Step 6: L5, black, E2 → F16
 
@@ -123,8 +123,8 @@ The [hole map](../web-programmer/carrier/hole-map.svg) and [CARRIER.md](CARRIER.
 - **From → to:** F2 → E16 (printed E2 → F16 on the underside)
 - **Side:** underside (link)
 - **What it does:** Ground from the XIAO's GND strip to the amp's GND.
-- **Check:** F2 connects to E16. Both strips will join INMP441.GND, PCA9685.GND, XIAO.GND, MAX98357A.GND.
-- **Check:** It must not connect to: XIAO.5V (strip 1R), INMP441.VDD (strip 3R), PCA9685.VCC (strip 3R), XIAO.3V3 (strip 3R), MAX98357A.SD (strip 15L), MAX98357A.Vin (strip 17L)
+- **Check:** F2 connects to E16. Both strips will join XIAO.GND, MAX98357A.GND.
+- **Check:** It must not connect to: XIAO.5V (strip 1R), XIAO.3V3 (strip 3R), MAX98357A.SD (strip 15L), MAX98357A.Vin (strip 17L)
 
 ## Step 7: L6, red, H14 → H17
 
@@ -146,9 +146,27 @@ The [hole map](../web-programmer/carrier/hole-map.svg) and [CARRIER.md](CARRIER.
 - **Check:** C14 connects to C17. Both strips will join MAX98357A.GAIN, MAX98357A.Vin.
 - **Check:** It must not connect to: MAX98357A.DIN (strip 13L), MAX98357A.SD (strip 15L), MAX98357A.GND (strip 16L)
 
-## Step 8: Solder the XIAO
+## Step 8: Power rails: four jumpers
 
 ![Step 8](../web-programmer/carrier/step-08.svg)
+
+**Do this:**
+
+1. These go on the **component side**, before the XIAO: H8 sits under the edge of its body.
+2. **T1: I2 → H8; T2: I3 → H9; T3: E8 → F8; T4: E9 → F9**.
+3. T1 and T2 bring ground and 3.3 V down the right half to rows 8 and 9; T3 and T4 carry both rails across the channel. The mic's and the PCA9685's power wires land on these rails later.
+4. Keep the jumpers low and clear of the holes around them.
+
+- **T1:** I2 → H8, colour not recorded: Ground from the XIAO's GND strip (row 2) to row 8.
+- **T2:** I3 → H9, colour not recorded: 3.3 V from the XIAO's 3V3 strip (row 3) to row 9.
+- **T3:** E8 → F8, orange: Joins row 8 across the channel: a ground rail on both halves.
+- **T4:** E9 → F9, orange: Joins row 9 across the channel: a 3.3 V rail on both halves.
+- **Check:** Row 8 (any hole, A–J) connects to H2's strip (GND); row 9 connects to H3's strip (3V3).
+- **Check:** Row 9 must **not** connect to row 1 (5V) or to row 8.
+
+## Step 9: Solder the XIAO
+
+![Step 9](../web-programmer/carrier/step-09.svg)
 
 **Do this:**
 
@@ -160,9 +178,9 @@ The [hole map](../web-programmer/carrier/hole-map.svg) and [CARRIER.md](CARRIER.
 - **USB-C:** Seeed's land pattern puts pin 1 2.9 mm from the body's USB end, so the body ends about 2.2 mm inside the board's row-1 edge. The cable plugs in from that edge.
 - **Check:** Each XIAO pin hole reads the same net as its link end (see the continuity check below).
 
-## Step 9: Solder the amp, flat
+## Step 10: Solder the amp, flat
 
-![Step 9](../web-programmer/carrier/step-09.svg)
+![Step 10](../web-programmer/carrier/step-10.svg)
 
 **Do this:**
 
@@ -175,37 +193,39 @@ The [hole map](../web-programmer/carrier/hole-map.svg) and [CARRIER.md](CARRIER.
 - **Check:** D13, D12 and D11 connect to D1, D2 and D3 (the XIAO's D0, D1 and D2) through L3, L2 and L1.
 - **Check:** D15 (SD) connects to nothing.
 
-## Step 10: Solder the mic's wires
-
-![Step 10](../web-programmer/carrier/step-10.svg)
-
-**Do this:**
-
-1. The mic sits off the board, on its 75 mm wires, where the head has a sound opening. Each wire lands in the strip of the XIAO pin it needs, so it needs no link.
-2. Push each wire in from the component side and solder it underneath: **SCK (white) C2, WS (blue) C3, SD (yellow) C4, GND (black) I2, VDD (red) I3**.
-3. VDD goes in the **3V3** strip, never the 5 V one.
-
-- **Wires:** SCK (white) C2, WS (blue) C3, SD (yellow) C4, GND (black) I2, VDD (red) I3
-- **Check:** C2 connects to D2 (D1, bit clock), C3 to D3 (D2, word select), C4 to D4 (D3, mic data).
-- **Check:** I3 connects to H3 (3V3) and I2 to H2 (GND).
-
-## Step 11: Solder the PCA9685's wires
+## Step 11: Solder the mic's wires
 
 ![Step 11](../web-programmer/carrier/step-11.svg)
 
 **Do this:**
 
-1. The PCA9685 sits off the board, on its 90 mm wires. Each wire lands in the strip of the XIAO pin it needs, so it needs no link.
-2. Push each wire in from the component side and solder it underneath: **SDA (green) C5, SCL (yellow) B6, GND (black) J2, VCC (red) J3, /OE (brown) J4**.
-3. VCC is the logic supply: **3V3**, not 5 V. The servo supply never comes to the carrier.
+1. The mic sits off the board, on its 75 mm wires, where the head has a sound opening. Each wire lands in the strip of the XIAO pin it needs, so it needs no link.
+2. Push each wire in from the component side and solder it underneath: **SCK (white) C2, WS (blue) C3, SD (yellow) C4, GND (black) B8, VDD (red) B9**.
+3. Red VDD goes on the row-9 rail (3.3 V) and black GND on the row-8 rail. Never on row 1, which is 5 V.
+4. B8 and B9 each take two wires, the mic's and the PCA9685's: twist the two tinned ends together, push them in and solder them as one.
 
-- **Wires:** SDA (green) C5, SCL (yellow) B6, GND (black) J2, VCC (red) J3, /OE (brown) J4
-- **Check:** C5 connects to D5 (SDA, D4) and B6 to D6 (SCL, D5).
-- **Check:** J2 connects to H2 (GND), J3 to H3 (3V3) and J4 to H4 (D10).
+- **Wires:** SCK (white) C2, WS (blue) C3, SD (yellow) C4, GND (black) B8, VDD (red) B9
+- **Check:** C2 connects to D2 (D1, bit clock), C3 to D3 (D2, word select), C4 to D4 (D3, mic data).
+- **Check:** B9 connects to H3 (3V3) and B8 to H2 (GND).
 
-## Step 12: Continuity check
+## Step 12: Solder the PCA9685's wires
 
 ![Step 12](../web-programmer/carrier/step-12.svg)
+
+**Do this:**
+
+1. The PCA9685 sits off the board, on its 90 mm wires. Each wire lands in the strip of the XIAO pin it needs, so it needs no link.
+2. Push each wire in from the component side and solder it underneath: **SDA (green) C5, SCL (yellow) B6, GND (black) B8, VCC (red) B9, /OE (brown) J4**.
+3. Red VCC is the logic supply: the row-9 rail (3.3 V), not 5 V. Black GND goes on the row-8 rail. The servo supply never comes to the carrier.
+4. The /OE pull-up (about 10 kΩ to VCC) sits on the PCA9685 board itself.
+
+- **Wires:** SDA (green) C5, SCL (yellow) B6, GND (black) B8, VCC (red) B9, /OE (brown) J4
+- **Check:** C5 connects to D5 (SDA, D4) and B6 to D6 (SCL, D5).
+- **Check:** B8 connects to H2 (GND), B9 to H3 (3V3) and J4 to H4 (D10).
+
+## Step 13: Continuity check
+
+![Step 13](../web-programmer/carrier/step-13.svg)
 
 **Do this:**
 
@@ -213,9 +233,9 @@ The [hole map](../web-programmer/carrier/hole-map.svg) and [CARRIER.md](CARRIER.
 
 | Net | Holes that must connect |
 |---|---|
-| +3V3 | H3 (XIAO.3V3), I3 (mic.VDD), J3 (PCA lead.VCC) |
+| +3V3 | B9 (mic.VDD), B9 (PCA lead.VCC), H3 (XIAO.3V3) |
 | +5V | D14 (amp.GAIN), D17 (amp.Vin), H1 (XIAO.5V) |
-| GND | D16 (amp.GND), H2 (XIAO.GND), I2 (mic.GND), J2 (PCA lead.GND) |
+| GND | B8 (mic.GND), B8 (PCA lead.GND), D16 (amp.GND), H2 (XIAO.GND) |
 | D0 | D1 (XIAO.D0), D13 (amp.DIN) |
 | D1 | C2 (mic.SCK), D2 (XIAO.D1), D12 (amp.BCLK) |
 | D2 | C3 (mic.WS), D3 (XIAO.D2), D11 (amp.LRC) |
@@ -227,7 +247,7 @@ The [hole map](../web-programmer/carrier/hole-map.svg) and [CARRIER.md](CARRIER.
 Then check that these nets are **not** connected to each other: +3V3, +5V and GND against every other net and each other, and D1 against D2.
 
 
-## Step 13: Off the board
+## Step 14: Off the board
 
 **Do this:**
 
@@ -240,12 +260,12 @@ Then check that these nets are **not** connected to each other: +3V3, +5V and GN
 | mic SCK | C2 | 75 mm | white |
 | mic WS | C3 | 75 mm | blue |
 | mic SD | C4 | 75 mm | yellow |
-| mic GND | I2 | 75 mm, hole chosen by the design | black |
-| mic VDD | I3 | 75 mm, hole chosen by the design | red |
+| mic GND | B8 | 75 mm | black |
+| mic VDD | B9 | 75 mm | red |
 | PCA9685 SDA | C5 | 90 mm | green |
 | PCA9685 SCL | B6 | 90 mm | yellow |
-| PCA9685 GND | J2 | 90 mm, hole chosen by the design | black |
-| PCA9685 VCC | J3 | 90 mm, hole chosen by the design | red |
+| PCA9685 GND | B8 | 90 mm | black |
+| PCA9685 VCC | B9 | 90 mm | red |
 | PCA9685 /OE | J4 | 90 mm, hole chosen by the design | brown |
 
 - **Check:** Then run the bench checks on the [Check](console.html) page.

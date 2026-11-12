@@ -47,99 +47,106 @@
   <nav class="steps" id="nav" aria-label="Steps"></nav>
   <div id="steps">
 <section class="step" id="step-1" hidden>
-<p class="crumb">Step 1 of 13</p><h2>Prepare the modules</h2>
+<p class="crumb">Step 1 of 14</p><h2>Prepare the modules</h2>
 <img class="pic" src="carrier/step-01.svg" alt="Prepare the modules. Hole map for this step." loading="lazy">
 <h3>Do this</h3><ol><li><strong>XIAO:</strong> fit header pins to left row D0–D5 and right row 5V, GND, 3V3, D10 only. Leave <strong>D6, D7, D8 and D9 out</strong>, so their strips stay free. Fit the pins to the module with the perfboard as the jig, so they come out square, and solder them to the module only.</li><li><strong>MAX98357A amp:</strong> a straight 7-pin header, all seven kept: Vin, GND, SD, GAIN, DIN, BCLK, LRC. It lies flat on the carrier.</li><li><strong>INMP441 mic:</strong> solder its five 75 mm wires to the mic (white SCK, blue WS, yellow SD, red VDD, black GND) and tie <strong>L/R to GND</strong> on the mic board. That is wire J1 in the <a href="wiring.html">wiring guide</a>.</li><li><strong>PCA9685:</strong> solder its five 90 mm wires to the breakout (green SDA, yellow SCL, red VCC, black GND, brown /OE), and swap its /OE pull-down for a pull-up as in the <a href="wiring.html">wiring guide</a>, stage 1.</li><li>Keep the four corner holes (A1, J1, A17, J17) empty: the mounting screws and their supports cover them.</li></ol>
 <h3>Details</h3><table><tr><th>Board</th><td>ElectroCookie mini solderable breadboard, 38.1 × 50.8 mm, 17 rows</td></tr><tr><th>Check</th><td>Hold each header over the hole map: every fitted pin lands on a dotted hole.</td></tr></table>
 <h3>Check</h3><ul class="check"><li>Nothing is soldered to the carrier yet.</li><li>Meter between L/R and GND on the mic: continuity.</li></ul>
 </section>
 <section class="step" id="step-2" hidden>
-<p class="crumb">Step 2 of 13</p><h2>L1, green, F3 → F11</h2>
+<p class="crumb">Step 2 of 14</p><h2>L1, green, F3 → F11</h2>
 <img class="pic" src="carrier/step-02.svg" alt="L1, green, F3 → F11. Hole map for this step." loading="lazy">
 <h3>Do this</h3><ol><li>Turn the board over (underside up).</li><li>Start at hole printed <strong>F3</strong> (top E3): push the tinned end in and solder it.</li><li>Lay the wire flat along the drawn path; pinch the corners and hold them with Kapton tape.</li><li>End at hole printed <strong>F11</strong> (top E11): push it in and solder it.</li><li>Turn the board back over and trim the ends in E3 and E11 flush: the XIAO and the amp sits over them.</li><li>Check, as below.</li></ol>
 <h3>Details</h3><table><tr><th>Wire</th><td>L1, green, 30 AWG stranded</td></tr><tr><th>Cut</th><td>40 mm, estimated from the drawn route: trim to fit</td></tr><tr><th>From → to</th><td>E3 → E11 (printed F3 → F11 on the underside)</td></tr><tr><th>Side</th><td>underside (link)</td></tr><tr><th>What it does</th><td>I2S word select: D2's strip to the amp's LRC.</td></tr></table>
 <h3>Check</h3><ul class="check"><li>E3 connects to E11. Both strips will join INMP441.WS, XIAO.D2, MAX98357A.LRC.</li><li>It must not connect to: INMP441.SCK (strip 2L), XIAO.D1 (strip 2L), INMP441.SD (strip 4L), XIAO.D3 (strip 4L), MAX98357A.BCLK (strip 12L)</li></ul>
 </section>
 <section class="step" id="step-3" hidden>
-<p class="crumb">Step 3 of 13</p><h2>L2, yellow, F2 → F12</h2>
+<p class="crumb">Step 3 of 14</p><h2>L2, yellow, F2 → F12</h2>
 <img class="pic" src="carrier/step-03.svg" alt="L2, yellow, F2 → F12. Hole map for this step." loading="lazy">
 <h3>Do this</h3><ol><li>Turn the board over (underside up).</li><li>Start at hole printed <strong>F2</strong> (top E2): push the tinned end in and solder it.</li><li>Lay the wire flat along the drawn path; pinch the corners and hold them with Kapton tape.</li><li>End at hole printed <strong>F12</strong> (top E12): push it in and solder it.</li><li>Turn the board back over and trim the ends in E2 and E12 flush: the XIAO and the amp sits over them.</li><li>Check, as below.</li></ol>
 <h3>Details</h3><table><tr><th>Wire</th><td>L2, yellow, 30 AWG stranded</td></tr><tr><th>Cut</th><td>50 mm, estimated from the drawn route: trim to fit</td></tr><tr><th>From → to</th><td>E2 → E12 (printed F2 → F12 on the underside)</td></tr><tr><th>Side</th><td>underside (link)</td></tr><tr><th>What it does</th><td>I2S bit clock: D1's strip to the amp's BCLK.</td></tr></table>
 <h3>Check</h3><ul class="check"><li>E2 connects to E12. Both strips will join INMP441.SCK, XIAO.D1, MAX98357A.BCLK.</li><li>It must not connect to: XIAO.D0 (strip 1L), INMP441.WS (strip 3L), XIAO.D2 (strip 3L), MAX98357A.LRC (strip 11L), MAX98357A.DIN (strip 13L)</li></ul>
 </section>
 <section class="step" id="step-4" hidden>
-<p class="crumb">Step 4 of 13</p><h2>L3, white, F1 → F13</h2>
+<p class="crumb">Step 4 of 14</p><h2>L3, white, F1 → F13</h2>
 <img class="pic" src="carrier/step-04.svg" alt="L3, white, F1 → F13. Hole map for this step." loading="lazy">
 <h3>Do this</h3><ol><li>Turn the board over (underside up).</li><li>Start at hole printed <strong>F1</strong> (top E1): push the tinned end in and solder it.</li><li>Lay the wire flat along the drawn path; pinch the corners and hold them with Kapton tape.</li><li>End at hole printed <strong>F13</strong> (top E13): push it in and solder it.</li><li>Turn the board back over and trim the ends in E1 and E13 flush: the XIAO and the amp sits over them.</li><li>Check, as below.</li></ol>
 <h3>Details</h3><table><tr><th>Wire</th><td>L3, white, 30 AWG stranded</td></tr><tr><th>Cut</th><td>55 mm, estimated from the drawn route: trim to fit</td></tr><tr><th>From → to</th><td>E1 → E13 (printed F1 → F13 on the underside)</td></tr><tr><th>Side</th><td>underside (link)</td></tr><tr><th>What it does</th><td>Speaker data: D0's strip to the amp's DIN.</td></tr></table>
 <h3>Check</h3><ul class="check"><li>E1 connects to E13. Both strips will join XIAO.D0, MAX98357A.DIN.</li><li>It must not connect to: INMP441.SCK (strip 2L), XIAO.D1 (strip 2L), MAX98357A.BCLK (strip 12L), MAX98357A.GAIN (strip 14L)</li></ul>
 </section>
 <section class="step" id="step-5" hidden>
-<p class="crumb">Step 5 of 13</p><h2>L4, red, E1 → F17</h2>
+<p class="crumb">Step 5 of 14</p><h2>L4, red, E1 → F17</h2>
 <img class="pic" src="carrier/step-05.svg" alt="L4, red, E1 → F17. Hole map for this step." loading="lazy">
 <h3>Do this</h3><ol><li>Turn the board over (underside up).</li><li>Start at hole printed <strong>E1</strong> (top F1): push the tinned end in and solder it.</li><li>Lay the wire flat along the drawn path; pinch the corners and hold them with Kapton tape.</li><li>End at hole printed <strong>F17</strong> (top E17): push it in and solder it.</li><li>Turn the board back over and trim the ends in F1 and E17 flush: the XIAO and the amp sits over them.</li><li>Check, as below.</li></ol>
 <h3>Details</h3><table><tr><th>Wire</th><td>L4, red, 30 AWG stranded</td></tr><tr><th>Cut</th><td>70 mm, estimated from the drawn route: trim to fit</td></tr><tr><th>From → to</th><td>F1 → E17 (printed E1 → F17 on the underside)</td></tr><tr><th>Side</th><td>underside (link)</td></tr><tr><th>What it does</th><td>+5 V from the XIAO's 5V strip to the amp's Vin.</td></tr></table>
-<h3>Check</h3><ul class="check"><li>F1 connects to E17. Both strips will join XIAO.5V, MAX98357A.Vin.</li><li>It must not connect to: INMP441.GND (strip 2R), PCA9685.GND (strip 2R), XIAO.GND (strip 2R), MAX98357A.GND (strip 16L)</li></ul>
+<h3>Check</h3><ul class="check"><li>F1 connects to E17. Both strips will join XIAO.5V, MAX98357A.Vin.</li><li>It must not connect to: XIAO.GND (strip 2R), MAX98357A.GND (strip 16L)</li></ul>
 </section>
 <section class="step" id="step-6" hidden>
-<p class="crumb">Step 6 of 13</p><h2>L5, black, E2 → F16</h2>
+<p class="crumb">Step 6 of 14</p><h2>L5, black, E2 → F16</h2>
 <img class="pic" src="carrier/step-06.svg" alt="L5, black, E2 → F16. Hole map for this step." loading="lazy">
 <h3>Do this</h3><ol><li>Turn the board over (underside up).</li><li>Start at hole printed <strong>E2</strong> (top F2): push the tinned end in and solder it.</li><li>Lay the wire flat along the drawn path; pinch the corners and hold them with Kapton tape.</li><li>End at hole printed <strong>F16</strong> (top E16): push it in and solder it.</li><li>Turn the board back over and trim the ends in F2 and E16 flush: the XIAO and the amp sits over them.</li><li>Check, as below.</li></ol>
 <h3>Details</h3><table><tr><th>Wire</th><td>L5, black, 30 AWG stranded</td></tr><tr><th>Cut</th><td>60 mm, estimated from the drawn route: trim to fit</td></tr><tr><th>From → to</th><td>F2 → E16 (printed E2 → F16 on the underside)</td></tr><tr><th>Side</th><td>underside (link)</td></tr><tr><th>What it does</th><td>Ground from the XIAO's GND strip to the amp's GND.</td></tr></table>
-<h3>Check</h3><ul class="check"><li>F2 connects to E16. Both strips will join INMP441.GND, PCA9685.GND, XIAO.GND, MAX98357A.GND.</li><li>It must not connect to: XIAO.5V (strip 1R), INMP441.VDD (strip 3R), PCA9685.VCC (strip 3R), XIAO.3V3 (strip 3R), MAX98357A.SD (strip 15L), MAX98357A.Vin (strip 17L)</li></ul>
+<h3>Check</h3><ul class="check"><li>F2 connects to E16. Both strips will join XIAO.GND, MAX98357A.GND.</li><li>It must not connect to: XIAO.5V (strip 1R), XIAO.3V3 (strip 3R), MAX98357A.SD (strip 15L), MAX98357A.Vin (strip 17L)</li></ul>
 </section>
 <section class="step" id="step-7" hidden>
-<p class="crumb">Step 7 of 13</p><h2>L6, red, H14 → H17</h2>
+<p class="crumb">Step 7 of 14</p><h2>L6, red, H14 → H17</h2>
 <img class="pic" src="carrier/step-07.svg" alt="L6, red, H14 → H17. Hole map for this step." loading="lazy">
 <h3>Do this</h3><ol><li>Turn the board over (underside up).</li><li>Start at hole printed <strong>H14</strong> (top C14): push the tinned end in and solder it.</li><li>Lay the wire flat along the drawn path; pinch the corners and hold them with Kapton tape.</li><li>End at hole printed <strong>H17</strong> (top C17): push it in and solder it.</li><li>Check, as below.</li></ol>
 <h3>Details</h3><table><tr><th>Wire</th><td>L6, red, 30 AWG stranded</td></tr><tr><th>Cut</th><td>20 mm, estimated from the drawn route: trim to fit</td></tr><tr><th>From → to</th><td>C14 → C17 (printed H14 → H17 on the underside)</td></tr><tr><th>Side</th><td>underside (link)</td></tr><tr><th>What it does</th><td>Ties the amp's GAIN to its Vin (+5 V): 6 dB. This is wire J2 in the wire list.</td></tr></table>
 <h3>Check</h3><ul class="check"><li>C14 connects to C17. Both strips will join MAX98357A.GAIN, MAX98357A.Vin.</li><li>It must not connect to: MAX98357A.DIN (strip 13L), MAX98357A.SD (strip 15L), MAX98357A.GND (strip 16L)</li></ul>
 </section>
 <section class="step" id="step-8" hidden>
-<p class="crumb">Step 8 of 13</p><h2>Solder the XIAO</h2>
-<img class="pic" src="carrier/step-08.svg" alt="Solder the XIAO. Hole map for this step." loading="lazy">
+<p class="crumb">Step 8 of 14</p><h2>Power rails: four jumpers</h2>
+<img class="pic" src="carrier/step-08.svg" alt="Power rails: four jumpers. Hole map for this step." loading="lazy">
+<h3>Do this</h3><ol><li>These go on the <strong>component side</strong>, before the XIAO: H8 sits under the edge of its body.</li><li><strong>T1: I2 → H8; T2: I3 → H9; T3: E8 → F8; T4: E9 → F9</strong>.</li><li>T1 and T2 bring ground and 3.3 V down the right half to rows 8 and 9; T3 and T4 carry both rails across the channel. The mic's and the PCA9685's power wires land on these rails later.</li><li>Keep the jumpers low and clear of the holes around them.</li></ol>
+<h3>Details</h3><table><tr><th>T1</th><td>I2 → H8, colour not recorded: Ground from the XIAO's GND strip (row 2) to row 8.</td></tr><tr><th>T2</th><td>I3 → H9, colour not recorded: 3.3 V from the XIAO's 3V3 strip (row 3) to row 9.</td></tr><tr><th>T3</th><td>E8 → F8, orange: Joins row 8 across the channel: a ground rail on both halves.</td></tr><tr><th>T4</th><td>E9 → F9, orange: Joins row 9 across the channel: a 3.3 V rail on both halves.</td></tr></table>
+<h3>Check</h3><ul class="check"><li>Row 8 (any hole, A–J) connects to H2's strip (GND); row 9 connects to H3's strip (3V3).</li><li>Row 9 must <strong>not</strong> connect to row 1 (5V) or to row 8.</li></ul>
+</section>
+<section class="step" id="step-9" hidden>
+<p class="crumb">Step 9 of 14</p><h2>Solder the XIAO</h2>
+<img class="pic" src="carrier/step-09.svg" alt="Solder the XIAO. Hole map for this step." loading="lazy">
 <h3>Do this</h3><ol><li>Component side up, <strong>USB-C toward row 1</strong> (the top edge), so the port sits at the board's edge. Left pin row in column D (D0 at D1 … D5 at D6), right row in column H (5V at H1, GND H2, 3V3 H3, D10 at H4).</li><li>Solder each pin from the underside. Check the pins you pulled (D6–D9) are not in the board.</li><li>S3 Sense: the camera board stacks on top of the XIAO, so allow height above it.</li></ol>
 <h3>Details</h3><table><tr><th>Pins</th><td>D0 D1, D1 D2, D2 D3, D3 D4, D4 D5, D5 D6, 5V H1, GND H2, 3V3 H3, D10 H4</td></tr><tr><th>USB-C</th><td>Seeed's land pattern puts pin 1 2.9 mm from the body's USB end, so the body ends about 2.2 mm inside the board's row-1 edge. The cable plugs in from that edge.</td></tr></table>
 <h3>Check</h3><ul class="check"><li>Each XIAO pin hole reads the same net as its link end (see the continuity check below).</li></ul>
 </section>
-<section class="step" id="step-9" hidden>
-<p class="crumb">Step 9 of 13</p><h2>Solder the amp, flat</h2>
-<img class="pic" src="carrier/step-09.svg" alt="Solder the amp, flat. Hole map for this step." loading="lazy">
+<section class="step" id="step-10" hidden>
+<p class="crumb">Step 10 of 14</p><h2>Solder the amp, flat</h2>
+<img class="pic" src="carrier/step-10.svg" alt="Solder the amp, flat. Hole map for this step." loading="lazy">
 <h3>Do this</h3><ol><li>Lay the MAX98357A flat on its straight header, pins in column D: <strong>Vin D17, GND D16, SD D15, GAIN D14, DIN D13, BCLK D12, LRC D11</strong>. Its board lies over the pins and toward column J, the speaker terminal at the far edge.</li><li>Solder from the underside. SD's strip (row 15, A–E) holds nothing else: SD stays unconnected. GAIN's strip is tied to Vin by L6, which sets 6 dB.</li><li>The speaker's two wires go to the amp's own terminal later.</li></ol>
 <h3>Details</h3><table><tr><th>Pins</th><td>Vin D17, GND D16, SD D15, GAIN D14, DIN D13, BCLK D12, LRC D11</td></tr></table>
 <h3>Check</h3><ul class="check"><li>D17 connects to H1 (+5 V), D16 to H2 (GND) and D14 to D17 (GAIN to Vin).</li><li>D13, D12 and D11 connect to D1, D2 and D3 (the XIAO's D0, D1 and D2) through L3, L2 and L1.</li><li>D15 (SD) connects to nothing.</li></ul>
 </section>
-<section class="step" id="step-10" hidden>
-<p class="crumb">Step 10 of 13</p><h2>Solder the mic's wires</h2>
-<img class="pic" src="carrier/step-10.svg" alt="Solder the mic&#x27;s wires. Hole map for this step." loading="lazy">
-<h3>Do this</h3><ol><li>The mic sits off the board, on its 75 mm wires, where the head has a sound opening. Each wire lands in the strip of the XIAO pin it needs, so it needs no link.</li><li>Push each wire in from the component side and solder it underneath: <strong>SCK (white) C2, WS (blue) C3, SD (yellow) C4, GND (black) I2, VDD (red) I3</strong>.</li><li>VDD goes in the <strong>3V3</strong> strip, never the 5 V one.</li></ol>
-<h3>Details</h3><table><tr><th>Wires</th><td>SCK (white) C2, WS (blue) C3, SD (yellow) C4, GND (black) I2, VDD (red) I3</td></tr></table>
-<h3>Check</h3><ul class="check"><li>C2 connects to D2 (D1, bit clock), C3 to D3 (D2, word select), C4 to D4 (D3, mic data).</li><li>I3 connects to H3 (3V3) and I2 to H2 (GND).</li></ul>
-</section>
 <section class="step" id="step-11" hidden>
-<p class="crumb">Step 11 of 13</p><h2>Solder the PCA9685's wires</h2>
-<img class="pic" src="carrier/step-11.svg" alt="Solder the PCA9685&#x27;s wires. Hole map for this step." loading="lazy">
-<h3>Do this</h3><ol><li>The PCA9685 sits off the board, on its 90 mm wires. Each wire lands in the strip of the XIAO pin it needs, so it needs no link.</li><li>Push each wire in from the component side and solder it underneath: <strong>SDA (green) C5, SCL (yellow) B6, GND (black) J2, VCC (red) J3, /OE (brown) J4</strong>.</li><li>VCC is the logic supply: <strong>3V3</strong>, not 5 V. The servo supply never comes to the carrier.</li></ol>
-<h3>Details</h3><table><tr><th>Wires</th><td>SDA (green) C5, SCL (yellow) B6, GND (black) J2, VCC (red) J3, /OE (brown) J4</td></tr></table>
-<h3>Check</h3><ul class="check"><li>C5 connects to D5 (SDA, D4) and B6 to D6 (SCL, D5).</li><li>J2 connects to H2 (GND), J3 to H3 (3V3) and J4 to H4 (D10).</li></ul>
+<p class="crumb">Step 11 of 14</p><h2>Solder the mic's wires</h2>
+<img class="pic" src="carrier/step-11.svg" alt="Solder the mic&#x27;s wires. Hole map for this step." loading="lazy">
+<h3>Do this</h3><ol><li>The mic sits off the board, on its 75 mm wires, where the head has a sound opening. Each wire lands in the strip of the XIAO pin it needs, so it needs no link.</li><li>Push each wire in from the component side and solder it underneath: <strong>SCK (white) C2, WS (blue) C3, SD (yellow) C4, GND (black) B8, VDD (red) B9</strong>.</li><li>Red VDD goes on the row-9 rail (3.3 V) and black GND on the row-8 rail. Never on row 1, which is 5 V.</li><li>B8 and B9 each take two wires, the mic's and the PCA9685's: twist the two tinned ends together, push them in and solder them as one.</li></ol>
+<h3>Details</h3><table><tr><th>Wires</th><td>SCK (white) C2, WS (blue) C3, SD (yellow) C4, GND (black) B8, VDD (red) B9</td></tr></table>
+<h3>Check</h3><ul class="check"><li>C2 connects to D2 (D1, bit clock), C3 to D3 (D2, word select), C4 to D4 (D3, mic data).</li><li>B9 connects to H3 (3V3) and B8 to H2 (GND).</li></ul>
 </section>
 <section class="step" id="step-12" hidden>
-<p class="crumb">Step 12 of 13</p><h2>Continuity check</h2>
-<img class="pic" src="carrier/step-12.svg" alt="Continuity check. Hole map for this step." loading="lazy">
-<h3>Do this</h3><ol><li>Meter on continuity: connected beeps. Probe from the component side.</li></ol>
-<h3>Nets that must connect</h3><table><tr><th>Net</th><td><b>Holes</b></td></tr><tr><th>+3V3</th><td>H3 (XIAO.3V3), I3 (mic.VDD), J3 (PCA lead.VCC)</td></tr><tr><th>+5V</th><td>D14 (amp.GAIN), D17 (amp.Vin), H1 (XIAO.5V)</td></tr><tr><th>GND</th><td>D16 (amp.GND), H2 (XIAO.GND), I2 (mic.GND), J2 (PCA lead.GND)</td></tr><tr><th>D0</th><td>D1 (XIAO.D0), D13 (amp.DIN)</td></tr><tr><th>D1</th><td>C2 (mic.SCK), D2 (XIAO.D1), D12 (amp.BCLK)</td></tr><tr><th>D2</th><td>C3 (mic.WS), D3 (XIAO.D2), D11 (amp.LRC)</td></tr><tr><th>D3</th><td>C4 (mic.SD), D4 (XIAO.D3)</td></tr><tr><th>D4</th><td>C5 (PCA lead.SDA), D5 (XIAO.D4)</td></tr><tr><th>D5</th><td>B6 (PCA lead.SCL), D6 (XIAO.D5)</td></tr><tr><th>D10</th><td>H4 (XIAO.D10), J4 (PCA lead./OE)</td></tr></table><p>Then check that +3V3, +5V and GND are <strong>not</strong> connected to each other or to any other net, and D1 is not connected to D2.</p>
+<p class="crumb">Step 12 of 14</p><h2>Solder the PCA9685's wires</h2>
+<img class="pic" src="carrier/step-12.svg" alt="Solder the PCA9685&#x27;s wires. Hole map for this step." loading="lazy">
+<h3>Do this</h3><ol><li>The PCA9685 sits off the board, on its 90 mm wires. Each wire lands in the strip of the XIAO pin it needs, so it needs no link.</li><li>Push each wire in from the component side and solder it underneath: <strong>SDA (green) C5, SCL (yellow) B6, GND (black) B8, VCC (red) B9, /OE (brown) J4</strong>.</li><li>Red VCC is the logic supply: the row-9 rail (3.3 V), not 5 V. Black GND goes on the row-8 rail. The servo supply never comes to the carrier.</li><li>The /OE pull-up (about 10 kΩ to VCC) sits on the PCA9685 board itself.</li></ol>
+<h3>Details</h3><table><tr><th>Wires</th><td>SDA (green) C5, SCL (yellow) B6, GND (black) B8, VCC (red) B9, /OE (brown) J4</td></tr></table>
+<h3>Check</h3><ul class="check"><li>C5 connects to D5 (SDA, D4) and B6 to D6 (SCL, D5).</li><li>B8 connects to H2 (GND), B9 to H3 (3V3) and J4 to H4 (D10).</li></ul>
 </section>
 <section class="step" id="step-13" hidden>
-<p class="crumb">Step 13 of 13</p><h2>Off the board</h2>
+<p class="crumb">Step 13 of 14</p><h2>Continuity check</h2>
+<img class="pic" src="carrier/step-13.svg" alt="Continuity check. Hole map for this step." loading="lazy">
+<h3>Do this</h3><ol><li>Meter on continuity: connected beeps. Probe from the component side.</li></ol>
+<h3>Nets that must connect</h3><table><tr><th>Net</th><td><b>Holes</b></td></tr><tr><th>+3V3</th><td>B9 (mic.VDD), B9 (PCA lead.VCC), H3 (XIAO.3V3)</td></tr><tr><th>+5V</th><td>D14 (amp.GAIN), D17 (amp.Vin), H1 (XIAO.5V)</td></tr><tr><th>GND</th><td>B8 (mic.GND), B8 (PCA lead.GND), D16 (amp.GND), H2 (XIAO.GND)</td></tr><tr><th>D0</th><td>D1 (XIAO.D0), D13 (amp.DIN)</td></tr><tr><th>D1</th><td>C2 (mic.SCK), D2 (XIAO.D1), D12 (amp.BCLK)</td></tr><tr><th>D2</th><td>C3 (mic.WS), D3 (XIAO.D2), D11 (amp.LRC)</td></tr><tr><th>D3</th><td>C4 (mic.SD), D4 (XIAO.D3)</td></tr><tr><th>D4</th><td>C5 (PCA lead.SDA), D5 (XIAO.D4)</td></tr><tr><th>D5</th><td>B6 (PCA lead.SCL), D6 (XIAO.D5)</td></tr><tr><th>D10</th><td>H4 (XIAO.D10), J4 (PCA lead./OE)</td></tr></table><p>Then check that +3V3, +5V and GND are <strong>not</strong> connected to each other or to any other net, and D1 is not connected to D2.</p>
+</section>
+<section class="step" id="step-14" hidden>
+<p class="crumb">Step 14 of 14</p><h2>Off the board</h2>
 <h3>Do this</h3><ol><li>Speaker: its two wires to the amp's own screw terminal (+ and −).</li><li>Servo power stays off the carrier: the supply's + goes through the switch to the PCA9685's V+ terminal, and its − to the PCA9685's GND terminal, as in stage 8 of the <a href="wiring.html">wiring guide</a>.</li><li>Leave the switch off and every servo unplugged.</li></ol>
-<h3>Wires that land on the carrier</h3><table><tr><th>Wire</th><td><b>Hole · lead · colour</b></td></tr><tr><th>mic SCK</th><td>C2 · 75 mm · white</td></tr><tr><th>mic WS</th><td>C3 · 75 mm · blue</td></tr><tr><th>mic SD</th><td>C4 · 75 mm · yellow</td></tr><tr><th>mic GND</th><td>I2 · 75 mm, hole chosen by the design · black</td></tr><tr><th>mic VDD</th><td>I3 · 75 mm, hole chosen by the design · red</td></tr><tr><th>PCA9685 SDA</th><td>C5 · 90 mm · green</td></tr><tr><th>PCA9685 SCL</th><td>B6 · 90 mm · yellow</td></tr><tr><th>PCA9685 GND</th><td>J2 · 90 mm, hole chosen by the design · black</td></tr><tr><th>PCA9685 VCC</th><td>J3 · 90 mm, hole chosen by the design · red</td></tr><tr><th>PCA9685 /OE</th><td>J4 · 90 mm, hole chosen by the design · brown</td></tr></table>
+<h3>Wires that land on the carrier</h3><table><tr><th>Wire</th><td><b>Hole · lead · colour</b></td></tr><tr><th>mic SCK</th><td>C2 · 75 mm · white</td></tr><tr><th>mic WS</th><td>C3 · 75 mm · blue</td></tr><tr><th>mic SD</th><td>C4 · 75 mm · yellow</td></tr><tr><th>mic GND</th><td>B8 · 75 mm · black</td></tr><tr><th>mic VDD</th><td>B9 · 75 mm · red</td></tr><tr><th>PCA9685 SDA</th><td>C5 · 90 mm · green</td></tr><tr><th>PCA9685 SCL</th><td>B6 · 90 mm · yellow</td></tr><tr><th>PCA9685 GND</th><td>B8 · 90 mm · black</td></tr><tr><th>PCA9685 VCC</th><td>B9 · 90 mm · red</td></tr><tr><th>PCA9685 /OE</th><td>J4 · 90 mm, hole chosen by the design · brown</td></tr></table>
 <h3>Check</h3><ul class="check"><li>Then run the bench checks on the <a href="console.html">Check</a> page.</li></ul>
 </section>
   </div>
   <div class="pager"><button class="ghost" id="prev">Back</button><button id="next">Next step</button></div>
 </main>
 <script>
-const TITLES = ['Prepare the modules', 'L1, green, F3 → F11', 'L2, yellow, F2 → F12', 'L3, white, F1 → F13', 'L4, red, E1 → F17', 'L5, black, E2 → F16', 'L6, red, H14 → H17', 'Solder the XIAO', 'Solder the amp, flat', "Solder the mic's wires", "Solder the PCA9685's wires", 'Continuity check', 'Off the board'];
+const TITLES = ['Prepare the modules', 'L1, green, F3 → F11', 'L2, yellow, F2 → F12', 'L3, white, F1 → F13', 'L4, red, E1 → F17', 'L5, black, E2 → F16', 'L6, red, H14 → H17', 'Power rails: four jumpers', 'Solder the XIAO', 'Solder the amp, flat', "Solder the mic's wires", "Solder the PCA9685's wires", 'Continuity check', 'Off the board'];
 const secs = [...document.querySelectorAll('.step')], nav = document.getElementById('nav');
 const btns = TITLES.map((t, i) => { const b = document.createElement('button'); b.textContent = (i + 1) + '. ' + t.replace(/\*/g, '');
   b.onclick = () => show(i); nav.appendChild(b); return b; });

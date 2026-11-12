@@ -171,17 +171,17 @@
     },
     {
       "pad": "INMP441.GND",
-      "hole": "I2",
-      "x_mm": 11.43,
-      "y_mm": 17.78,
+      "hole": "B8",
+      "x_mm": -11.43,
+      "y_mm": 2.54,
       "z_mm": 1.6,
       "marker_only": true
     },
     {
       "pad": "INMP441.VDD",
-      "hole": "I3",
-      "x_mm": 11.43,
-      "y_mm": 15.24,
+      "hole": "B9",
+      "x_mm": -11.43,
+      "y_mm": -0.0,
       "z_mm": 1.6,
       "marker_only": true
     },
@@ -203,17 +203,17 @@
     },
     {
       "pad": "PCA9685.GND",
-      "hole": "J2",
-      "x_mm": 13.97,
-      "y_mm": 17.78,
+      "hole": "B8",
+      "x_mm": -11.43,
+      "y_mm": 2.54,
       "z_mm": 1.6,
       "marker_only": true
     },
     {
       "pad": "PCA9685.VCC",
-      "hole": "J3",
-      "x_mm": 13.97,
-      "y_mm": 15.24,
+      "hole": "B9",
+      "x_mm": -11.43,
+      "y_mm": -0.0,
       "z_mm": 1.6,
       "marker_only": true
     },

@@ -357,13 +357,13 @@
         "diameter": 1,
         "height": 0.2,
         "base": [
-          11.43,
-          17.78,
+          -11.43,
+          2.54,
           "board_thickness"
         ],
         "operation": "new",
-        "body_name": "I2 INMP441.GND DATUM",
-        "name": "Pad location I2"
+        "body_name": "B8 INMP441.GND DATUM",
+        "name": "Pad location B8"
       }
     },
     {
@@ -372,13 +372,13 @@
         "diameter": 1,
         "height": 0.2,
         "base": [
-          11.43,
-          15.24,
+          -11.43,
+          -0.0,
           "board_thickness"
         ],
         "operation": "new",
-        "body_name": "I3 INMP441.VDD DATUM",
-        "name": "Pad location I3"
+        "body_name": "B9 INMP441.VDD DATUM",
+        "name": "Pad location B9"
       }
     },
     {
@@ -417,13 +417,13 @@
         "diameter": 1,
         "height": 0.2,
         "base": [
-          13.97,
-          17.78,
+          -11.43,
+          2.54,
           "board_thickness"
         ],
         "operation": "new",
-        "body_name": "J2 PCA9685.GND DATUM",
-        "name": "Pad location J2"
+        "body_name": "B8 PCA9685.GND DATUM",
+        "name": "Pad location B8"
       }
     },
     {
@@ -432,13 +432,13 @@
         "diameter": 1,
         "height": 0.2,
         "base": [
-          13.97,
-          15.24,
+          -11.43,
+          -0.0,
           "board_thickness"
         ],
         "operation": "new",
-        "body_name": "J3 PCA9685.VCC DATUM",
-        "name": "Pad location J3"
+        "body_name": "B9 PCA9685.VCC DATUM",
+        "name": "Pad location B9"
       }
     },
     {
@@ -496,8 +496,8 @@
           "C2 INMP441.SCK DATUM",
           "C3 INMP441.WS DATUM",
           "C4 INMP441.SD DATUM",
-          "I2 INMP441.GND DATUM",
-          "I3 INMP441.VDD DATUM"
+          "B8 INMP441.GND DATUM",
+          "B9 INMP441.VDD DATUM"
         ],
         "color": "#ad60ce"
       }
@@ -508,8 +508,8 @@
         "bodies": [
           "C5 PCA9685.SDA DATUM",
           "B6 PCA9685.SCL DATUM",
-          "J2 PCA9685.GND DATUM",
-          "J3 PCA9685.VCC DATUM",
+          "B8 PCA9685.GND DATUM",
+          "B9 PCA9685.VCC DATUM",
           "J4 PCA9685./OE DATUM"
         ],
         "color": "#d64f4f"

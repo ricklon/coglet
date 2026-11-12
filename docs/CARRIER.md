@@ -4,7 +4,7 @@
 
 The XIAO and the MAX98357A amp go on an **ElectroCookie mini solderable breadboard** (1/4 size, 38.1 × 50.8 mm), the board the N20 drive in cam-rotation-starter uses. The INMP441 mic (75 mm wires) and the PCA9685 (90 mm wires) sit off it, where the robot needs them, and their wires land straight in the carrier's holes. The speaker wires to the amp's terminal; the servo supply goes straight to the PCA9685's terminal block.
 
-![Hole map of the carrier, component side, row 1 at the top and column A at the left. The XIAO straddles the channel in columns D and H, its pins in rows 1 to 7 and its USB-C port at the row-1 edge. The amp lies flat with its pins in column D rows 11 to 17 and its body toward column J. The mic's wires land in C2, C3, C4, I2 and I3, and the PCA9685's in C5, B6, J2, J3 and J4. The four corner holes are left empty for the mounting screws. Dashed lines are the 6 underside links.](../web-programmer/carrier/hole-map.svg)
+![Hole map of the carrier, component side, row 1 at the top and column A at the left. The XIAO straddles the channel in columns D and H, its pins in rows 1 to 7 and its USB-C port at the row-1 edge. The amp lies flat with its pins in column D rows 11 to 17 and its body toward column J. Jumpers I2 to H8 and I3 to H9, and E8 to F8 and E9 to F9, make row 8 a ground rail and row 9 a 3.3 V rail. The mic's signal wires land in C2, C3 and C4 and the PCA9685's in C5, B6 and J4; both parts' power wires share B8 (ground) and B9 (3.3 V). The four corner holes are left empty for the mounting screws. Dashed lines are the 6 underside links.](../web-programmer/carrier/hole-map.svg)
 
 ## The board
 
@@ -24,31 +24,40 @@ Seeed's land pattern puts the XIAO's pin rows 15.25 mm apart (0.6 in), the same 
 |---|---|---|
 | XIAO ESP32 (S3 Sense, C3 or C6), component side up, USB-C at the row-1 edge | Rows 1–7 over columns D–H | D0–D5 at D1–D6, 5V H1, GND H2, 3V3 H3, D10 H4. **D6, D7, D8 and D9 stay out.** |
 | MAX98357A amp, flat on a straight header, body toward column J | Column D, rows 11–17 | Vin D17, GND D16, SD D15, GAIN D14, DIN D13, BCLK D12, LRC D11. SD connects to nothing; GAIN is tied to Vin (6 dB). |
-| INMP441 mic, off the board on 75 mm wires, L/R tied to GND on the mic | Wire ends | SCK C2, WS C3, SD C4, GND I2, VDD I3 |
-| PCA9685, off the board on 90 mm wires | Wire ends | SDA C5, SCL B6, GND J2, VCC J3, /OE J4 |
+| INMP441 mic, off the board on 75 mm wires, L/R tied to GND on the mic | Wire ends | SCK C2, WS C3, SD C4, GND B8, VDD B9 |
+| PCA9685, off the board on 90 mm wires | Wire ends | SDA C5, SCL B6, GND B8, VCC B9, /OE J4 |
 
-Every mic and PCA9685 wire lands in the strip of the XIAO pin it needs, so none of them needs a link. The amp's pins sit in rows 11–17, away from the XIAO's, so L1–L5 carry its three I2S lines, 5 V and ground through the centre channel, and L6 ties GAIN to Vin. Holes under the amp's body (roughly columns E–I, rows 10–17) can't take a wire from the top.
+Every mic and PCA9685 wire lands in a strip that already carries its net, so none of them needs a link: the signals in the XIAO's own strips, the power wires on two rails that four component-side jumpers make out of rows 8 and 9.
+
+| Jumper | From | To | Colour | Job |
+|---|---|---|---|---|
+| T1 | I2 | H8 | colour not recorded | Ground from the XIAO's GND strip (row 2) to row 8. |
+| T2 | I3 | H9 | colour not recorded | 3.3 V from the XIAO's 3V3 strip (row 3) to row 9. |
+| T3 | E8 | F8 | orange | Joins row 8 across the channel: a ground rail on both halves. |
+| T4 | E9 | F9 | orange | Joins row 9 across the channel: a 3.3 V rail on both halves. |
+
+The amp's pins sit in rows 11–17, away from the XIAO's, so L1–L5 carry its three I2S lines, 5 V and ground through the centre channel, and L6 ties GAIN to Vin. Holes under the amp's body (roughly columns E–I, rows 10–17) can't take a wire from the top.
 
 | Wire | Hole | Lead | Colour |
 |---|---|---|---|
 | mic SCK | C2 | 75 mm | white |
 | mic WS | C3 | 75 mm | blue |
 | mic SD | C4 | 75 mm | yellow |
-| mic GND | I2 | 75 mm, hole chosen by the design | black |
-| mic VDD | I3 | 75 mm, hole chosen by the design | red |
+| mic GND | B8 | 75 mm | black |
+| mic VDD | B9 | 75 mm | red |
 | PCA9685 SDA | C5 | 90 mm | green |
 | PCA9685 SCL | B6 | 90 mm | yellow |
-| PCA9685 GND | J2 | 90 mm, hole chosen by the design | black |
-| PCA9685 VCC | J3 | 90 mm, hole chosen by the design | red |
+| PCA9685 GND | B8 | 90 mm | black |
+| PCA9685 VCC | B9 | 90 mm | red |
 | PCA9685 /OE | J4 | 90 mm, hole chosen by the design | brown |
 
 ## Nets
 
 | Net | Holes |
 |---|---|
-| +3V3 | H3 (XIAO.3V3), I3 (mic.VDD), J3 (PCA lead.VCC) |
+| +3V3 | B9 (mic.VDD), B9 (PCA lead.VCC), H3 (XIAO.3V3) |
 | +5V | D14 (amp.GAIN), D17 (amp.Vin), H1 (XIAO.5V) |
-| GND | D16 (amp.GND), H2 (XIAO.GND), I2 (mic.GND), J2 (PCA lead.GND) |
+| GND | B8 (mic.GND), B8 (PCA lead.GND), D16 (amp.GND), H2 (XIAO.GND) |
 | D0 | D1 (XIAO.D0), D13 (amp.DIN) |
 | D1 | C2 (mic.SCK), D2 (XIAO.D1), D12 (amp.BCLK) |
 | D2 | C3 (mic.WS), D3 (XIAO.D2), D11 (amp.LRC) |
@@ -82,8 +91,8 @@ Cut lengths are the routed length × 1.15 + 10 mm, rounded up to 5 mm. They are 
 
 ## Still to confirm
 
-1. The holes the mic's and PCA9685's red, black and brown wires land in (the design chose I2 for mic GND, I3 for mic VDD, J2 for PCA9685 GND, J3 for PCA9685 VCC, J4 for PCA9685 /OE).
+1. The holes the mic's and PCA9685's red, black and brown wires land in (the design chose J4 for PCA9685 /OE).
 2. The amp's outline: its body is drawn about 17.8 × 18 mm over columns D–I.
-3. Two resistors on the prototype board that aren't in this design.
+3. The colours of jumpers T1 and T2.
 4. That your perfboard's underside print is mirrored as described, and its corner holes sit as described.
 5. How far the XIAO's USB-C port overhangs its body, and the cut lengths.
