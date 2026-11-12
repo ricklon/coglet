@@ -166,7 +166,7 @@ const STEPS = [
       'Solder headers to the XIAO, the INMP441, the MAX98357A and the PCA9685.',
       '<b>MAX98357A:</b> tie <b>GAIN to Vin</b> for 6 dB (wire J2, below). Leave SD unconnected.',
       '<b>PCA9685:</b> leave every address jumper open (address 0x40).',
-      '<b>PCA9685 /OE:</b> many breakouts pull /OE <em>down</em>, which keeps the outputs on across a reset. Replace that pull-down with a pull-up (for example 10 kΩ) to the PCA9685 3.3 V logic rail. Look at your breakout before cutting or desoldering anything.',
+      '<b>PCA9685 /OE:</b> many breakouts pull /OE <em>down</em>, which keeps the outputs on across a reset. Replace that pull-down with a pull-up (for example 10 kΩ) to the PCA9685 3.3 V logic rail. The breakout repeats its header at both ends: solder the pull-up across /OE and VCC at the end away from the wires. Look at your breakout before cutting or desoldering anything.',
       '<b>Wire:</b> any thin hook-up wire (26–30 AWG) is fine for the logic. Colours below are suggestions; what matters is where each end lands. Tin every stripped end.',
       '<b>INMP441:</b> tie <b>L/R to GND</b>. The firmware reads the left slot, and the mic only drives it with L/R low. That is wire J1, below.',
     ],
