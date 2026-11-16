@@ -11,7 +11,7 @@ The [hole map](../web-programmer/carrier/hole-map.svg) and [CARRIER.md](CARRIER.
 **Do this:**
 
 1. **XIAO:** fit header pins to left row D0–D5 and right row 5V, GND, 3V3, D10 only. Leave **D6, D7, D8 and D9 out**, so their strips stay free. Fit the pins to the module with the perfboard as the jig, so they come out square, and solder them to the module only.
-2. **MAX98357A amp:** a straight 7-pin header, all seven kept: Vin, GND, SD, GAIN, DIN, BCLK, LRC. It lies flat on the carrier.
+2. **MAX98357A amp:** a straight 7-pin header, all seven kept: Vin, GND, SD, GAIN, DIN, BCLK, LRC. It lies flat on the carrier. Vin is its only supply and takes 5 V (link L4); GAIN goes to that same Vin (link L6), never to 3.3 V.
 3. **INMP441 mic:** solder its five 75 mm wires to the mic (white SCK, blue WS, yellow SD, red VDD, black GND) and tie **L/R to GND** on the mic board. That is wire J1 in the [wiring guide](wiring.html).
 4. **PCA9685:** solder its five 90 mm wires to the breakout (green SDA, yellow SCL, red VCC, black GND, brown /OE) at one end's header. Its other end has the same header; solder the /OE pull-up (about 10 kΩ, /OE to VCC) there, so it keeps clear of the wires. Remove the breakout's /OE pull-down if it has one: [wiring guide](wiring.html), stage 1.
 5. Keep the four corner holes (A1, J1, A17, J17) empty: the mounting screws and their supports cover them.
